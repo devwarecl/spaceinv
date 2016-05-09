@@ -44,13 +44,14 @@ int main() {
         running = running && (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_RELEASE);
         running = running && !glfwWindowShouldClose(window);
         
+        auto clearFlags = gl33core::GL_COLOR_BUFFER_BIT | gl33core::GL_DEPTH_BUFFER_BIT;
+
         gl33core::glClearColor(0.2f, 0.2f, 0.8f, 1.0f);
-        gl33core::glClear(gl33core::GL_COLOR_BUFFER_BIT | gl33core::GL_DEPTH_BUFFER_BIT);
+        gl33core::glClear(clearFlags);
         
         gl33core::glFlush();
         glfwSwapBuffers(window);
     }
-    
     
     ::glfwDestroyWindow(window);
     ::glfwTerminate();
