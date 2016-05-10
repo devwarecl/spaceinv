@@ -5,14 +5,9 @@
 #define __xe_gfx_device_hpp__
 
 #include "xe/Buffer.hpp"
+#include "xe/gfx/BufferType.hpp"
 
 namespace xe { namespace gfx {
-
-    enum class BufferType {
-        Unknown,
-        Vertex, 
-        Index
-    };
 
     class Device {
     public:
