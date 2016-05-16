@@ -3,7 +3,7 @@
 #ifndef __xe_dataformat__
 #define __xe_dataformat__
 
-#include <array>
+#include <vector>
 #include <string>
 #include "xe/DataType.hpp"
 #include "xe/Traits.hpp"
@@ -12,25 +12,23 @@ namespace xe {
 
     struct Attrib {
         std::string name;
-        std::size_t dim = 1;
+        std::size_t count = 1;
         DataType    type = DataType::Unknown;
         
         std::size_t getSize() const {
-            return dim * xe::getSize(type);
-        }
-
-        template<typename Type>
-        Attrib make(const std::string &name) {
-            return {name, 1, Traits<Type>::Enum};
+            return count * xe::getSize(type);
         }
     };
 
-    template<typename DataAttrib, std::size_t AttribCount>
+    template<typename DataAttrib>
     struct DataFormat {
-        std::array<DataAttrib, AttribCount> attribs;
+
+        typedef std::vector<DataAttrib> AttribVector;
+
+        AttribVector attribs;
         
         DataFormat() {}
-        DataFormat(const std::array<DataAttrib, AttribCount> &attribs_) : attribs(attribs_) {}
+        DataFormat(const std::vector<DataAttrib> &attribs_) : attribs(attribs_) {}
 
         std::size_t getSize() const {
             std::size_t size = 0;
@@ -40,10 +38,6 @@ namespace xe {
             }
 
             return size;
-        }
-
-        constexpr std::size_t getCount() const {
-            return AttribCount;
         }
     };
 }

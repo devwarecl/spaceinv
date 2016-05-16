@@ -1,224 +1,147 @@
 
-#define GLFW_INCLUDE_NONE
-
-#pragma warning (disable:4251)
-
-#include <glbinding/Binding.h>
-#include <glbinding/gl33core/gl.h>
-#include <GLFW/glfw3.h>
+#include <vector>
 #include <cassert>
 
-class Buffer {
-public:
-    Buffer() {}
+#include "xe/DataType.hpp"
+#include "xe/DataFormat.hpp"
 
-    Buffer(gl33core::GLenum target_, std::size_t size_, gl33core::GLenum usage) {
-        size = size_;
-        target = target_;
+#include "gl3/Subset.hpp"
+#include "gl3/Program.hpp"
+#include "gl3/Device.hpp"
 
-        gl33core::glGenBuffers(1, &id);
-        gl33core::glBindBuffer(target, id);
-        gl33core::glBufferData(target, size, nullptr, usage);
-    }
+struct Assets {
+    gl3::SubsetFormat format;
+    gl3::Subset subset;
 
-    ~Buffer() {
-        gl33core::glDeleteBuffers(1, &id);
-    }
-
-    void write(const void* data) {
-        gl33core::glBufferSubData(target, 0, size, data);
-    }
-
-    void read(void *data) const {
-        gl33core::glGetBufferSubData(target, 0, size, data);
-    }
-
-    gl33core::GLint getId() const {
-        return id;
-    }
-
-    gl33core::GLenum getTarget() const {
-        return target;
-    }
-
-private:
-    gl33core::GLenum target;
-    gl33core::GLuint id = 0;
-    std::size_t size = 0;
-};
-
-struct SubsetAttrib {
-
-};
-
-class Subset {
-public:
-    template<typename BufferContainer>
-    explicit Subset(const BufferContainer &buffers, const Buffer &ibuffer) {
-        gl33core::glGenVertexArrays(1, &id);
-        gl33core::glBindVertexArray(id);
-
-        for (const Buffer &buffer : buffers) {
-            
-        }
-
-        gl33core::glBindVertexArray(0);
-    }
-
-    ~Subset() {
-        gl33core::glDeleteVertexArrays(1, &id);
-    }
-
-    gl33core::GLuint getId() const {
-        return id;
-    }
-
-private:
-    gl33core::GLuint id = 0;
-};
-
-class Shader {
-public:
-    Shader() {}
-
-    Shader(gl33core::GLenum type_, const std::string &glsl) {
-        type = type_;
-        id = gl33core::glCreateShader(type);
-
-        auto source = static_cast<const gl33core::GLchar *const>(glsl.c_str());
-        auto size = static_cast<gl33core::GLsizei>(glsl.size());
-        gl33core::glShaderSource (id, 1, &source, &size);
-        gl33core::glCompileShader(id);
-    }
-
-    ~Shader() {
-        gl33core::glDeleteShader(id);
-    }
-
-    gl33core::GLenum getType() const {
-        return type;
-    }
-
-    gl33core::GLuint getId() const {
-        return id;
-    }
-
-private:
-    gl33core::GLenum type;
-    gl33core::GLuint id = 0;
-};
-
-class Program {
-public:
-    Program() {}
-
-    template<typename ShaderContainer>
-    Program(const ShaderContainer &shaders) {
-        id = gl33core::glCreateProgram();
-
-        for (const Shader &shader : shaders) {
-            gl33core::glAttachShader(id, shader.getId());
-        }
-
-        gl33core::glLinkProgram(id);
-    }
-
-    gl33core::GLuint getId() const {
-        return id;
-    }
-
-    ~Program() {
-        gl33core::glDeleteProgram(id);
-    }
-
-private:
-    gl33core::GLuint id = 0;
-};
-
-class Device {
-public:
-    Device() {
-        ::glfwInit();
+    gl3::Program program;
     
-        int hints[][2] = {
-            // version
-            {GLFW_CONTEXT_VERSION_MAJOR, 3},
-            {GLFW_CONTEXT_VERSION_MINOR, 3},
-            {GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE},
-        
-            // framebuffer
-            {GLFW_RED_BITS, 8},
-            {GLFW_GREEN_BITS, 8},
-            {GLFW_BLUE_BITS, 8},
-            {GLFW_ALPHA_BITS, 8} ,
-            {GLFW_DEPTH_BITS,  24},
-            {GLFW_STENCIL_BITS, 8}
+    void initGeometry() {
+        float vertices[] =  {
+            0.0f, 1.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,
+            -1.0f, 0.0f, 0.0f
         };
-    
-        for (auto hint : hints) {
-            ::glfwWindowHint(hint[0], hint[1]);
-        }
-    
-        GLFWwindow *window = ::glfwCreateWindow(640, 480, "test", nullptr, nullptr);
-    
-        glfwMakeContextCurrent(window);
-    
-        glbinding::Binding::initialize(false);
+
+        float normals[] = {
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f
+        };
+
+        int indices[] = {
+            0, 1, 2, 0, 2, 1
+        };
+
+        std::vector<gl3::Buffer> buffers = {
+            std::move(gl3::Buffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, sizeof(vertices), vertices)),
+            std::move(gl3::Buffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, sizeof(normals), normals)),
+        };
+
+        gl3::Buffer ibuffer(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(indices), indices);
+
+        gl3::SubsetFormat::AttribVector attribs = {
+            gl3::SubsetAttrib("v_coord", 3, xe::DataType::Float32, 0),
+            gl3::SubsetAttrib("v_normal", 3, xe::DataType::Float32, 1)
+        };
+
+        format = gl3::SubsetFormat(attribs);
+        subset = gl3::Subset(format, std::move(buffers), std::move(ibuffer));
+
+        assert(glGetError() == GL_NO_ERROR);
     }
 
-    ~Device() {
-        ::glfwDestroyWindow(window);
-        ::glfwTerminate();
+    void initShaders() {
+        std::string vertexShader = R"(
+#version 330
+
+uniform mat4 mvp;
+
+in vec3 v_coord;
+in vec3 v_normal;
+
+out vec3 f_normal;
+
+vec3 transform(mat4 m, vec3 v, float w) {
+    vec4 result = mvp * vec4(v_normal, w);
+    return result.xyz;
+}
+
+void main() {
+    gl_Position = mvp * vec4(v_coord, 1.0f);
+    f_normal = (mvp * vec4(v_normal, 0.0f)).xyz;
+}
+        )";
+
+        std::string fragmentShader = R"(
+#version 330
+
+in vec3 f_normal;
+out vec4 color;
+
+void main() {
+    color = vec4(1.0f, 1.0f, 1.0f, 1.0f);   
+}
+        )";
+
+        gl3::Program::ShaderVector shaders = {
+            gl3::Shader(GL_VERTEX_SHADER, vertexShader),
+            gl3::Shader(GL_FRAGMENT_SHADER, fragmentShader)
+        };
+
+        program = gl3::Program(std::move(shaders));
+
+        assert(glGetError() == GL_NO_ERROR);
     }
 
-    void beginFrame() {
-        glfwPollEvents();
-
-        auto clearFlags = gl33core::GL_COLOR_BUFFER_BIT | gl33core::GL_DEPTH_BUFFER_BIT;
-
-        gl33core::glClearColor(0.2f, 0.2f, 0.8f, 1.0f);
-        gl33core::glClear(clearFlags);
+    Assets() {
+        initGeometry();
+        initShaders();
     }
 
-    void endFrame() {
-        gl33core::glFlush();
-        glfwSwapBuffers(window);
-    }
-
-    int getKey(int key) const {
-        return ::glfwGetKey(window, GLFW_KEY_ESCAPE);
-    }
-
-private:
-    GLFWwindow *window = nullptr;
+    ~Assets () {}
 };
 
 class SpaceInvApp {
 public:
-
     SpaceInvApp() {}
 
     ~SpaceInvApp() {}
 
+    bool running() {
+        return device.getKey(GLFW_KEY_ESCAPE)==GLFW_RELEASE;
+    }
+
+    void update() {}
+
+    void render() {
+        float matrix[] = {
+            1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f
+        };
+        
+        device.beginFrame();
+        device.setProgram(assets.program);
+        device.setUniformMatrix(assets.program.getLocation("mvp"), 1, false, matrix);
+        device.render(assets.subset, GL_TRIANGLES, 6);
+        device.endFrame();
+
+        assert(glGetError() == GL_NO_ERROR);
+    }
+
 private:
-    Device device;
-    Program program;
-    Shader vshader;
-    Shader fshader;
+    gl3::Device device;
+    Assets assets;
 };
 
-int main() {    
-    Device device;
+int main() {
+    SpaceInvApp app;
 
-    bool running = true;
-    
-    while(running) {
-        running = device.getKey(GLFW_KEY_ESCAPE)==GLFW_RELEASE;
-
-        device.beginFrame();
-
-        device.endFrame();
+    while (app.running()) {
+        app.update();
+        app.render();
     }
-    
+
     return 0;
 }

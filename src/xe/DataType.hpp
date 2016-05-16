@@ -15,6 +15,15 @@ namespace xe {
         Float16,    Float32 
     };
 
+    template<typename Type>
+    constexpr DataType getDataType() {return DataType::Unknown;}
+
+    template<>
+    constexpr DataType getDataType<std::int32_t>() {return DataType::Int32;}
+
+    template<>
+    constexpr DataType getDataType<float>() {return DataType::Float32;}
+
 	std::size_t getSize(DataType dataType)  {
 		switch (dataType) {
 			case DataType::UInt8:
