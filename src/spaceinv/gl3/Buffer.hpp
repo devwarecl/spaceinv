@@ -4,11 +4,15 @@
 #ifndef __gl3_buffer__
 #define __gl3_buffer__
 
+#include <memory>
 #include <cassert>
 #include "GL.hpp"
 
 namespace gl3 {
     class Buffer {
+    public:
+        typedef std::unique_ptr<Buffer> Ptr;
+
     public:
         Buffer() {}
 
@@ -28,10 +32,6 @@ namespace gl3 {
             }
         }
 
-        Buffer(Buffer &&other) {
-            *this = std::move(other);
-        }
-
         ~Buffer() {
             if (id) {
                 glDeleteBuffers(1, &id);
@@ -39,19 +39,6 @@ namespace gl3 {
             }
 
             assert(glGetError() == GL_NO_ERROR);
-        }
-
-        Buffer& operator= (Buffer &&other) {
-            this->~Buffer();
-
-            id = other.id;
-            target = other.target;
-            size = other.size;
-
-            other.id = 0;
-            other.size = 0;
-
-            return *this;
         }
 
         void write(const void* data) {

@@ -4,6 +4,7 @@
 #ifndef __gl3_subset__
 #define __gl3_subset__
 
+#include <memory>
 #include "xe/DataFormat.hpp"
 #include "Buffer.hpp"
 
@@ -34,9 +35,12 @@ namespace gl3 {
 
     class Subset {
     public:
+        typedef std::unique_ptr<Subset> Ptr;
+
+    public:
         Subset() {}
 
-        Subset(const SubsetFormat &format, const std::vector<Buffer> &buffers, const Buffer &ibuffer) {
+        Subset(const SubsetFormat &format, const std::vector<Buffer::Ptr> &buffers, const Buffer::Ptr &ibuffer) {
             glGenVertexArrays(1, &id);
             assert(glGetError() == GL_NO_ERROR);
 
@@ -50,9 +54,9 @@ namespace gl3 {
                     break;
                 }
 
-                const Buffer &buffer = buffers[attrib.bufferIndex];
+                auto buffer = buffers[attrib.bufferIndex].get();
 
-                glBindBuffer(buffer.getTarget(), buffer.getId());
+                glBindBuffer(buffer->getTarget(), buffer->getId());
                 assert(glGetError() == GL_NO_ERROR);
                 
                 glEnableVertexAttribArray(vertexAttrib);
@@ -65,12 +69,12 @@ namespace gl3 {
             }
 
             if (ibuffer) {
-                glBindBuffer(ibuffer.getTarget(), ibuffer.getId());
+                glBindBuffer(ibuffer->getTarget(), ibuffer->getId());
                 glBindVertexArray(0);
                 _indexed = true;
 
                 assert(glGetError() == GL_NO_ERROR);
-            }   
+            }
         }
 
         ~Subset() {

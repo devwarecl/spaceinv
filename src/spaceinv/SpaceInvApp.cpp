@@ -32,12 +32,12 @@ struct Assets {
             0, 1, 2, 0, 2, 1
         };
 
-        std::vector<gl3::Buffer> buffers = {
-            std::move(gl3::Buffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, sizeof(vertices), vertices)),
-            std::move(gl3::Buffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, sizeof(normals), normals)),
+        std::vector<gl3::Buffer::Ptr> buffers = {
+            std::make_unique<gl3::Buffer>(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, sizeof(vertices), vertices),
+            std::make_unique<gl3::Buffer>(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, sizeof(normals), normals),
         };
 
-        gl3::Buffer ibuffer(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(indices), indices);
+        auto ibuffer = std::make_unique<gl3::Buffer>(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(indices), indices);
 
         gl3::SubsetFormat::AttribVector attribs = {
             gl3::SubsetAttrib("v_coord", 3, xe::DataType::Float32, 0),
