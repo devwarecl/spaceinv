@@ -22,45 +22,45 @@ public:
     ~SpaceInvApp() {}
 
     bool running() {
-        return device.getKey(GLFW_KEY_ESCAPE)==GLFW_RELEASE;
+        return m_device.getKey(GLFW_KEY_ESCAPE)==GLFW_RELEASE;
     }
 
     void update() {
-        angle += 1.0f;
+        m_angle += 1.0f;
         
-        model = xe::rotatey(xe::rad(angle));
+        m_model = xe::rotatey(xe::rad(m_angle));
     }
 
     void render() {
-        auto mvp = proj * view * model;
+        auto mvp = m_proj * m_view * m_model;
         
-        device.beginFrame();
-        device.setProgram(program.get());
-        device.setUniformMatrix(program->getLocation("mvp"), 1, false, mvp.values);
-        device.render(subset.get(), GL_TRIANGLES, 6);
-        device.endFrame();
+        m_device.beginFrame();
+        m_device.setProgram(m_program.get());
+        m_device.setUniformMatrix(m_program->getLocation("mvp"), 1, false, mvp.values);
+        m_device.render(m_subset.get(), GL_TRIANGLES, 6);
+        m_device.endFrame();
         
         assert(glGetError() == GL_NO_ERROR);
     }
     
 private:
-    gl3::Device device;
-    gl3::SubsetFormat format;
-    gl3::SubsetPtr subset;
-    gl3::ProgramPtr program;
+    gl3::Device m_device;
+    gl3::SubsetFormat m_format;
+    gl3::SubsetPtr m_subset;
+    gl3::ProgramPtr m_program;
     
-    xe::Matrix4f proj;
-    xe::Matrix4f view;
-    xe::Matrix4f model;
+    xe::Matrix4f m_proj;
+    xe::Matrix4f m_view;
+    xe::Matrix4f m_model;
     
-    xe::Vector3f position;
-    float angle = 0.0f;
+    xe::Vector3f m_position;
+    float m_angle = 0.0f;
     
 private:
     void initMatrices() {
-        proj = xe::perspective(xe::rad(60.0f), 4.0f/3.0f, 0.01f, 1000.0f);
-        view = xe::lookat<float>({0.0f, 2.0f, 5.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
-        model = xe::identity<float, 4>();
+        m_proj = xe::perspective(xe::rad(60.0f), 4.0f/3.0f, 0.01f, 1000.0f);
+        m_view = xe::lookat<float>({0.0f, 2.0f, 5.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
+        m_model = xe::identity<float, 4>();
     }
     
     void initGeometry() {
@@ -91,9 +91,9 @@ private:
             gl3::SubsetAttrib("v_normal", 3, xe::DataType::Float32, 1)
         };
 
-        format = gl3::SubsetFormat(attribs);
+        m_format = gl3::SubsetFormat(attribs);
         
-        subset.reset(new gl3::Subset(format, std::move(buffers), std::move(ibuffer)));
+        m_subset.reset(new gl3::Subset(m_format, std::move(buffers), std::move(ibuffer)));
         
         assert(glGetError() == GL_NO_ERROR);
     }
@@ -138,7 +138,7 @@ void main() {
         shaders.push_back(std::move(shader1));
         shaders.push_back(std::move(shader2));
         
-        program = std::make_unique<gl3::Program>(std::move(shaders));
+        m_program = std::make_unique<gl3::Program>(std::move(shaders));
         
         assert(glGetError() == GL_NO_ERROR);
     }
