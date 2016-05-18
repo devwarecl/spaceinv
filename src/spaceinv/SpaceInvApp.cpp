@@ -16,6 +16,7 @@ public:
     SpaceInvApp() {
         initGeometry();
         initShaders();
+        initMatrices();
     }
 
     ~SpaceInvApp() {}
@@ -29,18 +30,36 @@ public:
     }
 
     void render() {
-        auto matrix = xe::identity<float, 4>();
+        auto mvp = proj * view * model;
         
         device.beginFrame();
         device.setProgram(program.get());
-        device.setUniformMatrix(program->getLocation("mvp"), 1, false, matrix.values);
+        device.setUniformMatrix(program->getLocation("mvp"), 1, false, mvp.values);
         device.render(subset.get(), GL_TRIANGLES, 6);
         device.endFrame();
         
         assert(glGetError() == GL_NO_ERROR);
     }
-
+    
 private:
+    gl3::Device device;
+    gl3::SubsetFormat format;
+    gl3::SubsetPtr subset;
+    gl3::ProgramPtr program;
+    
+    xe::Matrix4f proj;
+    xe::Matrix4f view;
+    xe::Matrix4f model;
+    
+    xe::Vector3f position;
+    
+private:
+    void initMatrices() {
+        proj = xe::perspective(xe::rad(60.0f), 4.0f/3.0f, 0.01f, 1000.0f);
+        view = xe::lookat<float>({0.0f, 0.0f, 5.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
+        model = xe::identity<float, 4>();
+    }
+    
     void initGeometry() {
         float vertices[] =  {
             0.0f, 1.0f, 0.0f,
@@ -120,14 +139,6 @@ void main() {
         
         assert(glGetError() == GL_NO_ERROR);
     }
-    
-private:
-    gl3::Device device;
-    gl3::SubsetFormat format;
-    gl3::SubsetPtr subset;
-    gl3::ProgramPtr program;
-    
-    xe::Vector3f position;
 };
 
 int main() {
