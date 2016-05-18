@@ -4,22 +4,48 @@
 
 #include "xe/DataType.hpp"
 #include "xe/DataFormat.hpp"
+#include "xe/Vector.hpp"
+#include "xe/Matrix.hpp"
 
 #include "gl3/Subset.hpp"
 #include "gl3/Program.hpp"
 #include "gl3/Device.hpp"
 
-struct Assets {
-    gl3::SubsetFormat format;
-    gl3::SubsetPtr subset;
+class SpaceInvApp {
+public:
+    SpaceInvApp() {
+        initGeometry();
+        initShaders();
+    }
 
-    gl3::ProgramPtr program;
-    
+    ~SpaceInvApp() {}
+
+    bool running() {
+        return device.getKey(GLFW_KEY_ESCAPE)==GLFW_RELEASE;
+    }
+
+    void update() {
+        
+    }
+
+    void render() {
+        auto matrix = xe::identity<float, 4>();
+        
+        device.beginFrame();
+        device.setProgram(program.get());
+        device.setUniformMatrix(program->getLocation("mvp"), 1, false, matrix.values);
+        device.render(subset.get(), GL_TRIANGLES, 6);
+        device.endFrame();
+        
+        assert(glGetError() == GL_NO_ERROR);
+    }
+
+private:
     void initGeometry() {
         float vertices[] =  {
             0.0f, 1.0f, 0.0f,
-            1.0f, 0.0f, 0.0f,
-            -1.0f, 0.0f, 0.0f
+            1.0f, -1.0f, 0.0f,
+            -1.0f, -1.0f, 0.0f
         };
 
         float normals[] = {
@@ -49,7 +75,7 @@ struct Assets {
         
         assert(glGetError() == GL_NO_ERROR);
     }
-
+    
     void initShaders() {
         std::string vertexShader = R"(
 #version 330
@@ -94,47 +120,14 @@ void main() {
         
         assert(glGetError() == GL_NO_ERROR);
     }
-
-    Assets() {
-        initGeometry();
-        initShaders();
-    }
-
-    ~Assets () {}
-};
-
-class SpaceInvApp {
-public:
-    SpaceInvApp() {}
-
-    ~SpaceInvApp() {}
-
-    bool running() {
-        return device.getKey(GLFW_KEY_ESCAPE)==GLFW_RELEASE;
-    }
-
-    void update() {}
-
-    void render() {
-        float matrix[] = {
-            1.0f, 0.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, 1.0f
-        };
-        
-        device.beginFrame();
-        device.setProgram(assets.program.get());
-        device.setUniformMatrix(assets.program->getLocation("mvp"), 1, false, matrix);
-        device.render(assets.subset.get(), GL_TRIANGLES, 6);
-        device.endFrame();
-
-        assert(glGetError() == GL_NO_ERROR);
-    }
-
+    
 private:
     gl3::Device device;
-    Assets assets;
+    gl3::SubsetFormat format;
+    gl3::SubsetPtr subset;
+    gl3::ProgramPtr program;
+    
+    xe::Vector3f position;
 };
 
 int main() {

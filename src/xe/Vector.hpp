@@ -119,7 +119,6 @@ namespace xe {
 	public:
 		typedef Type type;
 		static const int size = Size;
-		static const DataType::Enum dataType = DataTypeTraits<Type>::Enum;
 
     private:
         typedef Vector<Type, Size> VectorType;

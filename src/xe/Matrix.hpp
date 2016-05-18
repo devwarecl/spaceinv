@@ -83,14 +83,14 @@ namespace xe {
 			}
 		}
 
-		Matrix2<Type, RowCount - 1, ColumnCount - 1> getSubMatrix(const int row, const int column) const {
+		Matrix<Type, RowCount - 1, ColumnCount - 1> getSubMatrix(const int row, const int column) const {
 			assert(row >= 0);
 			assert(row < RowCount);
 
 			assert(column >= 0);
 			assert(column < ColumnCount);
 
-			Matrix2<Type, RowCount-1, ColumnCount-1> result;
+			Matrix<Type, RowCount-1, ColumnCount-1> result;
 
 			int ii = 0, jj = 0;
 
@@ -125,7 +125,7 @@ namespace xe {
 		}
 
 		// operators
-		friend std::ostream& operator<< (std::ostream &os, const Matrix2<Type, RowCount, ColumnCount>& Other) {
+		friend std::ostream& operator<< (std::ostream &os, const Matrix<Type, RowCount, ColumnCount>& Other) {
 			os << std::endl;
 
 			for (int i=0; i<RowCount; ++i) {
@@ -263,7 +263,7 @@ namespace xe {
 	private:
 		template<typename Type_, int Count>
 		struct Determinant {
-			static Type_ compute(const Matrix2<Type_, Count, Count> &m) {
+			static Type_ compute(const Matrix<Type_, Count, Count> &m) {
 				Type_ factor = Type_(1);
 				Type_ result = Type_(0);
                 
@@ -283,20 +283,20 @@ namespace xe {
 
 		template<typename Type_>
 		struct Determinant<Type_, 2> {
-			static Type_ compute(const Matrix2<Type_, 2, 2> &m) {
+			static Type_ compute(const Matrix<Type_, 2, 2> &m) {
 				return m(0, 0)*m(1, 1) - m(1, 0)*m(0, 1);
 			}
 		};
 
 	public:
-		friend Type abs(const Matrix2<Type, RowCount, ColumnCount> &m) {
+		friend Type abs(const Matrix<Type, RowCount, ColumnCount> &m) {
 			static_assert(RowCount == ColumnCount, "");
 
 			return Determinant<Type, RowCount>::compute(m);
 		}
 
 		friend MatrixType adjoint(const MatrixType &matrix) {
-			Matrix2<Type, RowCount, ColumnCount> result;
+			Matrix<Type, RowCount, ColumnCount> result;
         
 			for(int i=0; i<RowCount; ++i) {
 				for(int j=0; j<ColumnCount; ++j) {
@@ -353,15 +353,15 @@ namespace xe {
 			return j * RowCount + i;
 		}
 
-	private:
+	public:
 		Type values[ValueCount];
 	};
 	
 	// matrix factory functions
 
 	template<typename Type, int RowCount, int ColumnCount>
-    Matrix2<Type, RowCount, ColumnCount> zero() {
-        Matrix2<Type, RowCount, ColumnCount> result;
+    Matrix<Type, RowCount, ColumnCount> zero() {
+        Matrix<Type, RowCount, ColumnCount> result;
         
         for(int i=0; i<RowCount; ++i) {
 			for(int j=0; j<ColumnCount; ++j) {
@@ -373,7 +373,7 @@ namespace xe {
     }
 
     template<typename Type, int Size>
-    Matrix2<Type, Size, Size> identity() {
+    Matrix<Type, Size, Size> identity() {
         auto result = zero<Type, Size, Size>();
         
         for(int i=0; i<Size; ++i) {
@@ -384,7 +384,7 @@ namespace xe {
     }
     
     template<typename Type, int Size>
-    Matrix2<Type, Size, Size> scale(const Vector<Type, 3> &scale) {
+    Matrix<Type, Size, Size> scale(const Vector<Type, 3> &scale) {
         auto result = identity<Type, Size>();
         
         for(int i=0; i<3; ++i) {
@@ -395,7 +395,7 @@ namespace xe {
     }
     
     template<typename Type>
-    Matrix2<Type, 4, 4> translate(const Vector<Type, 3> &RelPos) {
+    Matrix<Type, 4, 4> translate(const Vector<Type, 3> &RelPos) {
         auto result = identity<Type, 4>();
         
         result.get(0, 3) = RelPos.x;
@@ -406,7 +406,7 @@ namespace xe {
     }
     
     template<typename Type>
-    Matrix2<Type, 4, 4> rotatex(const Type radians) {
+    Matrix<Type, 4, 4> rotatex(const Type radians) {
         auto result = identity<Type, 4>();
         
         Type Cos = std::cos(radians);
@@ -421,7 +421,7 @@ namespace xe {
     }
     
     template<typename Type>
-    Matrix2<Type, 4, 4> rotatey(const Type radians) {
+    Matrix<Type, 4, 4> rotatey(const Type radians) {
         auto result = identity<Type, 4>();
         
         Type Cos = std::cos(radians);
@@ -436,7 +436,7 @@ namespace xe {
     }
     
     template<typename Type>
-    Matrix2<Type, 4, 4> rotatez(const Type radians) {
+    Matrix<Type, 4, 4> rotatez(const Type radians) {
         auto result = identity<Type, 4>();
         
         Type Cos = std::cos(radians);
@@ -451,7 +451,7 @@ namespace xe {
     }
     
     template<typename Type>
-    Matrix2<Type, 4, 4> rotate(Type radians, const Vector<Type, 3> &Axis) {
+    Matrix<Type, 4, 4> rotate(Type radians, const Vector<Type, 3> &Axis) {
         Type Cos = std::cos(radians);
         Type Sin = std::sin(radians);
         
@@ -498,7 +498,7 @@ namespace xe {
     }
 
     template<typename Type>
-    Matrix2<Type, 4, 4> lookat(const Vector<Type, 3> &Eye, const Vector<Type, 3> &At, const Vector<Type, 3> &Up) {
+    Matrix<Type, 4, 4> lookat(const Vector<Type, 3> &Eye, const Vector<Type, 3> &At, const Vector<Type, 3> &Up) {
         auto forward = normalize(At - Eye);
         auto side = normalize(cross(forward, Up));
         auto up = cross(side, forward);
@@ -523,7 +523,7 @@ namespace xe {
     }
     
     template<typename Type>
-    Matrix2<Type, 4, 4> perspective(Type fov_radians, Type aspect, Type znear, Type zfar) {
+    Matrix<Type, 4, 4> perspective(Type fov_radians, Type aspect, Type znear, Type zfar) {
         Type f = Type(1) / std::tan(fov_radians / Type(2));
         // Type zdiff = zfar - znear;	// Reverse the projection (far objects appear in front of those near)
 		Type zdiff = znear - zfar;
@@ -541,7 +541,7 @@ namespace xe {
     
     //!Orthographic projection
     template<typename Type>
-    Matrix2<Type, 4, 4> ortho(const Boundary<Type, 3>& Volume) {
+    Matrix<Type, 4, 4> ortho(const Boundary<Type, 3>& Volume) {
         Type left = Volume.GetSide(Side3::Left);
         Type right = Volume.GetSide(Side3::Right);
         
@@ -566,7 +566,7 @@ namespace xe {
     }
 
 	template<typename Type, int Size>
-	Vector<Type, Size> transform(const Matrix2<Type, Size, Size> &m, Vector<Type, Size> &v) {
+	Vector<Type, Size> transform(const Matrix<Type, Size, Size> &m, Vector<Type, Size> &v) {
 		Vector<Type, Size> result;
 
 		for (int i=0; i<Size; i++) {
@@ -577,7 +577,7 @@ namespace xe {
 	}
 
 	template<typename Type, int Size>
-	Vector<Type, Size - 1> transform(const Matrix2<Type, Size, Size> &m, Vector<Type, Size - 1> &v) {
+	Vector<Type, Size - 1> transform(const Matrix<Type, Size, Size> &m, Vector<Type, Size - 1> &v) {
 		Vector<Type, Size - 1> result;
 
 		for (int i=0; i<Size - 1; i++) {
