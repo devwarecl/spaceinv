@@ -26,7 +26,9 @@ public:
     }
 
     void update() {
+        angle += 1.0f;
         
+        model = xe::rotatey(xe::rad(angle));
     }
 
     void render() {
@@ -52,11 +54,12 @@ private:
     xe::Matrix4f model;
     
     xe::Vector3f position;
+    float angle = 0.0f;
     
 private:
     void initMatrices() {
         proj = xe::perspective(xe::rad(60.0f), 4.0f/3.0f, 0.01f, 1000.0f);
-        view = xe::lookat<float>({0.0f, 0.0f, 5.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
+        view = xe::lookat<float>({0.0f, 2.0f, 5.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
         model = xe::identity<float, 4>();
     }
     
