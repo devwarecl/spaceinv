@@ -83,16 +83,16 @@ namespace gl3 {
             return ::glfwGetKey(window, GLFW_KEY_ESCAPE);
         }
 
-        void setProgram(const Program &program) {
-            glUseProgram(program.getId());
+        void setProgram(const Program *program) {
+            glUseProgram(program->getId());
 
             assert(glGetError() == GL_NO_ERROR);
         }
 
-        void render(const Subset &subset, GLenum primitive, std::size_t count) {
-            glBindVertexArray(subset.getId());
+        void render(const Subset *subset, GLenum primitive, std::size_t count) {
+            glBindVertexArray(subset->getId());
 
-            if (subset.indexed()) {
+            if (subset->indexed()) {
                 //! TODO: Determinar tipo de datos de los indices a partir del formato de los indices
                 glDrawElements(primitive, count, GL_UNSIGNED_INT, nullptr);
 

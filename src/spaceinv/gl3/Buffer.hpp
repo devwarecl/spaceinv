@@ -9,10 +9,8 @@
 #include "GL.hpp"
 
 namespace gl3 {
-    class Buffer {
-    public:
-        typedef std::unique_ptr<Buffer> Ptr;
 
+    class Buffer {
     public:
         Buffer() {}
 
@@ -74,6 +72,9 @@ namespace gl3 {
         GLuint id = 0;
         std::size_t size = 0;
     };
+    
+    typedef std::unique_ptr<Buffer> BufferPtr;
+    typedef std::vector<BufferPtr> BufferVector;
 }
 
 #endif

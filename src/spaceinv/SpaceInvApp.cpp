@@ -11,9 +11,9 @@
 
 struct Assets {
     gl3::SubsetFormat format;
-    gl3::Subset subset;
+    gl3::SubsetPtr subset;
 
-    gl3::Program program;
+    gl3::ProgramPtr program;
     
     void initGeometry() {
         float vertices[] =  {
@@ -32,11 +32,10 @@ struct Assets {
             0, 1, 2, 0, 2, 1
         };
 
-        std::vector<gl3::Buffer::Ptr> buffers = {
-            std::make_unique<gl3::Buffer>(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, sizeof(vertices), vertices),
-            std::make_unique<gl3::Buffer>(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, sizeof(normals), normals),
-        };
-
+        gl3::BufferVector buffers;
+        buffers.emplace_back(new gl3::Buffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, sizeof(vertices), vertices));
+        buffers.emplace_back(new gl3::Buffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, sizeof(normals), normals));
+        
         auto ibuffer = std::make_unique<gl3::Buffer>(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(indices), indices);
 
         gl3::SubsetFormat::AttribVector attribs = {
@@ -45,8 +44,9 @@ struct Assets {
         };
 
         format = gl3::SubsetFormat(attribs);
-        subset = gl3::Subset(format, std::move(buffers), std::move(ibuffer));
-
+        
+        subset.reset(new gl3::Subset(format, std::move(buffers), std::move(ibuffer)));
+        
         assert(glGetError() == GL_NO_ERROR);
     }
 
@@ -82,14 +82,13 @@ void main() {
     color = vec4(1.0f, 1.0f, 1.0f, 1.0f);   
 }
         )";
-
-        gl3::Program::ShaderVector shaders = {
-            gl3::Shader(GL_VERTEX_SHADER, vertexShader),
-            gl3::Shader(GL_FRAGMENT_SHADER, fragmentShader)
-        };
-
-        program = gl3::Program(std::move(shaders));
-
+        
+        gl3::ShaderVector shaders;
+        shaders.emplace_back(new gl3::Shader(GL_VERTEX_SHADER, vertexShader));
+        shaders.emplace_back(new gl3::Shader(GL_FRAGMENT_SHADER, vertexShader));
+        
+        program.reset(new gl3::Program(std::move(shaders)));
+        
         assert(glGetError() == GL_NO_ERROR);
     }
 
@@ -122,9 +121,9 @@ public:
         };
         
         device.beginFrame();
-        device.setProgram(assets.program);
-        device.setUniformMatrix(assets.program.getLocation("mvp"), 1, false, matrix);
-        device.render(assets.subset, GL_TRIANGLES, 6);
+        device.setProgram(assets.program.get());
+        device.setUniformMatrix(assets.program->getLocation("mvp"), 1, false, matrix);
+        device.render(assets.subset.get(), GL_TRIANGLES, 6);
         device.endFrame();
 
         assert(glGetError() == GL_NO_ERROR);

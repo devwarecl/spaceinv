@@ -35,12 +35,9 @@ namespace gl3 {
 
     class Subset {
     public:
-        typedef std::unique_ptr<Subset> Ptr;
-
-    public:
         Subset() {}
 
-        Subset(const SubsetFormat &format, const std::vector<Buffer::Ptr> &buffers, const Buffer::Ptr &ibuffer) {
+        Subset(const SubsetFormat &format, const std::vector<BufferPtr> &buffers, const BufferPtr &ibuffer) {
             glGenVertexArrays(1, &id);
             assert(glGetError() == GL_NO_ERROR);
 
@@ -98,6 +95,8 @@ namespace gl3 {
         GLuint id = 0;
         bool _indexed = false;
     };
+    
+    typedef std::unique_ptr<Subset> SubsetPtr;
 }
 
 #endif

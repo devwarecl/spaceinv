@@ -4,10 +4,21 @@
 #ifndef __gl3_program__
 #define __gl3_program__
 
+#include <memory>
 #include <cassert>
 #include "GL.hpp"
 
 namespace gl3 {
+
+    std::string getShaderInfoLog(GLint id) {
+        
+        GLint size;
+        
+        glGetShaderInfoLog(id, 0, &size, nullptr);
+        
+        
+    }
+
 
     class Shader {
     public:
@@ -27,8 +38,18 @@ namespace gl3 {
             glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 
             if (status == static_cast<GLint>(GL_FALSE)) {
-                char buffer[2048] = {};
-                glGetShaderInfoLog(id, 2048, nullptr, buffer);
+                
+                GLint logSize = 0;
+                
+                glGetShaderiv(id, GL_INFO_LOG_LENGTH, &logSize);
+                
+                std::string log;
+                
+                log.reserve(logSize);
+                
+                glGetShaderInfoLog(id, logSize, nullptr, const_cast< log.c_str());
+                
+                std::cerr << log << std::endl;
 
                 throw std::runtime_error(buffer);
             }
@@ -57,24 +78,25 @@ namespace gl3 {
         GLenum type;
         GLuint id = 0;
     };
-
+    
+    typedef std::unique_ptr<Shader> ShaderPtr;
+    typedef std::vector<ShaderPtr> ShaderVector;
+    
     class Program {
     public:
-        typedef std::vector<Shader> ShaderVector;
-
         Program() {}
 
-        Program(ShaderVector shaders_) {
+        explicit Program(ShaderVector shaders_) {
             shaders = std::move(shaders_);
 
             id = glCreateProgram();
 
             assert(glGetError() == GL_NO_ERROR);
 
-            for (const Shader &shader : shaders) {
-                assert(shader.getId());
+            for (auto &shader : shaders) {
+                assert(shader->getId());
 
-                glAttachShader(id, shader.getId());
+                glAttachShader(id, shader->getId());
             }
 
             glLinkProgram(id);
@@ -86,9 +108,11 @@ namespace gl3 {
             glGetShaderiv(id, GL_LINK_STATUS, &status);
 
             if (status == static_cast<GLint>(GL_FALSE)) {
-                char buffer[2048] = {};
+                char buffer[2048];
                 glGetShaderInfoLog(id, 2048, nullptr, buffer);
-
+                
+                std::cerr << buffer << std::endl;
+                
                 throw std::runtime_error(buffer);
             }
 
@@ -120,8 +144,10 @@ namespace gl3 {
 
     private:
         GLuint id = 0;
-        std::vector<Shader> shaders;
+        ShaderVector shaders;
     };
+    
+    typedef std::unique_ptr<Program> ProgramPtr;
 }
 
 #endif
