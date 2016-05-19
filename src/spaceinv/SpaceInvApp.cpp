@@ -13,10 +13,13 @@
 #include "gl3/Device.hpp"
 
 struct Material {
+    bool cullFace = true;
+
     xe::Vector4f ambient = {0.2f, 0.2f, 0.2f, 1.0f};
     xe::Vector4f diffuse = {0.8f, 0.8f, 0.8f, 1.0f};
     xe::Vector4f specular = {0.0f, 0.0f, 0.0f, 1.0f};
     xe::Vector4f emissive = {0.0f, 0.0f, 0.0f, 1.0f};
+
     float shininess = 0.0f;
 };
 
@@ -35,6 +38,13 @@ public:
     }
     
     void renderMaterial(const Material &material) {
+        if (material.cullFace) {
+            glEnable(GL_CULL_FACE);
+
+        } else {
+            glDisable(GL_CULL_FACE);
+        }
+
         m_device.setUniform4(m_program->getLocation("mat_ambient"), 1, material.ambient.values);
         m_device.setUniform4(m_program->getLocation("mat_diffuse"), 1, material.diffuse.values);
         m_device.setUniform4(m_program->getLocation("mat_specular"), 1, material.specular.values);
@@ -58,8 +68,6 @@ public:
         if (m_device.getKey(GLFW_KEY_RIGHT) == GLFW_PRESS) {
             displace.x = -1.0f;
         }
-        
-        std::cout << m_position << "    " << displace << std::endl;
         
         m_position += displace;
         auto translate = xe::translate<float>(m_position);
@@ -182,8 +190,8 @@ in vec3 f_normal;
 out vec4 p_color;
 
 void main() {
-    vec4 color = vec4(0.1f, 0.1f, 0.1f, 1.0f);
-    vec3 light_dir = normalize(vec3(0.25f, 1.0f, 0.5f));
+    vec4 color = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    vec3 light_dir = normalize(vec3(0.0f, 0.0f, 1.0f));
     float light_factor = max(dot(f_normal, light_dir), 0.0f);
     
     color += mat_ambient + mat_emissive;
