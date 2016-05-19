@@ -83,11 +83,14 @@ void main() {
 }
         )";
         
+        auto shader1 = std::make_unique<gl3::Shader>(GL_VERTEX_SHADER, vertexShader);
+        auto shader2 = std::make_unique<gl3::Shader>(GL_FRAGMENT_SHADER, fragmentShader);
+
         gl3::ShaderVector shaders;
-        shaders.emplace_back(new gl3::Shader(GL_VERTEX_SHADER, vertexShader));
-        shaders.emplace_back(new gl3::Shader(GL_FRAGMENT_SHADER, vertexShader));
+        shaders.push_back(std::move(shader1));
+        shaders.push_back(std::move(shader2));
         
-        program.reset(new gl3::Program(std::move(shaders)));
+        program = std::make_unique<gl3::Program>(std::move(shaders));
         
         assert(glGetError() == GL_NO_ERROR);
     }

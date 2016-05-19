@@ -10,16 +10,6 @@
 
 namespace gl3 {
 
-    std::string getShaderInfoLog(GLint id) {
-        
-        GLint size;
-        
-        glGetShaderInfoLog(id, 0, &size, nullptr);
-        
-        
-    }
-
-
     class Shader {
     public:
         Shader() {}
@@ -38,18 +28,12 @@ namespace gl3 {
             glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 
             if (status == static_cast<GLint>(GL_FALSE)) {
+                const GLint logsize = 4096;
+                char buffer[logsize] = {};
                 
-                GLint logSize = 0;
+                glGetShaderInfoLog(id, logsize, nullptr, buffer);
                 
-                glGetShaderiv(id, GL_INFO_LOG_LENGTH, &logSize);
-                
-                std::string log;
-                
-                log.reserve(logSize);
-                
-                glGetShaderInfoLog(id, logSize, nullptr, const_cast< log.c_str());
-                
-                std::cerr << log << std::endl;
+                std::cerr << buffer << std::endl;
 
                 throw std::runtime_error(buffer);
             }
@@ -105,11 +89,15 @@ namespace gl3 {
 
             // check for errors
             GLint status;
-            glGetShaderiv(id, GL_LINK_STATUS, &status);
+
+            glGetProgramiv(id, GL_LINK_STATUS, &status);
+            assert(glGetError() == GL_NO_ERROR);
 
             if (status == static_cast<GLint>(GL_FALSE)) {
-                char buffer[2048];
-                glGetShaderInfoLog(id, 2048, nullptr, buffer);
+                const GLint logsize = 4096;
+                char buffer[logsize] = {};
+
+                glGetProgramInfoLog(id, logsize, nullptr, buffer);
                 
                 std::cerr << buffer << std::endl;
                 
