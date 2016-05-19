@@ -30,13 +30,13 @@
 namespace xe { 
     template<typename Type, int size>
     struct VectorBase {
-        Type data[size];
+        Type values[size];
     };
 
 	template<typename Type> 
     struct VectorBase<Type, 1> {
         union {
-            Type data[1];
+            Type values[1];
             struct { Type x; };
         };
 
@@ -60,7 +60,7 @@ namespace xe {
     template<typename Type> 
     struct VectorBase<Type, 2> {
         union {
-            Type data[2];
+            Type values[2];
             struct { Type x, y; };
         };
 
@@ -81,7 +81,7 @@ namespace xe {
     template<typename Type> 
     struct VectorBase<Type, 3> {
         union {
-            Type data[3];
+            Type values[3];
             struct { Type x, y, z; };
         };
 
@@ -99,7 +99,7 @@ namespace xe {
     template<typename Type> 
     struct VectorBase<Type, 4> {
         union {
-            Type data[4];
+            Type values[4];
             struct { Type x, y, z, w; };
         };
 
@@ -130,10 +130,10 @@ namespace xe {
 
 		Vector( const Vector<Type, Size - 1> &v, Type value) {
 			for (int i=0; i<Size-1; i++) {
-				VectorBase<Type, Size>::data[i] = v[i];
+				VectorBase<Type, Size>::values[i] = v[i];
 			}
 
-			VectorBase<Type, Size>::data[Size-1] = value;
+			VectorBase<Type, Size>::values[Size-1] = value;
 		}
 
         explicit Vector(const Type *arrayValues) {
@@ -174,21 +174,21 @@ namespace xe {
 				throw std::runtime_error("Vector<Type, Size>::set: Input value is a null pointer.");
 			}
 #endif
-			std::memcpy(this->data, values, sizeof(Type)*Size);
+			std::memcpy(this->values, values, sizeof(Type)*Size);
 		}
 
         void set(Type Value) {
 			for(int i=0; i<Size; ++i) {
-				this->data[i] = Value;
+				this->values[i] = Value;
 			}	
 		}
 
         Type* getPtr() {
-			return this->data;
+			return this->values;
 		}
 		
         const Type* getPtr() const {
-			return this->data;
+			return this->values;
 		}
 		
         Type& operator[] (int index) {
@@ -197,7 +197,7 @@ namespace xe {
 				throw std::runtime_error("Vector<Type, Size>::operator[]: Index out of bounds.");
 			}
 #endif
-			return this->data[index];
+			return this->values[index];
 		}
 
         const Type& operator[] (int index) const {
@@ -206,14 +206,14 @@ namespace xe {
 				throw std::runtime_error("Vector<Type, Size>::operator[]: Index out of bounds.");
 			}
 #endif
-			return this->data[index];
+			return this->values[index];
 		}
 
         Vector operator+ (const Vector &rhs) const {
 			Vector<Type, Size> result;
 
 			for(int i=0; i<Size; ++i) {
-				result.data[i] = this->data[i] + rhs.data[i];
+				result.values[i] = this->values[i] + rhs.values[i];
 			}
     
 			return result;
@@ -229,7 +229,7 @@ namespace xe {
 			Vector<Type, Size> result;
 
 			for(int i=0; i<Size; ++i) {
-				result.data[i] = this->data[i] - rhs.data[i];
+				result.values[i] = this->values[i] - rhs.values[i];
 			}
     
 			return result;
@@ -245,7 +245,7 @@ namespace xe {
 			Vector<Type, Size> result;
 
 			for(int i=0; i<Size; ++i) {
-				result.data[i] = this->data[i] * rhs;
+				result.values[i] = this->values[i] * rhs;
 			}
     
 			return result;
@@ -266,7 +266,7 @@ namespace xe {
 			Vector<Type, Size> result;
 
 			for(int i=0; i<Size; ++i) {
-				result.data[i] = this->data[i] / rhs;
+				result.values[i] = this->values[i] / rhs;
 			}
     
 			return result;
@@ -282,7 +282,7 @@ namespace xe {
 			Vector<Type, Size> result;
 
 			for (int i=0; i<Size; ++i) {
-				result.data[i] = this->data[i] * rhs.data[i];
+				result.values[i] = this->values[i] * rhs.values[i];
 			}
     
 			return result;
@@ -298,7 +298,7 @@ namespace xe {
 			Vector<Type, Size> result;
 
 			for(int i=0; i<Size; ++i) {
-				result.data[i] = this->data[i] / rhs.data[i];
+				result.values[i] = this->values[i] / rhs.values[i];
 			}
     
 			return result;
@@ -315,7 +315,7 @@ namespace xe {
 		}
 
         bool operator== (const Vector &Other) const {
-			return arrayCompare<Type, Size>(this->data, Other.data);
+			return arrayCompare<Type, Size>(this->values, Other.values);
 		}
 
         bool operator!= (const Vector &Other) const {
@@ -332,7 +332,7 @@ namespace xe {
             int minSize = std::min(OtherSize, Size);
         
             for(int i=0; i<minSize; ++i) {
-                result[i] = static_cast<OtherType>( this->data[i] );
+                result[i] = static_cast<OtherType>( this->values[i] );
             }
         
             return result;
@@ -416,7 +416,7 @@ namespace xe {
 		Vector<Type, Size> result;
 
 		for (int i=0; i<Size; ++i) {
-			result.data[i] = std::max(v1[i], v2[i]);
+			result.values[i] = std::max(v1[i], v2[i]);
 		}
 
 		return result;
@@ -428,7 +428,7 @@ namespace xe {
 		Vector<Type, Size> result;
 
 		for (int i=0; i<Size; ++i) {
-			result.data[i] = std::min(v1[i], v2[i]);
+			result.values[i] = std::min(v1[i], v2[i]);
 		}
 
 		return result;
@@ -523,4 +523,4 @@ namespace xe {
     typedef Vector<unsigned char, 4> Vector4ub;
 }
 
-#endif	//__EXENG_VECTOR_HPP__
+#endif

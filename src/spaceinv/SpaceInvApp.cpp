@@ -11,6 +11,14 @@
 #include "gl3/Program.hpp"
 #include "gl3/Device.hpp"
 
+struct Material {
+    xe::Vector4f ambient = {0.2f, 0.2f, 0.2f, 1.0f};
+    xe::Vector4f diffuse = {0.8f, 0.8f, 0.8f, 1.0f};
+    xe::Vector4f specular = {0.0f, 0.0f, 0.0f, 1.0f};
+    xe::Vector4f emissive = {0.0f, 0.0f, 0.0f, 1.0f};
+    float shininess = 0.0f;
+};
+
 class SpaceInvApp {
 public:
     SpaceInvApp() {
@@ -24,11 +32,38 @@ public:
     bool running() {
         return m_device.getKey(GLFW_KEY_ESCAPE)==GLFW_RELEASE;
     }
-
+    
+    void renderMaterial(const Material &material) {
+        m_device.setUniform4(m_program->getLocation("mat_ambient"), 1, material.ambient.values);
+        m_device.setUniform4(m_program->getLocation("mat_diffuse"), 1, material.diffuse.values);
+        m_device.setUniform4(m_program->getLocation("mat_specular"), 1, material.specular.values);
+        m_device.setUniform4(m_program->getLocation("mat_emissive"), 1, material.emissive.values);
+        m_device.setUniform(m_program->getLocation("mat_shininess"), material.shininess);
+    }
+    
     void update() {
+        // animar modelo
         m_angle += 1.0f;
         
-        m_model = xe::rotatey(xe::rad(m_angle));
+        auto rotate = xe::rotatey(xe::rad(m_angle));
+        
+        // mover modelo
+        xe::Vector3f displace = {0.0f, 0.0f, 0.0f};
+        
+        if (m_device.getKey(GLFW_KEY_LEFT) == GLFW_PRESS) {
+            displace.x = 1.0f;
+        }
+        
+        if (m_device.getKey(GLFW_KEY_RIGHT) == GLFW_PRESS) {
+            displace.x = -1.0f;
+        }
+        
+        std::cout << m_position << "    " << displace << std::endl;
+        
+        m_position += displace;
+        auto translate = xe::translate<float>(m_position);
+        
+        m_model = rotate * translate;
     }
 
     void render() {
@@ -36,6 +71,9 @@ public:
         
         m_device.beginFrame();
         m_device.setProgram(m_program.get());
+        
+        renderMaterial(m_material);
+        
         m_device.setUniformMatrix(m_program->getLocation("mvp"), 1, false, mvp.values);
         m_device.render(m_subset.get(), GL_TRIANGLES, 6);
         m_device.endFrame();
@@ -53,7 +91,9 @@ private:
     xe::Matrix4f m_view;
     xe::Matrix4f m_model;
     
-    xe::Vector3f m_position;
+    Material m_material;
+    
+    xe::Vector3f m_position = {0.0f, 0.0f, 0.0f};
     float m_angle = 0.0f;
     
 private:
@@ -104,6 +144,12 @@ private:
 
 uniform mat4 mvp;
 
+uniform vec4 mat_ambient;
+uniform vec4 mat_diffuse;
+uniform vec4 mat_specular;
+uniform vec4 mat_emissive;
+uniform float mat_shininess;
+
 in vec3 v_coord;
 in vec3 v_normal;
 
@@ -116,18 +162,41 @@ vec3 transform(mat4 m, vec3 v, float w) {
 
 void main() {
     gl_Position = mvp * vec4(v_coord, 1.0f);
-    f_normal = (mvp * vec4(v_normal, 0.0f)).xyz;
+    f_normal = normalize((mvp * vec4(v_normal, 0.0f)).xyz);
 }
         )";
 
         std::string fragmentShader = R"(
 #version 330
 
+uniform vec4 mat_ambient;
+uniform vec4 mat_diffuse;
+uniform vec4 mat_specular;
+uniform vec4 mat_emissive;
+uniform float mat_shininess;
+
 in vec3 f_normal;
-out vec4 color;
+out vec4 p_color;
 
 void main() {
-    color = vec4(1.0f, 1.0f, 1.0f, 1.0f);   
+    vec4 color = vec4(0.1f, 0.1f, 0.1f, 1.0f);
+    vec3 light_dir = normalize(vec3(1.0f, 0.0f, 0.5f));
+    float light_factor = max(dot(f_normal, light_dir), 0.0f);
+    
+    color += mat_ambient + mat_emissive;
+    
+    if (light_factor > 0.0) {
+        // diffuse
+        color += mat_diffuse * light_factor;
+        
+        // specular
+        vec3 light_dir_half = normalize(light_dir + vec3(0.0f, 0.0f, 1.0f));
+        float light_factor_specular = max(dot(f_normal, light_dir_half), 0.0f);
+        
+        color += mat_specular * pow(light_factor_specular, mat_shininess);
+    }
+    
+    p_color = color;
 }
         )";
         
