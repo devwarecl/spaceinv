@@ -36,8 +36,41 @@ namespace gl3 {
     class Subset {
     public:
         Subset() {}
+        
+        Subset(const SubsetFormat &format, std::vector<BufferPtr> buffers_) {
+            
+            BufferPtr ibuffer_;
+            
+            construct(format, std::move(buffers_), std::move(ibuffer_));
+        }
+        
+        Subset(const SubsetFormat &format, std::vector<BufferPtr> buffers_, BufferPtr ibuffer_) {
+            construct(format, std::move(buffers_), std::move(ibuffer_));
+        }
 
-        Subset(const SubsetFormat &format, const std::vector<BufferPtr> &buffers, const BufferPtr &ibuffer) {
+        ~Subset() {
+            if (id) {
+                glDeleteVertexArrays(1, &id);
+                id = 0;
+            }
+
+            assert(glGetError() == GL_NO_ERROR);
+        }
+
+        GLuint getId() const {
+            return id;
+        }
+
+        bool indexed() const {
+            return _indexed;
+        }
+
+    protected:
+        void construct(const SubsetFormat &format, std::vector<BufferPtr> buffers_, BufferPtr ibuffer_) {
+        
+            buffers = std::move(buffers_);
+            ibuffer = std::move(ibuffer_);
+        
             glGenVertexArrays(1, &id);
             assert(glGetError() == GL_NO_ERROR);
 
@@ -74,26 +107,11 @@ namespace gl3 {
             }
         }
 
-        ~Subset() {
-            if (id) {
-                glDeleteVertexArrays(1, &id);
-                id = 0;
-            }
-
-            assert(glGetError() == GL_NO_ERROR);
-        }
-
-        GLuint getId() const {
-            return id;
-        }
-
-        bool indexed() const {
-            return _indexed;
-        }
-
     private:
         GLuint id = 0;
         bool _indexed = false;
+        std::vector<BufferPtr> buffers;
+        BufferPtr ibuffer;
     };
     
     typedef std::unique_ptr<Subset> SubsetPtr;

@@ -107,24 +107,26 @@ private:
         float vertices[] =  {
             0.0f, 1.0f, 0.0f,
             1.0f, -1.0f, 0.0f,
-            -1.0f, -1.0f, 0.0f
+            -1.0f, -1.0f, 0.0f,
+            
+            0.0f, 1.0f, 0.0f,
+            -1.0f, -1.0f, 0.0f,
+            1.0f, -1.0f, 0.0f
         };
 
         float normals[] = {
             0.0f, 0.0f, 1.0f,
             0.0f, 0.0f, 1.0f,
-            0.0f, 0.0f, 1.0f
-        };
-
-        int indices[] = {
-            0, 1, 2, 0, 2, 1
+            0.0f, 0.0f, 1.0f,
+            
+            0.0f, 0.0f, -1.0f,
+            0.0f, 0.0f, -1.0f,
+            0.0f, 0.0f, -1.0f
         };
 
         gl3::BufferVector buffers;
         buffers.emplace_back(new gl3::Buffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, sizeof(vertices), vertices));
         buffers.emplace_back(new gl3::Buffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, sizeof(normals), normals));
-        
-        auto ibuffer = std::make_unique<gl3::Buffer>(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(indices), indices);
 
         gl3::SubsetFormat::AttribVector attribs = {
             gl3::SubsetAttrib("v_coord", 3, xe::DataType::Float32, 0),
@@ -133,7 +135,7 @@ private:
 
         m_format = gl3::SubsetFormat(attribs);
         
-        m_subset.reset(new gl3::Subset(m_format, std::move(buffers), std::move(ibuffer)));
+        m_subset.reset(new gl3::Subset(m_format, std::move(buffers)));
         
         assert(glGetError() == GL_NO_ERROR);
     }
@@ -180,7 +182,7 @@ out vec4 p_color;
 
 void main() {
     vec4 color = vec4(0.1f, 0.1f, 0.1f, 1.0f);
-    vec3 light_dir = normalize(vec3(1.0f, 0.0f, 0.5f));
+    vec3 light_dir = normalize(vec3(0.25f, 1.0f, 0.5f));
     float light_factor = max(dot(f_normal, light_dir), 0.0f);
     
     color += mat_ambient + mat_emissive;
