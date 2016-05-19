@@ -20,7 +20,6 @@
 #include <cmath>
 #include <cstring>
 
-#include <xe/Common.hpp>
 #include <xe/DataType.hpp>
 
 #if defined(EXENG_DEBUG)

@@ -4,6 +4,7 @@
 
 #include "xe/DataType.hpp"
 #include "xe/DataFormat.hpp"
+#include "xe/Common.hpp"
 #include "xe/Vector.hpp"
 #include "xe/Matrix.hpp"
 

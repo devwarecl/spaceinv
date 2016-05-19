@@ -1,7 +1,7 @@
 
 set (target xe)
 
-set (sources Buffer.hpp DataFormat.hpp DataType.hpp Traits.hpp Vector.hpp Matrix.hpp Quaternion.hpp)
+set (sources Buffer.hpp Common.hpp DataFormat.hpp DataType.hpp Traits.hpp Vector.hpp Matrix.hpp Quaternion.hpp)
 
 set (sources_gfx 
     gfx/Device.hpp gfx/Device.cpp 

@@ -8,7 +8,6 @@
 #include <cmath>
 #include <iostream>
 #include <xe/Vector.hpp>
-#include <xe/Boundary.hpp>
 
 namespace xe {
 	template<typename Type, int RowCount, int ColumnCount>
@@ -541,15 +540,15 @@ namespace xe {
     
     //!Orthographic projection
     template<typename Type>
-    Matrix<Type, 4, 4> ortho(const Boundary<Type, 3>& Volume) {
-        Type left = Volume.GetSide(Side3::Left);
-        Type right = Volume.GetSide(Side3::Right);
+    Matrix<Type, 4, 4> ortho(const xe::Vector<Type, 3> &pmin,  const xe::Vector<Type, 3> &pmax) {
+        Type left = pmin.x;
+        Type right = pmax.x;
         
-        Type bottom = Volume.GetSide(Side3::Bottom);
-        Type top = Volume.GetSide(Side3::Top);
+        Type bottom = pmin.y;
+        Type top = pmin.y;
 
-        Type near = Volume.GetSide(Side3::Near);
-        Type far = Volume.GetSide(Side3::Far);
+        Type near = pmin.z;
+        Type far = pmin.z;
         
         auto result = identity<Type, 4>();
         
