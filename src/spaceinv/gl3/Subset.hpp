@@ -29,7 +29,7 @@ namespace gl3 {
         switch (type) {
             case xe::DataType::Float32: return GL_FLOAT;
             case xe::DataType::Int32:   return GL_INT;
-            default: assert(false);
+            default: assert(false); return GL_UNSIGNED_SHORT;
         }
     }
 

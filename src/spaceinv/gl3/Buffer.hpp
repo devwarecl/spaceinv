@@ -15,19 +15,14 @@ namespace gl3 {
         Buffer() {}
 
         Buffer(GLenum target_, GLenum usage, std::size_t size_, const void *data=nullptr) {
-            size = size_;
-            target = target_;
+            construct(target_, usage, size_, data);
+        }
 
-            glGenBuffers(1, &id);
-            glBindBuffer(target, id);
-            glBufferData(target, size, nullptr, usage);
-            glBindBuffer(target, 0);
+        template<typename Container>
+        Buffer(GLenum target_, GLenum usage, const Container& values) {
+            typedef typename Container::value_type Type;
 
-            assert(glGetError() == GL_NO_ERROR);
-
-            if (data) {
-                write(data);
-            }
+            construct(target_, usage, sizeof(Type) * values.size(), values.data());
         }
 
         ~Buffer() {
@@ -65,6 +60,23 @@ namespace gl3 {
 
         operator bool() const {
             return this->id != 0;
+        }
+
+    protected:
+        void construct(GLenum target_, GLenum usage, std::size_t size_, const void *data=nullptr) {
+            size = size_;
+            target = target_;
+
+            glGenBuffers(1, &id);
+            glBindBuffer(target, id);
+            glBufferData(target, size, nullptr, usage);
+            glBindBuffer(target, 0);
+
+            assert(glGetError() == GL_NO_ERROR);
+
+            if (data) {
+                write(data);
+            }
         }
 
     private:

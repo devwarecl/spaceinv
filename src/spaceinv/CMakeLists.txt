@@ -8,4 +8,4 @@ source_group(\\gl3  FILES ${sources_gl3})
 
 add_executable(${target} ${sources} ${sources_gl3})
 
-target_link_libraries(${target} ${GLFW3_LIBRARY} ${OPENGL_LIBRARY} glbinding)
+target_link_libraries(${target} ${GLFW3_LIBRARY} ${OPENGL_LIBRARY} glbinding bdm)

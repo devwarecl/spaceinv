@@ -33,7 +33,7 @@ namespace gl3 {
                 ::glfwWindowHint(hint[0], hint[1]);
             }
     
-            window = ::glfwCreateWindow(640, 480, "test", nullptr, nullptr);
+            window = ::glfwCreateWindow(1024, 768, "test", nullptr, nullptr);
     
             glfwMakeContextCurrent(window);
         
