@@ -35,6 +35,8 @@ namespace xe {
 		 */
 		virtual void write(const void *source, const int size = 0, const int offset = 0, const int source_offset = 0) = 0;
 	};
+
+    typedef std::unique_ptr<Buffer> BufferPtr;
 }
 
 #endif

@@ -8,6 +8,10 @@
 #include "GL.hpp"
 
 namespace gl3 {
+        
+    void window_size_callback(GLFWwindow* window, int width, int height) {
+        glViewport(0, 0, width, height);
+    }
 
     class Device {
     public:
@@ -52,6 +56,8 @@ namespace gl3 {
     //            }
     //        });
     //#endif
+
+            glfwSetWindowSizeCallback(window, window_size_callback);
 
             std::cout << "Device inicializado correctamente." << std::endl;
         }

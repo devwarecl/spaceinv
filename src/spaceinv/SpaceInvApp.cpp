@@ -2,6 +2,8 @@
 #include <vector>
 #include <cassert>
 
+#include "FreeImage.h"
+
 #include "bdm/BdmFile.hpp"
 
 #include "xe/DataType.hpp"
@@ -13,6 +15,61 @@
 #include "gl3/Subset.hpp"
 #include "gl3/Program.hpp"
 #include "gl3/Device.hpp"
+#include "gl3/Texture.hpp"
+
+class TextureLoader {
+public:
+    TextureLoader() {
+        ::FreeImage_Initialise();
+    }
+
+    ~TextureLoader() {
+        ::FreeImage_DeInitialise();
+    }
+
+    void addPath(const std::string &path) {
+        m_paths.push_back(path);
+    }
+
+    gl3::TexturePtr loadTexture(const std::string &file) {
+        gl3::TexturePtr texture;
+
+        if (m_paths.size()) {
+            for (const auto &path : m_paths) {
+                texture = this->doLoadTexture(path + file);
+
+                if (texture) {
+                    break;
+                }
+            }
+        } else {
+            texture = this->doLoadTexture(file);
+        }
+
+        return texture;
+    }
+
+protected:
+    gl3::TexturePtr doLoadTexture(const std::string &file) {
+        FIBITMAP *bitmap = ::FreeImage_Load(FIF_BMP, file.c_str());
+
+        // bitmap = FreeImage_ConvertTo24Bits(bitmap);
+
+        auto width = ::FreeImage_GetWidth(bitmap);
+        auto height = ::FreeImage_GetHeight(bitmap);
+        auto bpp = ::FreeImage_GetBPP(bitmap);
+        void* data = ::FreeImage_GetBits(bitmap);
+        
+        auto texture = std::make_unique<gl3::Texture>(width, height, data);
+
+        ::FreeImage_Unload(bitmap);
+
+        return texture;
+    }
+
+private:
+    std::list<std::string> m_paths;
+};
 
 struct Box {
     xe::Vector3f pmin;
@@ -36,6 +93,8 @@ struct Material {
     xe::Vector4f emissive = {0.0f, 0.0f, 0.0f, 1.0f};
 
     float shininess = 0.0f;
+
+    gl3::TexturePtr texture;
 };
 
 struct Model {
@@ -47,7 +106,6 @@ struct Model {
 };
 
 Model loadModelBDM(const std::string &path, const gl3::SubsetFormat &format) {
-    
     bdm::BdmFile bdmFile(path.c_str());
 
     auto &model_vertices = bdmFile.vertices();
@@ -55,6 +113,7 @@ Model loadModelBDM(const std::string &path, const gl3::SubsetFormat &format) {
 
     std::vector<xe::Vector3f> vertices;
     std::vector<xe::Vector3f> normals;
+    std::vector<xe::Vector2f> texcoords;
 
     // duplicar vertices
     for (auto &face : model_faces) {
@@ -86,7 +145,7 @@ Model loadModelBDM(const std::string &path, const gl3::SubsetFormat &format) {
         // escalar modelo
         for (int j=0; j<3; j++) {
             vertices[i + j] -= center;
-            vertices[i + j] *= 5.0f/length;
+            vertices[i + j] *= 10.0f/length;
         }
 
         // generar normales
@@ -100,14 +159,48 @@ Model loadModelBDM(const std::string &path, const gl3::SubsetFormat &format) {
         }
     }
 
+    // finalizar construccion modelo
+    Model model;
+
+    // cargar texturas 
+    // TODO: Considerar el resto de las texturas
+    xe::Vector2f texcoordscale = {1.0f, 1.0f};
+
+    TextureLoader loader;
+
+    loader.addPath("assets/bitmaps/");
+
+    for (const std::string &file : bdmFile.textures()) {
+        if (file != "") {
+            model.material.texture = loader.loadTexture(file);
+
+            if (model.material.texture) {
+
+                texcoordscale = xe::Vector2f (
+                    1.0f/model.material.texture->getWidth(),
+                    1.0f/model.material.texture->getHeight()
+                );
+            }
+
+            break;
+        }
+    }
+
+    // copiar los datos de coordenadas de textura
+    for (auto &t : bdmFile.texcoords()) {
+        xe::Vector2f texcoord = xe::Vector2f(t.values) * texcoordscale;
+
+        std::cout << texcoord << std::endl;
+
+        texcoords.push_back(texcoord);
+    }
+
     // cargar datos a OpenGL
     gl3::BufferVector buffers;
     buffers.emplace_back(new gl3::Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, vertices));
     buffers.emplace_back(new gl3::Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, normals));
+    buffers.emplace_back(new gl3::Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, texcoords));
     
-    // 
-    Model model;
-
     model.count = vertices.size();
     model.primitive = GL_TRIANGLES;
     model.subset = std::make_unique<gl3::Subset>(format, std::move(buffers));
@@ -140,6 +233,16 @@ public:
             glDisable(GL_CULL_FACE);
         }
 
+        GLuint textureId = 0;
+
+        if (material.texture) {
+            textureId = material.texture->getId();
+        }
+        
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureId);
+
+        m_device.setUniform(m_program->getLocation("tex_diffuse"), 0);
         m_device.setUniform4(m_program->getLocation("mat_ambient"), 1, material.ambient.values);
         m_device.setUniform4(m_program->getLocation("mat_diffuse"), 1, material.diffuse.values);
         m_device.setUniform4(m_program->getLocation("mat_specular"), 1, material.specular.values);
@@ -198,12 +301,13 @@ private:
     void initGeometry() {
         gl3::SubsetFormat::AttribVector attribs = {
             gl3::SubsetAttrib("v_coord", 3, xe::DataType::Float32, 0),
-            gl3::SubsetAttrib("v_normal", 3, xe::DataType::Float32, 1)
+            gl3::SubsetAttrib("v_normal", 3, xe::DataType::Float32, 1),
+            gl3::SubsetAttrib("v_texcoord", 2, xe::DataType::Float32, 2)
         };
 
         m_format = gl3::SubsetFormat(attribs);
         
-        m_model = loadModelBDM("assets/model2.bdm", m_format);
+        m_model = loadModelBDM("assets/models/wls1.bdm", m_format);
         
         assert(glGetError() == GL_NO_ERROR);
     }
@@ -222,8 +326,10 @@ uniform float mat_shininess;
 
 in vec3 v_coord;
 in vec3 v_normal;
+in vec2 v_texcoord;
 
 out vec3 f_normal;
+out vec2 f_texcoord;
 
 vec3 transform(mat4 m, vec3 v, float w) {
     vec4 result = mvp * vec4(v_normal, w);
@@ -233,6 +339,7 @@ vec3 transform(mat4 m, vec3 v, float w) {
 void main() {
     gl_Position = mvp * vec4(v_coord, 1.0f);
     f_normal = normalize((mvp * vec4(v_normal, 0.0f)).xyz);
+    f_texcoord = v_texcoord;
 }
         )";
 
@@ -245,7 +352,11 @@ uniform vec4 mat_specular;
 uniform vec4 mat_emissive;
 uniform float mat_shininess;
 
+uniform sampler2D tex_diffuse;
+
 in vec3 f_normal;
+in vec2 f_texcoord;
+
 out vec4 p_color;
 
 void main() {
@@ -255,10 +366,12 @@ void main() {
     
     // ambient y emissive
     color += mat_ambient + mat_emissive;
-    
+
     if (light_factor > 0.0) {
         // diffuse
-        color += mat_diffuse * light_factor;
+        // color += (mat_diffuse*0.5f + texture(tex_diffuse, f_texcoord)*0.5f) * light_factor;
+        // color += mat_diffuse * texture(tex_diffuse, f_texcoord) * light_factor;
+        color += texture(tex_diffuse, f_texcoord) * light_factor + mat_diffuse*0.0f;        
         
         // specular
         vec3 light_dir_half = normalize(light_dir + vec3(0.0f, 0.0f, 1.0f));

@@ -24,7 +24,7 @@ namespace xe {
     template<>
     constexpr DataType getDataType<float>() {return DataType::Float32;}
 
-	std::size_t getSize(DataType dataType)  {
+	inline std::size_t getSize(DataType dataType)  {
 		switch (dataType) {
 			case DataType::UInt8:
 			case DataType::Int8:

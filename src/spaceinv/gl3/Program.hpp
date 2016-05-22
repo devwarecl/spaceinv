@@ -129,7 +129,7 @@ namespace gl3 {
                 std::cerr << uniformName << std::endl;
             }
 
-            assert(location >= 0);
+            // assert(location >= 0);
 
             return location;
         }
