@@ -53,14 +53,14 @@ protected:
     gl3::TexturePtr doLoadTexture(const std::string &file) {
         FIBITMAP *bitmap = ::FreeImage_Load(FIF_BMP, file.c_str());
 
-        // bitmap = FreeImage_ConvertTo24Bits(bitmap);
+        bitmap = FreeImage_ConvertTo24Bits(bitmap);
 
         auto width = ::FreeImage_GetWidth(bitmap);
         auto height = ::FreeImage_GetHeight(bitmap);
         auto bpp = ::FreeImage_GetBPP(bitmap);
         void* data = ::FreeImage_GetBits(bitmap);
         
-        auto texture = std::make_unique<gl3::Texture>(width, height, data);
+        auto texture = std::make_unique<gl3::Texture>(width, height, data, GL_BGR);
 
         ::FreeImage_Unload(bitmap);
 
@@ -145,7 +145,7 @@ Model loadModelBDM(const std::string &path, const gl3::SubsetFormat &format) {
         // escalar modelo
         for (int j=0; j<3; j++) {
             vertices[i + j] -= center;
-            vertices[i + j] *= 10.0f/length;
+            vertices[i + j] *= 5.0f/length;
         }
 
         // generar normales
@@ -168,14 +168,18 @@ Model loadModelBDM(const std::string &path, const gl3::SubsetFormat &format) {
 
     TextureLoader loader;
 
-    loader.addPath("assets/bitmaps/");
+    loader.addPath("assets/uprising/bitmaps/");
+
+    // mostrar texturas disponibles
+    for (auto &file : bdmFile.textures()) {
+        std::cout << file << std::endl;
+    }
 
     for (const std::string &file : bdmFile.textures()) {
         if (file != "") {
             model.material.texture = loader.loadTexture(file);
 
             if (model.material.texture) {
-
                 texcoordscale = xe::Vector2f (
                     1.0f/model.material.texture->getWidth(),
                     1.0f/model.material.texture->getHeight()
@@ -189,8 +193,6 @@ Model loadModelBDM(const std::string &path, const gl3::SubsetFormat &format) {
     // copiar los datos de coordenadas de textura
     for (auto &t : bdmFile.texcoords()) {
         xe::Vector2f texcoord = xe::Vector2f(t.values) * texcoordscale;
-
-        std::cout << texcoord << std::endl;
 
         texcoords.push_back(texcoord);
     }
@@ -307,7 +309,7 @@ private:
 
         m_format = gl3::SubsetFormat(attribs);
         
-        m_model = loadModelBDM("assets/models/wls1.bdm", m_format);
+        m_model = loadModelBDM("assets/uprising/models/iab1.bdm", m_format);
         
         assert(glGetError() == GL_NO_ERROR);
     }

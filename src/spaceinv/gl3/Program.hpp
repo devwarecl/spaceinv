@@ -126,7 +126,7 @@ namespace gl3 {
             GLint location = glGetUniformLocation(id, uniformName);
 
             if (location < 0) {
-                std::cerr << uniformName << std::endl;
+                // std::cerr << uniformName << std::endl;
             }
 
             // assert(location >= 0);
