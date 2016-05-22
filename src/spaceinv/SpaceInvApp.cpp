@@ -313,86 +313,35 @@ private:
         
         assert(glGetError() == GL_NO_ERROR);
     }
-    
-    void initShaders() {
-        std::string vertexShader = R"(
-#version 330
 
-uniform mat4 mvp;
+    std::string loadTextFile(const std::string &file) {
+        std::fstream fs;
 
-uniform vec4 mat_ambient;
-uniform vec4 mat_diffuse;
-uniform vec4 mat_specular;
-uniform vec4 mat_emissive;
-uniform float mat_shininess;
+        fs.open(file.c_str(), std::ios_base::in);
+        if (!fs.is_open()) {
+            throw std::runtime_error("");
+        }
 
-in vec3 v_coord;
-in vec3 v_normal;
-in vec2 v_texcoord;
+        std::string content;
 
-out vec3 f_normal;
-out vec2 f_texcoord;
+        while (!fs.eof()) {
+            std::string line;
+            std::getline(fs, line);
 
-vec3 transform(mat4 m, vec3 v, float w) {
-    vec4 result = mvp * vec4(v_normal, w);
-    return result.xyz;
-}
+            content += line + "\n";
+        }
 
-void main() {
-    gl_Position = mvp * vec4(v_coord, 1.0f);
-    f_normal = normalize((mvp * vec4(v_normal, 0.0f)).xyz);
-    f_texcoord = v_texcoord;
-}
-        )";
-
-        std::string fragmentShader = R"(
-#version 330
-
-uniform vec4 mat_ambient;
-uniform vec4 mat_diffuse;
-uniform vec4 mat_specular;
-uniform vec4 mat_emissive;
-uniform float mat_shininess;
-
-uniform sampler2D tex_diffuse;
-
-in vec3 f_normal;
-in vec2 f_texcoord;
-
-out vec4 p_color;
-
-void main() {
-    vec4 color = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-    vec3 light_dir = normalize(vec3(0.0f, 0.0f, 1.0f));
-    float light_factor = max(dot(f_normal, light_dir), 0.0f);
-    
-    // ambient y emissive
-    color += mat_ambient + mat_emissive;
-
-    if (light_factor > 0.0) {
-        // diffuse
-        // color += (mat_diffuse*0.5f + texture(tex_diffuse, f_texcoord)*0.5f) * light_factor;
-        // color += mat_diffuse * texture(tex_diffuse, f_texcoord) * light_factor;
-        color += texture(tex_diffuse, f_texcoord) * light_factor + mat_diffuse*0.0f;        
-        
-        // specular
-        vec3 light_dir_half = normalize(light_dir + vec3(0.0f, 0.0f, 1.0f));
-        float light_factor_specular = max(dot(f_normal, light_dir_half), 0.0f);
-        
-        color += mat_specular * pow(light_factor_specular, mat_shininess);
+        return content;
     }
-    
-    p_color = color;
-}
-        )";
-        
-        auto shader1 = std::make_unique<gl3::Shader>(GL_VERTEX_SHADER, vertexShader);
-        auto shader2 = std::make_unique<gl3::Shader>(GL_FRAGMENT_SHADER, fragmentShader);
+
+    void initShaders() {
+        std::string vertexShader = this->loadTextFile("assets/shaders/vertex.glsl");
+        std::string fragmentShader = this->loadTextFile("assets/shaders/fragment.glsl");
 
         gl3::ShaderVector shaders;
-        shaders.push_back(std::move(shader1));
-        shaders.push_back(std::move(shader2));
-        
+        shaders.emplace_back(new gl3::Shader (GL_VERTEX_SHADER, vertexShader));
+        shaders.emplace_back(new gl3::Shader (GL_FRAGMENT_SHADER, fragmentShader));
+
         m_program = std::make_unique<gl3::Program>(std::move(shaders));
         
         assert(glGetError() == GL_NO_ERROR);
