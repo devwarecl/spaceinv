@@ -111,6 +111,20 @@ namespace gl3 {
             assert(glGetError() == GL_NO_ERROR);
         }
 
+        void render(const Subset *subset, GLenum primitive, size_t start, size_t count) {
+            glBindVertexArray(subset->getId());
+
+            if (subset->indexed()) {
+                glDrawElementsBaseVertex(primitive, count, GL_UNSIGNED_INT, nullptr, start);
+            } else {
+                glDrawArrays(primitive, start, count);
+            }
+
+            glBindVertexArray(0);
+
+            assert(glGetError() == GL_NO_ERROR);
+        }
+
         void setUniform(GLint location, float v) {
             glUniform1f(location, v);
         }

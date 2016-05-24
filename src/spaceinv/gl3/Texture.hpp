@@ -36,6 +36,10 @@ namespace gl3 {
             return m_height;
         }
 
+        xe::Vector2i getSize() const {
+            return xe::Vector2i(m_width, m_height);
+        }
+
         GLuint getId() const {
             return m_id;
         }
