@@ -20,7 +20,7 @@ set (sources_sg
 	sg/SceneLoader.cpp
 	sg/SceneManager.cpp
 	sg/SceneRenderer.cpp
-	sg/SceneRendererGeneric.cpp
+	sg/SceneRendererimpl.cpp
 	sg/SceneLoader.cpp
     sg/Camera.cpp 
     sg/Light.cpp
@@ -46,7 +46,7 @@ set (sources_sg
     sg/Sphere.hpp
     sg/Triangle.hpp
 	sg/SceneRenderer.hpp
-    sg/SceneRendererGeneric.hpp
+    sg/SceneRendererImpl.hpp
 	sg/SceneLoader.hpp
 	sg/SceneManager.hpp
 	sg/SceneNodeAnimator.hpp

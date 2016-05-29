@@ -6,26 +6,30 @@
 
 #include "GL.hpp"
 #include "xe/DataFormat.hpp"
+#include "xe/Vector.hpp"
+#include "Texture.hpp"
 
 namespace gl3 {
 
     typedef xe::DataFormat<xe::Attrib> MaterialFormat;
 
+	enum class FaceMode {
+		Point,
+		Line,
+		Triangle
+	};
+
     struct Material {
         bool depthTest = true;
         bool cullFace = true;
-    
-        const MaterialFormat &format;
+		FaceMode faceMode;
 
-        void *data = nullptr;
+        xe::Vector4f ambient = {0.2f, 0.2f, 0.2f, 1.0f};
+        xe::Vector4f diffuse = {0.8f, 0.8f, 0.8f, 1.0f};
+        xe::Vector4f specular = {0.0f, 0.0f, 0.0f, 1.0f};
+        xe::Vector4f emissive = {0.0f, 0.0f, 0.0f, 1.0f};
 
-        explicit Material(const MaterialFormat &format_) : format(format_) {
-            data = std::malloc(format.getSize());
-        }
-
-        ~Material() {
-            std::free(data);
-        }
+        float shininess = 0.0f;
     };
 }
 

@@ -41,21 +41,10 @@ namespace gl3 {
     
             glfwMakeContextCurrent(window);
         
+			glbinding::Binding::useCurrentContext();
             glbinding::Binding::initialize(true);
 
             assert(glGetError() == GL_NO_ERROR);
-
-    //#if defined(_DEBUG)
-    //        glbinding::setCallbackMaskExcept(glbinding::CallbackMask::After, { "glGetError" });
-    //
-    //        glbinding::setAfterCallback([](const glbinding::FunctionCall &) {
-    //            const auto error = glGetError();
-    //
-    //            if (error != GL_NO_ERROR) {
-    //                std::cout << "error: " << std::hex << error << std::endl;
-    //            }
-    //        });
-    //#endif
 
             glfwSetWindowSizeCallback(window, window_size_callback);
 
@@ -95,11 +84,15 @@ namespace gl3 {
             assert(glGetError() == GL_NO_ERROR);
         }
 
+        void setSubset(const Subset *subset) {
+            glBindVertexArray(subset->getId());
+        }
+
         void render(const Subset *subset, GLenum primitive, std::size_t count) {
             glBindVertexArray(subset->getId());
 
             if (subset->indexed()) {
-                //! TODO: Determinar tipo de datos de los indices a partir del formato de los indices
+                //! TODO: Determinar tipo de datos de los indices a partir del formato
                 glDrawElements(primitive, count, GL_UNSIGNED_INT, nullptr);
 
             } else {

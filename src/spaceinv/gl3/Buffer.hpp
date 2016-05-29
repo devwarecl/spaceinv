@@ -75,7 +75,7 @@ namespace gl3 {
             assert(glGetError() == GL_NO_ERROR);
 
             if (data) {
-                write(data);
+                this->write(data);
             }
         }
 

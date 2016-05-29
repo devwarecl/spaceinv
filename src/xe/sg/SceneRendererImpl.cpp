@@ -1,5 +1,5 @@
 
-#include "SceneRendererGeneric.hpp"
+#include "SceneRendererImpl.hpp"
 
 #include <cassert>
 #include <xe/sg/Scene.hpp>
@@ -8,17 +8,17 @@
 
 namespace xe { namespace sg {
 
-	void SceneRendererImpl::renderScene() {
-		assert(m_scene);
-        assert(m_renderer);
-
+	void SceneRendererImpl::renderScene(Scene *scene) {
+		assert(m_pipeline);
+		assert(scene);
+        
 		TransformationStack transformStack;
 
 		transformStack.reset(xe::identity<float, 4>());
 
-		m_renderer->beginFrame(m_scene->backcolor);
-		this->renderNode(&transformStack, &m_scene->rootNode);
-		m_renderer->endFrame();
+		m_pipeline->beginFrame(scene->backcolor);
+		this->renderNode(&transformStack, &scene->rootNode);
+		m_pipeline->endFrame();
 	}
 
 	void SceneRendererImpl::renderNode(TransformationStack *transformStack, SceneNode* node) {
@@ -27,10 +27,10 @@ namespace xe { namespace sg {
 
 		transformStack->push(node->transform);
         
-		m_renderer->setModel(transformStack->top());
+		m_pipeline->setModel(transformStack->top());
 
 		if (node->renderable) {
-			node->renderable->renderWith(m_renderer);
+			node->renderable->renderWith(m_pipeline);
 		}
 
         for (auto &child : node->childs) {

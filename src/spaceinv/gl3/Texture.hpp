@@ -3,7 +3,10 @@
 #ifndef __gl3_texture__
 #define __gl3_texture__
 
+#include <cassert>
 
+#include "GL.hpp"
+#include "xe/Vector.hpp"
 
 namespace gl3 {
 

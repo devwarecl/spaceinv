@@ -13,13 +13,11 @@ namespace xe { namespace gfx {
         virtual ~Shader() {}
 
         virtual ShaderType getShaderType() const = 0;
-
     };
 
     class Program {
     public:
         virtual ~Program() {}
-
     };
 }}
 

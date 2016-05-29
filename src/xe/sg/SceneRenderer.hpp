@@ -1,15 +1,3 @@
-/**
- * @file ISceneRenderer.hpp
- * @brief Definition of the ISceneRenderer interface.
- */
-
-
-/*
- * Copyright (c) 2013-2014 Felipe Apablaza.
- *
- * The license and distribution terms for this file may be
- * found in the file LICENSE in this distribution.
- */
 
 #pragma once
 
@@ -24,16 +12,7 @@ namespace xe { namespace sg {
     
 	class SceneRenderer {
     public:
-        explicit SceneRenderer(Scene *scene) {
-            assert(scene);
-
-            m_scene = scene;
-        }
-
-        virtual void renderScene() = 0;
-
-    protected:
-        Scene *m_scene = nullptr;
+        virtual void renderScene(Scene *scene) = 0;
 	};
 
 	typedef std::unique_ptr<SceneRenderer> SceneRendererPtr;

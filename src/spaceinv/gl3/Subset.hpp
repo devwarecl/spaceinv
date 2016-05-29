@@ -25,7 +25,7 @@ namespace gl3 {
 
     typedef xe::DataFormat<SubsetAttrib> SubsetFormat;
 
-    GLenum conv_type(xe::DataType type) {
+    inline GLenum conv_type(xe::DataType type) {
         switch (type) {
             case xe::DataType::Float32: return GL_FLOAT;
             case xe::DataType::Int32:   return GL_INT;

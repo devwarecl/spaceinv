@@ -14,6 +14,8 @@ namespace xe { namespace gfx {
         int bufferIndex = 0;
     };
 
+	typedef xe::DataFormat<SubsetAttrib> SubsetFormat;
+
     class Subset {
     public:
         virtual ~Subset() {}

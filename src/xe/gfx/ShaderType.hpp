@@ -7,7 +7,8 @@
 namespace xe { namespace gfx {
     enum class ShaderType {
         Vertex,
-        Fragment
+        Fragment,
+		Geometry
     };
 }}
 
