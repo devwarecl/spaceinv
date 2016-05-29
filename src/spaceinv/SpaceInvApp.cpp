@@ -71,24 +71,25 @@ public:
         m_world = rotate * translate;
     }
 
-    void render() {
-        auto mvp = m_proj * m_view * m_world;
-        
-        m_device.beginFrame();
-        m_device.setProgram(m_program.get());
-        
-        auto &mesh = m_meshes[0];
-
-        m_device.setUniformMatrix(m_program->getLocation("mvp"), 1, false, mvp.values);
-
-        for (size_t mindex=0; mindex<mesh.materials.size(); mindex++) {
-
+	void renderMesh(Mesh &mesh) {
+		for (size_t mindex=0; mindex<mesh.materials.size(); mindex++) {
             Patch patch = mesh.patches[mindex];
 
             this->renderMaterial(mesh.materials[mindex]);
 
             m_device.render(mesh.subset.get(), mesh.primitive, patch.start, patch.count);
         }
+	}
+
+    void render() {
+        auto mvp = m_proj * m_view * m_world;
+        
+        m_device.beginFrame();
+        m_device.setProgram(m_program.get());
+        
+		m_device.setUniformMatrix(m_program->getLocation("mvp"), 1, false, mvp.values);
+
+		this->renderMesh(m_meshes[0]);
 
         m_device.endFrame();
         

@@ -6,117 +6,30 @@
 
 #include <cassert>
 #include "GL.hpp"
+#include "Program.hpp"
+#include "Subset.hpp"
 
 namespace gl3 {
-        
-    void window_size_callback(GLFWwindow* window, int width, int height) {
-        glViewport(0, 0, width, height);
-    }
 
     class Device {
     public:
-        Device() {
-            ::glfwInit();
-    
-            int hints[][2] = {
-                // version
-                {GLFW_CONTEXT_VERSION_MAJOR, 3},
-                {GLFW_CONTEXT_VERSION_MINOR, 3},
-                {GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE},
-        
-                // framebuffer
-                {GLFW_RED_BITS, 8},
-                {GLFW_GREEN_BITS, 8},
-                {GLFW_BLUE_BITS, 8},
-                {GLFW_ALPHA_BITS, 8} ,
-                {GLFW_DEPTH_BITS,  24},
-                {GLFW_STENCIL_BITS, 8}
-            };
-    
-            for (auto hint : hints) {
-                ::glfwWindowHint(hint[0], hint[1]);
-            }
-    
-            window = ::glfwCreateWindow(1024, 768, "test", nullptr, nullptr);
-    
-            glfwMakeContextCurrent(window);
-        
-			glbinding::Binding::useCurrentContext();
-            glbinding::Binding::initialize(true);
+        Device();
 
-            assert(glGetError() == GL_NO_ERROR);
+        ~Device();
 
-            glfwSetWindowSizeCallback(window, window_size_callback);
+        void beginFrame();
 
-            std::cout << "Device inicializado correctamente." << std::endl;
-        }
+        void endFrame();
 
-        ~Device() {
-            ::glfwDestroyWindow(window);
-            ::glfwTerminate();
-        }
+        int getKey(int key) const;
 
-        void beginFrame() {
-            glfwPollEvents();
+        void setProgram(const Program *program);
 
-            auto clearFlags = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
+        void setSubset(const Subset *subset);
 
-            glClearColor(0.2f, 0.2f, 0.8f, 1.0f);
-            glClear(clearFlags);
+        void render(const Subset *subset, GLenum primitive, std::size_t count);
 
-            assert(glGetError() == GL_NO_ERROR);
-        }
-
-        void endFrame() {
-            glFlush();
-            glfwSwapBuffers(window);
-
-            assert(glGetError() == GL_NO_ERROR);
-        }
-
-        int getKey(int key) const {
-            return ::glfwGetKey(window, GLFW_KEY_ESCAPE);
-        }
-
-        void setProgram(const Program *program) {
-            glUseProgram(program->getId());
-
-            assert(glGetError() == GL_NO_ERROR);
-        }
-
-        void setSubset(const Subset *subset) {
-            glBindVertexArray(subset->getId());
-        }
-
-        void render(const Subset *subset, GLenum primitive, std::size_t count) {
-            glBindVertexArray(subset->getId());
-
-            if (subset->indexed()) {
-                //! TODO: Determinar tipo de datos de los indices a partir del formato
-                glDrawElements(primitive, count, GL_UNSIGNED_INT, nullptr);
-
-            } else {
-                glDrawArrays(primitive, 0, count);
-            }
-
-            glBindVertexArray(0);
-
-            assert(glGetError() == GL_NO_ERROR);
-        }
-
-        void render(const Subset *subset, GLenum primitive, size_t start, size_t count) {
-            glBindVertexArray(subset->getId());
-
-            if (subset->indexed()) {
-                glDrawElementsBaseVertex(primitive, count, GL_UNSIGNED_INT, nullptr, start);
-            } else {
-                glDrawArrays(primitive, start, count);
-            }
-
-            glBindVertexArray(0);
-
-            assert(glGetError() == GL_NO_ERROR);
-        }
+        void render(const Subset *subset, GLenum primitive, size_t start, size_t count);
 
         void setUniform(GLint location, float v) {
             glUniform1f(location, v);

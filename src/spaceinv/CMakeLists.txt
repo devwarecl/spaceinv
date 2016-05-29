@@ -1,7 +1,22 @@
 
 set (target spaceinv)
-set (sources SpaceInvApp.cpp Mesh.hpp TextureLoader.hpp TextureLoader.cpp MeshLoader.cpp MeshLoader.hpp)
-set (sources_gl3 gl3/GL.hpp gl3/Buffer.hpp gl3/Device.hpp gl3/Material.hpp gl3/Program.hpp gl3/Subset.hpp)
+
+set (sources 
+	SpaceInvApp.cpp 
+	Mesh.hpp 
+	TextureLoader.hpp TextureLoader.cpp 
+	MeshLoader.cpp MeshLoader.hpp 
+	PhongPipeline.hpp PhongPipeline.cpp
+)
+
+set (sources_gl3 
+	gl3/GL.hpp 
+	gl3/Buffer.hpp 
+	gl3/Device.hpp gl3/Device.cpp 
+	gl3/Material.hpp 
+	gl3/Program.hpp gl3/Program.cpp 
+	gl3/Subset.hpp
+)
 
 source_group(\\     FILES ${sources})
 source_group(\\gl3  FILES ${sources_gl3})
