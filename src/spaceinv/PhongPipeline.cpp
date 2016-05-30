@@ -86,7 +86,12 @@ void PhongPipeline::setWorldTransform(const xe::Matrix4f &world) {
 }
 
 xe::Matrix4f PhongPipeline::getPVW() const {
-	return m_proj * m_view * m_world;
+
+	xe::Matrix4f mvp = m_proj * m_view * m_world;
+
+	std::cout << mvp << std::endl;
+
+	return mvp;
 }
 
 void PhongPipeline::renderMaterial(Material &material) {

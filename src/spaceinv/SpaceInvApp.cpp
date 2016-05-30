@@ -10,6 +10,8 @@
 #include "xe/Vector.hpp"
 #include "xe/Matrix.hpp"
 #include "xe/sg/Camera.hpp"
+#include "xe/sg/Scene.hpp"
+#include "xe/sg/SceneRendererImpl.hpp"
 
 #include "gl3/Subset.hpp"
 #include "gl3/Program.hpp"
@@ -25,9 +27,11 @@ class SpaceInvApp {
 public:
     SpaceInvApp() {
 		m_pipeline = std::make_unique<PhongPipeline>(&m_device);
-
+		m_renderer = std::make_unique<xe::sg::SceneRendererImpl>(m_pipeline.get());
+		
         initGeometry();
         initCamera();
+		initScene();
     }
 
     ~SpaceInvApp() {}
@@ -40,16 +44,14 @@ public:
         // animar modelo
         m_angle += 1.0f;
         
+		m_scene.rootNode.childs[0].transform = xe::rotatey(xe::rad(m_angle));
+
         // mover modelo
-        auto translate = xe::translate<float>(m_position);
+        // auto translate = xe::translate<float>(m_position);
     }
 
     void render() {
-		m_pipeline->beginFrame({0.0f, 0.0f, 0.0f, 1.0f});
-		m_pipeline->render(&m_camera);
-		m_pipeline->setWorldTransform(xe::rotatey(xe::rad(m_angle)));
-		m_pipeline->render(&m_meshes[0]);
-		m_pipeline->endFrame();
+		m_renderer->renderScene(&m_scene);
     }
     
 private:
@@ -61,8 +63,10 @@ private:
 	TextureLoader m_textureLoader;
 	LookAtCamera m_camera;
 
+	xe::sg::Scene m_scene;
+	xe::sg::SceneRendererPtr m_renderer;
+
     std::vector<Mesh> m_meshes;
-    xe::Vector3f m_position = {0.0f, 0.0f, 0.0f};
     float m_angle = 0.0f;
     
 private:
@@ -72,6 +76,13 @@ private:
 		m_camera.up = {0.0f, 1.0f, 0.0f};
     }
     
+	void initScene() {
+		m_scene.rootNode.renderable = &m_camera;
+
+		m_scene.rootNode.childs.resize(1);
+		m_scene.rootNode.childs[0].renderable = &m_meshes[0];
+	}
+
     void initGeometry() {
         gl3::SubsetFormat::AttribVector attribs = {
             gl3::SubsetAttrib("v_coord", 3, xe::DataType::Float32, 0),

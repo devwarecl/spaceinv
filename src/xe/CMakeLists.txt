@@ -20,7 +20,7 @@ set (sources_sg
 	sg/SceneLoader.cpp
 	sg/SceneManager.cpp
 	sg/SceneRenderer.cpp
-	sg/SceneRendererimpl.cpp
+	sg/SceneRendererImpl.cpp
 	sg/SceneLoader.cpp
     sg/Camera.cpp 
     sg/Light.cpp

@@ -11,6 +11,10 @@
 namespace xe { namespace sg {
 	class SceneRendererImpl : public SceneRenderer {
 	public:
+		explicit SceneRendererImpl(Pipeline* pipeline) {
+			m_pipeline = pipeline;
+		}
+
 		virtual ~SceneRendererImpl() {}
 
 		virtual void renderScene(Scene *scene) override;
