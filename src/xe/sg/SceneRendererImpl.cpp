@@ -27,7 +27,7 @@ namespace xe { namespace sg {
 
 		transformStack->push(node->transform);
         
-		m_pipeline->setModel(transformStack->top());
+		m_pipeline->setWorldTransform(transformStack->top());
 
 		if (node->renderable) {
 			node->renderable->renderWith(m_pipeline);

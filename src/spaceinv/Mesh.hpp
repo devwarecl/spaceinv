@@ -4,6 +4,8 @@
 
 #include <vector>
 #include "xe/Vector.hpp"
+#include "xe/sg/Renderable.hpp"
+#include "xe/sg/Geometry.hpp"
 #include "gl3/Texture.hpp"
 #include "gl3/Subset.hpp"
 
@@ -38,7 +40,7 @@ struct Patch {
     std::uint16_t count = 0;    // total de caras
 };
 
-struct Mesh {
+struct Mesh : public xe::sg::Geometry {
     gl3::SubsetFormat format;
     gl3::SubsetPtr subset;
     size_t count = 0;
@@ -47,7 +49,10 @@ struct Mesh {
     std::vector<Patch> patches;
 
     GLenum primitive = GL_TRIANGLES;
+	
+	virtual void renderWith(xe::sg::Pipeline *renderer) override {
+		renderer->render(this);
+	}
 };
 
 #endif 
-

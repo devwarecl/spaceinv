@@ -22,7 +22,7 @@ namespace xe { namespace sg {
 		virtual void render(xe::sg::Camera *camera) = 0;
 		virtual void render(xe::sg::Geometry *geometry) = 0;
 		
-		virtual void setModel(const xe::Matrix4f &) = 0;
+		virtual void setWorldTransform(const xe::Matrix4f &) = 0;
 	};
 
 	typedef std::unique_ptr<Pipeline> PipelinePtr;
