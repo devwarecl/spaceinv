@@ -68,9 +68,17 @@ void PhongPipeline::render(xe::sg::Camera *camera) {
 	this->updateMvp();
 }
 
-void PhongPipeline::render(xe::sg::Geometry *geometry) {}
+void PhongPipeline::render(xe::sg::Geometry *geometry) {
+	
+	if (auto *mesh = dynamic_cast<Mesh*>(geometry)) {
+		this->renderMesh(*mesh);
+	}
+}
 
 void PhongPipeline::render(Mesh *mesh) {
+
+	std::cout << "render mesh!" << std::endl;
+
 	this->renderMesh(*mesh);
 }
 
@@ -86,10 +94,7 @@ void PhongPipeline::setWorldTransform(const xe::Matrix4f &world) {
 }
 
 xe::Matrix4f PhongPipeline::getPVW() const {
-
 	xe::Matrix4f mvp = m_proj * m_view * m_world;
-
-	std::cout << mvp << std::endl;
 
 	return mvp;
 }

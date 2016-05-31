@@ -1,7 +1,6 @@
 
 #include <vector>
 #include <map>
-
 #include <cassert>
 
 #include "xe/DataType.hpp"
@@ -13,15 +12,17 @@
 #include "xe/sg/Scene.hpp"
 #include "xe/sg/SceneRendererImpl.hpp"
 
-#include "gl3/Subset.hpp"
-#include "gl3/Program.hpp"
-#include "gl3/Device.hpp"
+#include "render/gl3/Subset.hpp"
+#include "render/gl3/Program.hpp"
+#include "render/gl3/Device.hpp"
 
-#include "Mesh.hpp"
-#include "TextureLoader.hpp"
-#include "MeshLoader.hpp"
-#include "PhongPipeline.hpp"
-#include "LookAtCamera.hpp"
+#include "render/Mesh.hpp"
+#include "render/TextureLoader.hpp"
+#include "render/MeshLoader.hpp"
+#include "render/PhongPipeline.hpp"
+#include "render/LookAtCamera.hpp"
+
+#include "Player.hpp"
 
 class SpaceInvApp {
 public:
@@ -41,13 +42,29 @@ public:
     }
     
     void update() {
-        // animar modelo
-        m_angle += 1.0f;
-        
-		m_scene.rootNode.childs[0].transform = xe::rotatey(xe::rad(m_angle));
+		m_device.pollEvents();
 
-        // mover modelo
-        // auto translate = xe::translate<float>(m_position);
+		m_player.setTime(0.25f);
+
+		if (m_device.getKey(GLFW_KEY_LEFT)) {
+			m_player.moveLeft();
+		}
+
+		if (m_device.getKey(GLFW_KEY_RIGHT)) {
+			m_player.moveRight();
+		}
+
+		if (m_device.getKey(GLFW_KEY_UP)) {
+			m_player.moveForward();
+		}
+
+		if (m_device.getKey(GLFW_KEY_DOWN)) {
+			m_player.moveBackward();
+		}
+
+		if (m_device.getKey(GLFW_KEY_SPACE)) {
+			m_player.fire();
+		}
     }
 
     void render() {
@@ -62,6 +79,8 @@ private:
 	MeshLoader m_meshLoader;
 	TextureLoader m_textureLoader;
 	LookAtCamera m_camera;
+
+	Player m_player;
 
 	xe::sg::Scene m_scene;
 	xe::sg::SceneRendererPtr m_renderer;
@@ -78,9 +97,10 @@ private:
     
 	void initScene() {
 		m_scene.rootNode.renderable = &m_camera;
-
 		m_scene.rootNode.childs.resize(1);
 		m_scene.rootNode.childs[0].renderable = &m_meshes[0];
+
+		m_player = Player(&m_scene.rootNode.childs[0]);
 	}
 
     void initGeometry() {

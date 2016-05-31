@@ -27,7 +27,7 @@ namespace gl3 {
 		for (auto hint : hints) {
 			::glfwWindowHint(hint[0], hint[1]);
 		}
-    
+		
 		window = ::glfwCreateWindow(1024, 768, "test", nullptr, nullptr);
     
 		glfwMakeContextCurrent(window);
@@ -47,9 +47,11 @@ namespace gl3 {
 		::glfwTerminate();
 	}
 
-	void Device::beginFrame() {
+	void Device::pollEvents() {
 		glfwPollEvents();
+	}
 
+	void Device::beginFrame() {
 		auto clearFlags = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 
 		glClearColor(0.2f, 0.2f, 0.8f, 1.0f);
@@ -66,7 +68,7 @@ namespace gl3 {
 	}
 
 	int Device::getKey(int key) const {
-		return ::glfwGetKey(window, GLFW_KEY_ESCAPE);
+		return ::glfwGetKey(window, key);
 	}
 
 	void Device::setProgram(const Program *program) {
