@@ -314,7 +314,8 @@ namespace xe {
 		}
 
         bool operator== (const Vector &Other) const {
-			return arrayCompare<Type, Size>(this->values, Other.values);
+			// return arrayCompare<Type, Size>(this->values, Other.values);
+            return false;
 		}
 
         bool operator!= (const Vector &Other) const {

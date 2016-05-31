@@ -25,4 +25,4 @@ source_group(\\render\\gl3  FILES ${sources_render_gl3})
 
 add_executable(${target} ${sources} ${sources_render} ${sources_render_gl3})
 
-target_link_libraries(${target} ${GLFW3_LIBRARY} ${OPENGL_LIBRARY} glbinding bdm FreeImage xe)
+target_link_libraries(${target} ${GLFW3_LIBRARY} ${OPENGL_LIBRARY} glbinding bdm freeimage xe)
