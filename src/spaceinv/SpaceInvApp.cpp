@@ -48,6 +48,7 @@ private:
 
 typedef std::unique_ptr<Model> ModelPtr;
 
+
 class SpaceInvApp {
 public:
     SpaceInvApp() {
@@ -165,9 +166,9 @@ private:
 
 	gl3::MeshFormat createMeshFormat() const {
 		gl3::MeshFormat::AttribVector attribs = {
-            gl3::MeshAttrib("v_coord", 3, xe::DataType::Float32, 0),
-            gl3::MeshAttrib("v_normal", 3, xe::DataType::Float32, 1),
-            gl3::MeshAttrib("v_texcoord", 2, xe::DataType::Float32, 2)
+			{"v_coord", 3, xe::DataType::Float32, 0},
+			{"v_normal", 3, xe::DataType::Float32, 1},
+			{"v_texcoord", 2, xe::DataType::Float32, 2}
         };
 
         return gl3::MeshFormat(attribs);
@@ -175,8 +176,6 @@ private:
 
     void initGeometry() {
         m_format = this->createMeshFormat();
-        
-        assert(glGetError() == GL_NO_ERROR);
     }
 };
 
