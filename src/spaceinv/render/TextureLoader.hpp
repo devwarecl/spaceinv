@@ -5,15 +5,23 @@
 
 #include <list>
 #include <string>
+
+#include "xe/FileLocator.hpp"
 #include "gl3/Texture.hpp"
 
 class TextureLoader {
 public:
-    TextureLoader();
+    explicit TextureLoader(xe::FileLocator *locator=nullptr);
 
     ~TextureLoader();
 
-    void addPath(const std::string &path);
+	void setLocator(xe::FileLocator *locator) {
+		m_locator = locator;
+	}
+
+	xe::FileLocator *getLocator() {
+		return m_locator;
+	}
 
     gl3::TexturePtr loadTexture(const std::string &file);
 
@@ -21,7 +29,7 @@ protected:
     gl3::TexturePtr doLoadTexture(const std::string &file);
 
 private:
-    std::list<std::string> m_paths;
+	xe::FileLocator *m_locator = nullptr;
 };
 
 #endif 

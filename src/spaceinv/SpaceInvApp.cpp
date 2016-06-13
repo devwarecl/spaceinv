@@ -8,6 +8,7 @@
 #include "xe/Common.hpp"
 #include "xe/Vector.hpp"
 #include "xe/Matrix.hpp"
+#include "xe/FileLocator.hpp"
 #include "xe/sg/Camera.hpp"
 #include "xe/sg/Scene.hpp"
 #include "xe/sg/SceneRendererImpl.hpp"
@@ -24,12 +25,43 @@
 
 #include "Player.hpp"
 
+class Model : public xe::sg::Renderable {
+public:
+	explicit Model(std::vector<Mesh> meshes) {
+		m_meshes = std::move(meshes);
+	}
+
+	virtual void renderWith(xe::sg::Pipeline *pipeline) {
+		this->renderWith(dynamic_cast<PhongPipeline*>(pipeline));
+	}
+
+	virtual void renderWith(PhongPipeline *pipeline) {
+		assert(pipeline);
+		assert(m_meshes.size() > 0);
+
+		pipeline->render(&m_meshes[0]);
+	}
+
+private:
+	std::vector<Mesh> m_meshes;
+};
+
+typedef std::unique_ptr<Model> ModelPtr;
+
 class SpaceInvApp {
 public:
     SpaceInvApp() {
 		m_pipeline = std::make_unique<PhongPipeline>(&m_device);
 		m_renderer = std::make_unique<xe::sg::SceneRendererImpl>(m_pipeline.get());
 		
+		m_locator.addPath("assets/uprising/");
+		m_locator.addPath("assets/uprising/bitmaps/");
+		
+		m_textureLoader.setLocator(&m_locator);
+
+		m_meshLoader.setLocator(&m_locator);
+		m_meshLoader.setTextureLoader(&m_textureLoader);
+
         initGeometry();
         initCamera();
 		initScene();
@@ -47,23 +79,19 @@ public:
 		m_player.setTime(0.25f);
 
 		if (m_device.getKey(GLFW_KEY_LEFT)) {
-			m_player.moveLeft();
+			m_camera.turn(0.025f);
 		}
 
 		if (m_device.getKey(GLFW_KEY_RIGHT)) {
-			m_player.moveRight();
+			m_camera.turn(-0.025f);
 		}
 
 		if (m_device.getKey(GLFW_KEY_UP)) {
-			m_player.moveForward();
+			m_camera.move(0.1f);
 		}
 
 		if (m_device.getKey(GLFW_KEY_DOWN)) {
-			m_player.moveBackward();
-		}
-
-		if (m_device.getKey(GLFW_KEY_SPACE)) {
-			m_player.fire();
+			m_camera.move(-0.1f);
 		}
     }
 
@@ -73,7 +101,7 @@ public:
     
 private:
     gl3::Device m_device;
-    gl3::SubsetFormat m_format;
+    gl3::MeshFormat m_format;
 
 	PhongPipelinePtr m_pipeline;
 	MeshLoader m_meshLoader;
@@ -82,44 +110,72 @@ private:
 
 	Player m_player;
 
+	xe::FileLocator m_locator;
 	xe::sg::Scene m_scene;
 	xe::sg::SceneRendererPtr m_renderer;
 
-    std::vector<Mesh> m_meshes;
     float m_angle = 0.0f;
-    
+
+	std::map<std::string, ModelPtr> m_models;
+
+	Model* getModel(const std::string &name) {
+		Model* model = nullptr;
+
+		auto modelIt = m_models.find(name);
+
+		if (modelIt == std::end(m_models)) {
+			m_models[name] = std::make_unique<Model>(m_meshLoader.createMeshSet(name, m_format));
+			model = m_models[name].get();
+
+		} else {
+			model = modelIt->second.get();
+		}
+
+		return model;
+	}
+
 private:
     void initCamera() {
-		m_camera.position = {0.0f, 2.5f, 7.5f};
-		m_camera.lookat = {0.0f, 0.0f, 0.0f};
+		m_camera.position = {0.0f, 0.5f, 12.5f};
+		m_camera.lookat = {0.0f, 0.5f, 0.0f};
 		m_camera.up = {0.0f, 1.0f, 0.0f};
     }
     
 	void initScene() {
-		m_scene.rootNode.renderable = &m_camera;
-		m_scene.rootNode.childs.resize(1);
-		m_scene.rootNode.childs[0].renderable = &m_meshes[0];
+		auto playerNode = new xe::sg::SceneNode(this->getModel("models/iab1.bdm"), xe::translate(xe::Vector3f(0.0f, 0.0f, 0.0f)));
 
-		m_player = Player(&m_scene.rootNode.childs[0]);
+		xe::sg::SceneNode* models[] = {
+			new xe::sg::SceneNode(this->getModel("models/ibb5.bdm"), xe::translate(xe::Vector3f(-5.0f, 0.0f, -5.0f))),
+			new xe::sg::SceneNode(this->getModel("models/wsp1.bdm"), xe::translate(xe::Vector3f(0.0f, 0.0f, -5.0f))), 
+			new xe::sg::SceneNode(this->getModel("models/wpu5.bdm"), xe::translate(xe::Vector3f(5.0f, 0.0f, -5.0f))), 
+			new xe::sg::SceneNode(this->getModel("models/WT11.bdm"), xe::translate(xe::Vector3f(-5.0f, 0.0f, 5.0f))), 
+			new xe::sg::SceneNode(this->getModel("models/rab1.bdm"), xe::translate(xe::Vector3f(0.0f, 0.0f, 5.0f))), 
+			new xe::sg::SceneNode(this->getModel("models/wan1.bdm"), xe::translate(xe::Vector3f(5.0f, 0.0f, 5.0f)))
+		};
+
+		m_player = Player(playerNode);
+
+		m_scene.rootNode.renderable = &m_camera;
+		m_scene.rootNode.childs.emplace_back(playerNode);
+
+		for (auto node : models) {
+			m_scene.rootNode.childs.emplace_back(node);
+		}
+	}
+
+	gl3::MeshFormat createMeshFormat() const {
+		gl3::MeshFormat::AttribVector attribs = {
+            gl3::MeshAttrib("v_coord", 3, xe::DataType::Float32, 0),
+            gl3::MeshAttrib("v_normal", 3, xe::DataType::Float32, 1),
+            gl3::MeshAttrib("v_texcoord", 2, xe::DataType::Float32, 2)
+        };
+
+        return gl3::MeshFormat(attribs);
 	}
 
     void initGeometry() {
-        gl3::SubsetFormat::AttribVector attribs = {
-            gl3::SubsetAttrib("v_coord", 3, xe::DataType::Float32, 0),
-            gl3::SubsetAttrib("v_normal", 3, xe::DataType::Float32, 1),
-            gl3::SubsetAttrib("v_texcoord", 2, xe::DataType::Float32, 2)
-        };
-
-        m_format = gl3::SubsetFormat(attribs);
+        m_format = this->createMeshFormat();
         
-        m_meshes = m_meshLoader.createMeshSet("assets/uprising/models/iab1.bdm", m_format);
-        // m_meshes = createMeshSet("assets/uprising/models/ibb5.bdm", m_format);
-        // m_meshes = createMeshSet("assets/uprising/models/wsp1.bdm", m_format);
-        // m_meshes = createMeshSet("assets/uprising/models/wpu5.bdm", m_format);
-        // m_meshes = createMeshSet("assets/uprising/models/WT11.bdm", m_format);
-        // m_meshes = createMeshSet("assets/uprising/models/rab1.bdm", m_format);
-        // m_meshes = createMeshSet("assets/uprising/models/wan1.bdm", m_format);
-
         assert(glGetError() == GL_NO_ERROR);
     }
 };

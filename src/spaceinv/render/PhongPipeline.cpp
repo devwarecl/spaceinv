@@ -76,9 +76,6 @@ void PhongPipeline::render(xe::sg::Geometry *geometry) {
 }
 
 void PhongPipeline::render(Mesh *mesh) {
-
-	std::cout << "render mesh!" << std::endl;
-
 	this->renderMesh(*mesh);
 }
 

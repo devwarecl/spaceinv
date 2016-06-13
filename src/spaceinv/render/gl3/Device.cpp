@@ -77,11 +77,11 @@ namespace gl3 {
 		assert(glGetError() == GL_NO_ERROR);
 	}
 
-	void Device::setSubset(const Subset *subset) {
+	void Device::setSubset(const Mesh *subset) {
 		glBindVertexArray(subset->getId());
 	}
 
-	void Device::render(const Subset *subset, GLenum primitive, std::size_t count) {
+	void Device::render(const Mesh *subset, GLenum primitive, std::size_t count) {
 		glBindVertexArray(subset->getId());
 
 		if (subset->indexed()) {
@@ -97,7 +97,7 @@ namespace gl3 {
 		assert(glGetError() == GL_NO_ERROR);
 	}
 
-	void Device::render(const Subset *subset, GLenum primitive, size_t start, size_t count) {
+	void Device::render(const Mesh *subset, GLenum primitive, size_t start, size_t count) {
 		glBindVertexArray(subset->getId());
 
 		if (subset->indexed()) {

@@ -131,12 +131,8 @@ std::vector<Patch> createPatchArray(const bdm::Mesh &bdm_mesh) {
     return patches;
 }
 
-Mesh createMesh(const bdm::Mesh &bdm_mesh, const gl3::SubsetFormat &format) {    
-
-    TextureLoader loader;
-    loader.addPath("assets/uprising/bitmaps/");
-
-    auto materials = createMaterialArray(loader, bdm_mesh);
+Mesh createMesh(const bdm::Mesh &bdm_mesh, const gl3::MeshFormat &format, TextureLoader *loader) {    
+    auto materials = createMaterialArray(*loader, bdm_mesh);
     auto vertices = createVertexArray(bdm_mesh);
     auto normals = generateNormals(vertices);
     auto texcoords = createTexCoordArray(materials, bdm_mesh);
@@ -155,7 +151,7 @@ Mesh createMesh(const bdm::Mesh &bdm_mesh, const gl3::SubsetFormat &format) {
 
     mesh.count = vertices.size();
     mesh.primitive = GL_TRIANGLES;
-    mesh.subset = std::make_unique<gl3::Subset>(format, std::move(buffers));
+    mesh.subset = std::make_unique<gl3::Mesh>(format, std::move(buffers));
     mesh.materials = std::move(materials);
     mesh.patches = std::move(patches);
     mesh.format = format;
@@ -163,13 +159,18 @@ Mesh createMesh(const bdm::Mesh &bdm_mesh, const gl3::SubsetFormat &format) {
     return mesh;
 }
 
-std::vector<Mesh> MeshLoader::createMeshSet(const std::string &path, const gl3::SubsetFormat &format) {
+std::vector<Mesh> MeshLoader::createMeshSet(const std::string &path, const gl3::MeshFormat &format) {
     std::vector<Mesh> meshes;
 
-    bdm::BdmFile bdm_file(path.c_str());
+	std::string location = path;
+	if (m_locator) {
+		location = m_locator->locate(path);
+	}
+
+    bdm::BdmFile bdm_file(location.c_str());
     
     for (auto &bdm_mesh : bdm_file.meshes()) {
-        meshes.push_back(createMesh(bdm_mesh, format));
+        meshes.push_back(createMesh(bdm_mesh, format, m_textureLoader));
     }
 
     return meshes;

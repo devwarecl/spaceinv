@@ -22,10 +22,34 @@ public:
 		return xe::Rectf();
 	}
 
+	xe::Vector3f getDirection() const {
+		return normalize(lookat - position);
+	}
+
+	void step(float distance) {
+		auto diff = cross(this->getDirection(), up) * distance;
+
+		position += diff;
+		lookat += diff;
+	}
+
+	void move(float distance) {
+		auto diff = this->getDirection() * distance;
+
+		position += diff;
+		lookat += diff;
+	}
+	
+	void turn(float radians) {
+		auto rotation = xe::rotate(radians, up);
+
+		lookat = position + xe::transform(rotation, this->getDirection());
+	}
+
 public:
-	xe::Vector3f position = {0.0f, 0.0f, 0.0f};
+	xe::Vector3f position = {0.0f, 0.0f, 1.0f};
 	xe::Vector3f lookat = {0.0f, 0.0f, 0.0f};
-	xe::Vector3f up = {0.0f, 0.0f, 0.0f};
+	xe::Vector3f up = {0.0f, 1.0f, 0.0f};
 
 	float fov = xe::rad(60.0f);
 	float aspect = 4.0f/3.0f;

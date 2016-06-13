@@ -3,7 +3,8 @@
 #include "TextureLoader.hpp"
 #include "FreeImage.h"
 
-TextureLoader::TextureLoader() {
+TextureLoader::TextureLoader(xe::FileLocator *locator) {
+	this->setLocator(locator);
     ::FreeImage_Initialise();
 }
 
@@ -11,27 +12,15 @@ TextureLoader::~TextureLoader() {
     ::FreeImage_DeInitialise();
 }
 
-void TextureLoader::addPath(const std::string &path) {
-    m_paths.push_back(path);
-}
-
 gl3::TexturePtr TextureLoader::loadTexture(const std::string &file) {
     gl3::TexturePtr texture;
 
-    if (m_paths.size()) {
-        for (const auto &path : m_paths) {
+	std::string location = file;
 
-            std::string textureName = path + file;
-
-            texture = this->doLoadTexture(textureName);
-
-            if (texture) {
-                break;
-            }
-        }
-    } else {
-        texture = this->doLoadTexture(file);
-    }
+	if (m_locator) {
+		std::string location = m_locator->locate(file);
+		texture = this->doLoadTexture(location);
+	}
 
     return texture;
 }

@@ -10,15 +10,15 @@
 
 namespace xe { namespace gfx {
 
-    struct SubsetAttrib : public Attrib {
+    struct MeshAttrib : public Attrib {
         int bufferIndex = 0;
     };
 
-	typedef xe::DataFormat<SubsetAttrib> SubsetFormat;
+	typedef xe::DataFormat<MeshAttrib> MeshFormat;
 
-    class Subset {
+    class Mesh {
     public:
-        virtual ~Subset() {}
+        virtual ~Mesh() {}
 
         virtual std::size_t getBufferCount() const = 0;
         virtual Buffer* getBuffer(const std::size_t index) = 0;

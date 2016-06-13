@@ -27,11 +27,11 @@ namespace gl3 {
 
         void setProgram(const Program *program);
 
-        void setSubset(const Subset *subset);
+        void setSubset(const Mesh *subset);
 
-        void render(const Subset *subset, GLenum primitive, std::size_t count);
+        void render(const Mesh *subset, GLenum primitive, std::size_t count);
 
-        void render(const Subset *subset, GLenum primitive, size_t start, size_t count);
+        void render(const Mesh *subset, GLenum primitive, size_t start, size_t count);
 
         void setUniform(GLint location, float v) {
 			// assert(location > 0);

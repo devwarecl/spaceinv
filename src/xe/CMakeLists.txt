@@ -1,7 +1,18 @@
 
 set (target xe)
 
-set (sources Buffer.hpp Common.hpp DataFormat.hpp DataType.hpp Traits.hpp Vector.hpp Matrix.hpp Quaternion.hpp Boundary.hpp)
+set (sources 
+	Buffer.hpp 
+	Common.hpp 
+	DataFormat.hpp 
+	DataType.hpp 
+	Traits.hpp 
+	Vector.hpp 
+	Matrix.hpp 
+	Quaternion.hpp 
+	Boundary.hpp
+	FileLocator.hpp FileLocator.cpp
+)
 
 set (sources_gfx 
     gfx/Device.hpp gfx/Device.cpp 
@@ -59,3 +70,5 @@ source_group(\\gfx 	FILES ${sources_gfx})
 source_group(\\sg 	FILES ${sources_sg})
 
 add_library(${target} ${sources} ${sources_gfx} ${sources_sg})
+
+target_link_libraries(${target} ${Boost_LIBRARIES})

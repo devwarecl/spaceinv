@@ -41,8 +41,8 @@ struct Patch {
 };
 
 struct Mesh : public xe::sg::Geometry {
-    gl3::SubsetFormat format;
-    gl3::SubsetPtr subset;
+    gl3::MeshFormat format;
+    gl3::MeshPtr subset;
     size_t count = 0;
 
     std::vector<Material> materials;

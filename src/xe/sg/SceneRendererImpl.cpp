@@ -34,7 +34,7 @@ namespace xe { namespace sg {
 		}
 
         for (auto &child : node->childs) {
-            this->renderNode(transformStack, &child);
+            this->renderNode(transformStack, child.get());
         }
 
 		transformStack->pop();

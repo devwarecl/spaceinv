@@ -10,12 +10,12 @@
 
 namespace gl3 {
 
-    struct SubsetAttrib : public xe::Attrib {
+    struct MeshAttrib : public xe::Attrib {
         int bufferIndex = 0;
 
-        SubsetAttrib() {}
+        MeshAttrib() {}
 
-        SubsetAttrib(const std::string &name_, std::size_t count_, xe::DataType type_, int bufferIndex_) {
+        MeshAttrib(const std::string &name_, std::size_t count_, xe::DataType type_, int bufferIndex_) {
             name = name_;
             count = count_;
             type = type_;
@@ -23,7 +23,7 @@ namespace gl3 {
         }
     };
 
-    typedef xe::DataFormat<SubsetAttrib> SubsetFormat;
+    typedef xe::DataFormat<MeshAttrib> MeshFormat;
 
     inline GLenum conv_type(xe::DataType type) {
         switch (type) {
@@ -33,22 +33,22 @@ namespace gl3 {
         }
     }
 
-    class Subset {
+    class Mesh {
     public:
-        Subset() {}
+        Mesh() {}
         
-        Subset(const SubsetFormat &format, std::vector<BufferPtr> buffers_) {
+        Mesh(const MeshFormat &format, std::vector<BufferPtr> buffers_) {
             
             BufferPtr ibuffer_;
             
             construct(format, std::move(buffers_), std::move(ibuffer_));
         }
         
-        Subset(const SubsetFormat &format, std::vector<BufferPtr> buffers_, BufferPtr ibuffer_) {
+        Mesh(const MeshFormat &format, std::vector<BufferPtr> buffers_, BufferPtr ibuffer_) {
             construct(format, std::move(buffers_), std::move(ibuffer_));
         }
 
-        ~Subset() {
+        ~Mesh() {
             if (id) {
                 glDeleteVertexArrays(1, &id);
                 id = 0;
@@ -66,7 +66,7 @@ namespace gl3 {
         }
 
     protected:
-        void construct(const SubsetFormat &format, std::vector<BufferPtr> buffers_, BufferPtr ibuffer_) {
+        void construct(const MeshFormat &format, std::vector<BufferPtr> buffers_, BufferPtr ibuffer_) {
         
             buffers = std::move(buffers_);
             ibuffer = std::move(ibuffer_);
@@ -79,7 +79,7 @@ namespace gl3 {
 
             GLuint vertexAttrib = 0;
 
-            for (const SubsetAttrib &attrib : format.attribs) {
+            for (const MeshAttrib &attrib : format.attribs) {
                 if (attrib.type == xe::DataType::Unknown) {
                     break;
                 }
@@ -114,7 +114,7 @@ namespace gl3 {
         BufferPtr ibuffer;
     };
     
-    typedef std::unique_ptr<Subset> SubsetPtr;
+    typedef std::unique_ptr<Mesh> MeshPtr;
 }
 
 #endif
