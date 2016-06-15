@@ -1,14 +1,17 @@
 #pragma once
 
+#ifndef __phongpipeline__
+#define __phongpipeline__
+
 #include "xe/sg/Pipeline.hpp"
-#include "gl3/Device.hpp"
-#include "gl3/Program.hpp"
+#include "gl3/DeviceGL.hpp"
+#include "gl3/ProgramGL.hpp"
 
 #include "Mesh.hpp"
 
 class PhongPipeline : public xe::sg::Pipeline {
 public:
-	explicit PhongPipeline(gl3::Device *device);
+	explicit PhongPipeline(gl3::DeviceGL *device);
 
 	~PhongPipeline();
 
@@ -33,7 +36,7 @@ protected:
 	void updateMvp();
 
 private:
-	gl3::Device *m_device = nullptr;
+	gl3::DeviceGL *m_device = nullptr;
 	gl3::ProgramPtr m_program;
 
 	xe::Matrix4f m_proj;
@@ -42,3 +45,6 @@ private:
 };
 
 typedef std::unique_ptr<PhongPipeline> PhongPipelinePtr;
+
+#endif
+

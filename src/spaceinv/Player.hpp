@@ -8,9 +8,9 @@
 
 class Player {
 public:
-
 	Player() {}
-	explicit Player(xe::sg::SceneNode *node) : m_node(node) {
+
+	Player(xe::sg::SceneNode *world, xe::sg::SceneNode *node) : m_world(world), m_node(node) {
 		assert(m_node);
 	}
 
@@ -34,6 +34,7 @@ protected:
 	xe::Matrix4f getTranform();
 
 private:
+	xe::sg::SceneNode *m_world = nullptr;
 	xe::sg::SceneNode *m_node = nullptr;
 	xe::Vector3f m_position = {0.0f, 0.0f, 0.0f};
 	float m_time = 0.0f;

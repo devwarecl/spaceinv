@@ -114,8 +114,6 @@ Patch createPatch(const bdm::Mesh &bdm_mesh, const uint16_t mindex) {
     patch.start = 3 * first;
     patch.count = 3 * (last - first);
 
-    std::cout << "Patch " << (mindex) << ". (" << patch.start << ", " << patch.count << ")" << std::endl;
-
     return patch;
 }
 
@@ -142,16 +140,16 @@ Mesh createMesh(const bdm::Mesh &bdm_mesh, const gl3::MeshFormat &format, Textur
 
     // cargar datos a OpenGL
     gl3::BufferVector buffers;
-    buffers.emplace_back(new gl3::Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, vertices));
-    buffers.emplace_back(new gl3::Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, normals));
-    buffers.emplace_back(new gl3::Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, texcoords));
+    buffers.emplace_back(new gl3::BufferGL(GL_ARRAY_BUFFER, GL_STATIC_DRAW, vertices));
+    buffers.emplace_back(new gl3::BufferGL(GL_ARRAY_BUFFER, GL_STATIC_DRAW, normals));
+    buffers.emplace_back(new gl3::BufferGL(GL_ARRAY_BUFFER, GL_STATIC_DRAW, texcoords));
     
     // finalizar construccion modelo
     Mesh mesh;
 
     mesh.count = vertices.size();
     mesh.primitive = GL_TRIANGLES;
-    mesh.subset = std::make_unique<gl3::Mesh>(format, std::move(buffers));
+    mesh.subset = std::make_unique<gl3::MeshGL>(format, std::move(buffers));
     mesh.materials = std::move(materials);
     mesh.patches = std::move(patches);
     mesh.format = format;

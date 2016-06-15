@@ -13,9 +13,9 @@
 #include "xe/sg/Scene.hpp"
 #include "xe/sg/SceneRendererImpl.hpp"
 
-#include "render/gl3/Subset.hpp"
-#include "render/gl3/Program.hpp"
-#include "render/gl3/Device.hpp"
+#include "render/gl3/MeshGL.hpp"
+#include "render/gl3/ProgramGL.hpp"
+#include "render/gl3/DeviceGL.hpp"
 
 #include "render/Mesh.hpp"
 #include "render/TextureLoader.hpp"
@@ -55,7 +55,7 @@ public:
 		m_pipeline = std::make_unique<PhongPipeline>(&m_device);
 		m_renderer = std::make_unique<xe::sg::SceneRendererImpl>(m_pipeline.get());
 		
-		m_locator.addPath("assets/uprising/");
+		m_locator.addPath("assets/uprising/models/");
 		m_locator.addPath("assets/uprising/bitmaps/");
 		
 		m_textureLoader.setLocator(&m_locator);
@@ -101,7 +101,7 @@ public:
     }
     
 private:
-    gl3::Device m_device;
+    gl3::DeviceGL m_device;
     gl3::MeshFormat m_format;
 
 	PhongPipelinePtr m_pipeline;
@@ -137,29 +137,45 @@ private:
 
 private:
     void initCamera() {
-		m_camera.position = {0.0f, 0.5f, 12.5f};
+		m_camera.position = {0.0f, 5.5f, 12.5f};
 		m_camera.lookat = {0.0f, 0.5f, 0.0f};
 		m_camera.up = {0.0f, 1.0f, 0.0f};
     }
     
 	void initScene() {
-		auto playerNode = new xe::sg::SceneNode(this->getModel("models/iab1.bdm"), xe::translate(xe::Vector3f(0.0f, 0.0f, 0.0f)));
+		auto playerNode = new xe::sg::SceneNode(this->getModel("iab1.bdm"), xe::translate(xe::Vector3f(0.0f, 0.0f, 0.0f)));
 
-		xe::sg::SceneNode* models[] = {
-			new xe::sg::SceneNode(this->getModel("models/ibb5.bdm"), xe::translate(xe::Vector3f(-5.0f, 0.0f, -5.0f))),
-			new xe::sg::SceneNode(this->getModel("models/wsp1.bdm"), xe::translate(xe::Vector3f(0.0f, 0.0f, -5.0f))), 
-			new xe::sg::SceneNode(this->getModel("models/wpu5.bdm"), xe::translate(xe::Vector3f(5.0f, 0.0f, -5.0f))), 
-			new xe::sg::SceneNode(this->getModel("models/WT11.bdm"), xe::translate(xe::Vector3f(-5.0f, 0.0f, 5.0f))), 
-			new xe::sg::SceneNode(this->getModel("models/rab1.bdm"), xe::translate(xe::Vector3f(0.0f, 0.0f, 5.0f))), 
-			new xe::sg::SceneNode(this->getModel("models/wan1.bdm"), xe::translate(xe::Vector3f(5.0f, 0.0f, 5.0f)))
+		const char *models[] = {
+			"xspln.bdm", "alien.bdm", "himodA.bdm", "himodB.bdm", "iab1.bdm", "iab2.bdm", "iab3.bdm", "iab4.bdm", "iab5.bdm", "iar1.bdm", "iav1.bdm", "iav2.bdm", "iav3.bdm", "iav4.bdm", "iav5.bdm", "ibb1.bdm", "ibb2.bdm", "ibb3.bdm", "ibb4.bdm", "ibb5.bdm", "ibm1.bdm", "ibm2.bdm", "ibm3.bdm", "ibm4.bdm", "ibm5.bdm", "ibr1.bdm", "icy1t.bdm", "ien1p.bdm", "iib1.bdm", "iib2.bdm", "iib3.bdm", "iib4.bdm", "iib5.bdm", "iir1.bdm", "iks1t.bdm", "iks2t.bdm", "iks3t.bdm", "ism1t.bdm", "ist1t.bdm", "ist2t.bdm", "ist3t.bdm", "ist4t.bdm", "ist5t.bdm", "itb1.bdm", "itb2.bdm", "itb3.bdm", "itb4.bdm", "itb5.bdm", "itr1.bdm", "itt1t.bdm", "pab1.bdm", "pab2.bdm", "pab3.bdm", "pab4.bdm", "pab5.bdm", "par1.bdm", "pat1.bdm", "pav1.bdm", "pav2.bdm", "pav3.bdm", "pav4.bdm", "pav5.bdm", "pbb1.bdm", "pbb2.bdm", "pbb3.bdm", "pbb4.bdm", "pbb5.bdm", "pbm1.bdm", "pbm2.bdm", "pbm3.bdm", "pbm4.bdm", "pbm5.bdm", "pbr1.bdm", "pcv1.bdm", "pcv2.bdm", "pcv3.bdm", "pcv4.bdm", "pcy1t.bdm", "pen1p.bdm", "pib1.bdm", "pib2.bdm", "pib3.bdm", "pib4.bdm", "pib5.bdm", "pir1.bdm", "pks1t.bdm", "pks2t.bdm", "pks3t.bdm", "ppt1t.bdm", "psm1t.bdm", "pst1t.bdm", "pst2t.bdm", "pst3t.bdm", "pst4t.bdm", "pst5t.bdm", "ptb1.bdm", "ptb2.bdm", "ptb3.bdm", "ptb4.bdm", "ptb5.bdm", "ptr1.bdm", "ptt1t.bdm", "rab1.bdm", "rav1.bdm", "rbb1.bdm", "rbm1.bdm", "rht1t.bdm", "rib1.bdm", "rlt1t.bdm", "rpw1.bdm", "rsm1t.bdm", "rst1t.bdm", "rtb1.bdm", "rtc1.bdm", "wan1.bdm", "wb11.bdm", "wbo1.bdm", "wcu1.bdm", "wcu2.bdm", "wgp1.bdm", "wgp2.bdm", "wgt1.bdm", "whv1.bdm", "wig1.bdm", "wla1.bdm", "wlb1.bdm", "wls1.bdm", "wls2.bdm", "wls3.bdm", "wls4.bdm", "wmb1.bdm", "wml1.bdm", "wmm1.bdm", "wmn1.bdm", "wms1.bdm", "wpu1.bdm", "wpu2.bdm", "wpu3.bdm", "wpu4.bdm", "wpu5.bdm", "wr11.bdm", "wr21.bdm", "wr31.bdm", "wse1.bdm", "wsp1.bdm", "wsp2.bdm", "wSr1.bdm", "WT11.BDM", "wt12.bdm", "wte1.bdm", "xcupd.bdm", "xflm.bdm", "xhealth.bdm", "xheat.bdm", "xhelx.bdm", "xhhiw.bdm", "xhsm.bdm", "xlasr.bdm", "xmbfg.bdm", "xmine.bdm", "xmnly.bdm", "xmole.bdm", "xrack.bdm"
 		};
 
-		m_player = Player(playerNode);
+		std::list<xe::sg::SceneNode*> nodes;
+
+		const int count_per_width = 10;
+		int current = 0;
+
+		float diff = 5.0f;
+		float x = -diff * float(count_per_width / 2);
+		float z = x;
+
+		for (const char *model : models) {
+			nodes.push_back(new xe::sg::SceneNode(this->getModel(model), xe::translate(xe::Vector3f(x, 0.0f, z))));
+
+			if (++current % count_per_width == 0) {
+				x = -diff * float(count_per_width / 2);
+				z += diff;
+
+			} else {
+				x += diff;
+			}
+		}
+
+		m_player = Player(&m_scene.rootNode, playerNode);
 
 		m_scene.rootNode.renderable = &m_camera;
 		m_scene.rootNode.childs.emplace_back(playerNode);
 
-		for (auto node : models) {
+		for (auto node : nodes) {
 			m_scene.rootNode.childs.emplace_back(node);
 		}
 	}

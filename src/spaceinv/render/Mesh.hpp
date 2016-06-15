@@ -7,7 +7,7 @@
 #include "xe/sg/Renderable.hpp"
 #include "xe/sg/Geometry.hpp"
 #include "gl3/Texture.hpp"
-#include "gl3/Subset.hpp"
+#include "gl3/MeshGL.hpp"
 
 struct Box {
     xe::Vector3f pmin;

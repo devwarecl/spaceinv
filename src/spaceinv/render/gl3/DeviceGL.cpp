@@ -1,12 +1,12 @@
 
-#include "Device.hpp"
+#include "DeviceGL.hpp"
 
 namespace gl3 {
 	void window_size_callback(GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 	}
 
-	Device::Device() {
+	DeviceGL::DeviceGL() {
 		::glfwInit();
     
 		int hints[][2] = {
@@ -42,16 +42,16 @@ namespace gl3 {
 		std::cout << "Device inicializado correctamente." << std::endl;
 	}
 
-	Device::~Device() {
+	DeviceGL::~DeviceGL() {
 		::glfwDestroyWindow(window);
 		::glfwTerminate();
 	}
 
-	void Device::pollEvents() {
+	void DeviceGL::pollEvents() {
 		glfwPollEvents();
 	}
 
-	void Device::beginFrame() {
+	void DeviceGL::beginFrame() {
 		auto clearFlags = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 
 		glClearColor(0.2f, 0.2f, 0.8f, 1.0f);
@@ -60,28 +60,28 @@ namespace gl3 {
 		assert(glGetError() == GL_NO_ERROR);
 	}
 
-	void Device::endFrame() {
+	void DeviceGL::endFrame() {
 		glFlush();
 		glfwSwapBuffers(window);
 
 		assert(glGetError() == GL_NO_ERROR);
 	}
 
-	int Device::getKey(int key) const {
+	int DeviceGL::getKey(int key) const {
 		return ::glfwGetKey(window, key);
 	}
 
-	void Device::setProgram(const Program *program) {
+	void DeviceGL::setProgram(const ProgramGL *program) {
 		glUseProgram(program->getId());
 
 		assert(glGetError() == GL_NO_ERROR);
 	}
 
-	void Device::setSubset(const Mesh *subset) {
+	void DeviceGL::setSubset(const MeshGL *subset) {
 		glBindVertexArray(subset->getId());
 	}
 
-	void Device::render(const Mesh *subset, GLenum primitive, std::size_t count) {
+	void DeviceGL::render(const MeshGL *subset, GLenum primitive, std::size_t count) {
 		glBindVertexArray(subset->getId());
 
 		if (subset->indexed()) {
@@ -97,7 +97,7 @@ namespace gl3 {
 		assert(glGetError() == GL_NO_ERROR);
 	}
 
-	void Device::render(const Mesh *subset, GLenum primitive, size_t start, size_t count) {
+	void DeviceGL::render(const MeshGL *subset, GLenum primitive, size_t start, size_t count) {
 		glBindVertexArray(subset->getId());
 
 		if (subset->indexed()) {

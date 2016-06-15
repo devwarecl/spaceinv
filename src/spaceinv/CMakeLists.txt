@@ -12,11 +12,11 @@ set (sources_render
 
 set (sources_render_gl3 
 	render/gl3/GL.hpp 
-	render/gl3/Buffer.hpp 
-	render/gl3/Device.hpp render/gl3/Device.cpp 
-	render/gl3/Material.hpp 
-	render/gl3/Program.hpp render/gl3/Program.cpp 
-	render/gl3/Subset.hpp
+	render/gl3/BufferGL.hpp render/gl3/BufferGL.cpp
+	render/gl3/DeviceGL.hpp render/gl3/DeviceGL.cpp 
+	render/gl3/MaterialGL.hpp 
+	render/gl3/ProgramGL.hpp render/gl3/ProgramGL.cpp 
+	render/gl3/MeshGL.hpp render/gl3/MeshGL.cpp
 )
 
 source_group(\\     		FILES ${sources})

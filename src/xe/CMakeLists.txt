@@ -19,7 +19,7 @@ set (sources_gfx
     gfx/BufferType.hpp
     gfx/Program.hpp
     gfx/ShaderType.hpp
-    gfx/Subset.hpp
+    gfx/Mesh.hpp
 )
 
 set (sources_sg    

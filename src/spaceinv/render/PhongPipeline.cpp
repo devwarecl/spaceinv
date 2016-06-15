@@ -24,7 +24,7 @@ std::string loadTextFile(const std::string &file) {
     return content;
 }
 
-PhongPipeline::PhongPipeline(gl3::Device *device) {
+PhongPipeline::PhongPipeline(gl3::DeviceGL *device) {
 	assert(device);
 
 	m_device = device;
@@ -39,10 +39,10 @@ PhongPipeline::PhongPipeline(gl3::Device *device) {
 	std::string fshader = loadTextFile("assets/shaders/fragment.glsl");
 
 	gl3::ShaderVector shaders;
-	shaders.emplace_back(new gl3::Shader (GL_VERTEX_SHADER, vshader));
-	shaders.emplace_back(new gl3::Shader (GL_FRAGMENT_SHADER, fshader));
+	shaders.emplace_back(new gl3::ShaderGL (GL_VERTEX_SHADER, vshader));
+	shaders.emplace_back(new gl3::ShaderGL (GL_FRAGMENT_SHADER, fshader));
 
-	m_program = std::make_unique<gl3::Program>(std::move(shaders));
+	m_program = std::make_unique<gl3::ProgramGL>(std::move(shaders));
 
 	m_device->setProgram(m_program.get());
 }

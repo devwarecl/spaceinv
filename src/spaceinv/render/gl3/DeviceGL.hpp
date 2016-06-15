@@ -6,16 +6,16 @@
 
 #include <cassert>
 #include "GL.hpp"
-#include "Program.hpp"
-#include "Subset.hpp"
+#include "ProgramGL.hpp"
+#include "MeshGL.hpp"
 
 namespace gl3 {
 
-    class Device {
+    class DeviceGL {
     public:
-        Device();
+        DeviceGL();
 
-        ~Device();
+        ~DeviceGL();
 
 		void pollEvents();
 
@@ -25,13 +25,13 @@ namespace gl3 {
 
         int getKey(int key) const;
 
-        void setProgram(const Program *program);
+        void setProgram(const ProgramGL *program);
 
-        void setSubset(const Mesh *subset);
+        void setSubset(const MeshGL *subset);
 
-        void render(const Mesh *subset, GLenum primitive, std::size_t count);
+        void render(const MeshGL *subset, GLenum primitive, std::size_t count);
 
-        void render(const Mesh *subset, GLenum primitive, size_t start, size_t count);
+        void render(const MeshGL *subset, GLenum primitive, size_t start, size_t count);
 
         void setUniform(GLint location, float v) {
 			// assert(location > 0);

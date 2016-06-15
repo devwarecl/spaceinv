@@ -1,11 +1,11 @@
 
-#include "Program.hpp"
+#include "ProgramGL.hpp"
 
 #include <iostream>
 
 namespace gl3 {
 
-	Shader::Shader(GLenum type_, const std::string &glsl) {
+	ShaderGL::ShaderGL(GLenum type_, const std::string &glsl) {
         type = type_;
         id = glCreateShader(type);
 
@@ -32,7 +32,7 @@ namespace gl3 {
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    Shader::~Shader() {
+    ShaderGL::~ShaderGL() {
         if (id) {
             glDeleteShader(id);
             id = 0;
@@ -43,7 +43,7 @@ namespace gl3 {
 }
 
 namespace gl3 {
-	Program::Program(ShaderVector shaders_) {
+	ProgramGL::ProgramGL(ShaderVector shaders_) {
         shaders = std::move(shaders_);
 
         id = glCreateProgram();
@@ -80,7 +80,7 @@ namespace gl3 {
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    Program::~Program() {
+    ProgramGL::~ProgramGL() {
         if (id) {
             glDeleteProgram(id);
             id = 0;
@@ -89,7 +89,7 @@ namespace gl3 {
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    GLint Program::getLocation(const char *uniformName) const {
+    GLint ProgramGL::getLocation(const char *uniformName) const {
         assert(uniformName);
 
         GLint location = glGetUniformLocation(id, uniformName);

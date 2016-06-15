@@ -10,13 +10,13 @@
 
 namespace gl3 {
 
-    class Shader {
+    class ShaderGL {
     public:
-        Shader() {}
+        ShaderGL() {}
 
-        Shader(GLenum type_, const std::string &glsl) ;
+        ShaderGL(GLenum type_, const std::string &glsl) ;
 
-        ~Shader();
+        ~ShaderGL();
 
         GLenum getType() const {
             return type;
@@ -31,20 +31,20 @@ namespace gl3 {
         GLuint id = 0;
     };
     
-    typedef std::unique_ptr<Shader> ShaderPtr;
+    typedef std::unique_ptr<ShaderGL> ShaderPtr;
     typedef std::vector<ShaderPtr> ShaderVector;
     
-    class Program {
+    class ProgramGL {
     public:
-        Program() {}
+        ProgramGL() {}
 
-        explicit Program(ShaderVector shaders_);
+        explicit ProgramGL(ShaderVector shaders_);
 
         GLuint getId() const {
             return id;
         }
 
-        ~Program();
+        ~ProgramGL();
 
         GLint getLocation(const char *uniformName) const;
 
@@ -53,7 +53,7 @@ namespace gl3 {
         ShaderVector shaders;
     };
     
-    typedef std::unique_ptr<Program> ProgramPtr;
+    typedef std::unique_ptr<ProgramGL> ProgramPtr;
 }
 
 #endif
