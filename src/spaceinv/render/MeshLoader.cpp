@@ -88,7 +88,10 @@ std::vector<xe::Vector2f> createTexCoordArray(const std::vector<Material> &mater
         xe::Vector2f texsize = {1.0f, 1.0f};
         
         if (material.texture) {
-            texsize = material.texture->getSize()/* - xe::Vector2f(1.0f, 1.0f)*/;
+			auto desc = material.texture->getDesc();
+
+            texsize.x = float(desc.width);
+			texsize.y = float(desc.height);
         }
 
         xe::Vector2f texcoord = xe::Vector2f(t.values) / texsize;

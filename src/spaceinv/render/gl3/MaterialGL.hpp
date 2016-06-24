@@ -7,7 +7,6 @@
 #include "GL.hpp"
 #include "xe/DataFormat.hpp"
 #include "xe/Vector.hpp"
-#include "Texture.hpp"
 
 namespace gl3 {
 

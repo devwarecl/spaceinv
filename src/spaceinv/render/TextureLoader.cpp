@@ -41,7 +41,7 @@ gl3::TexturePtr TextureLoader::doLoadTexture(const std::string &file) {
     auto bpp = ::FreeImage_GetBPP(bitmap);
     void* data = ::FreeImage_GetBits(bitmap);
         
-    auto texture = std::make_unique<gl3::Texture>(width, height, data, GL_BGR);
+    auto texture = std::make_unique<gl3::TextureGL>(width, height, data, GL_BGR);
 
     ::FreeImage_Unload(bitmap);
 

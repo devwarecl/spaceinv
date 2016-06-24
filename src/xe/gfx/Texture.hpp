@@ -6,6 +6,7 @@
 
 #include <memory>
 #include "xe/Buffer.hpp"
+#include "xe/gfx/PixelFormat.hpp"
 
 namespace xe { namespace gfx {
 
@@ -21,15 +22,6 @@ namespace xe { namespace gfx {
 		Unknown,
 		PosX, PosY, PosZ,
 		NegX, NegY, NegZ
-	};
-
-	enum class PixelFormat {
-		Unknown,
-		R8G8B8A8,
-		R8G8B8,
-		R5G6B5,
-		R5G5B5X1,
-		R5G5B5A1,
 	};
 
 	struct TextureDesc {

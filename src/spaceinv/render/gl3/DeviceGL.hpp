@@ -9,7 +9,21 @@
 #include "ProgramGL.hpp"
 #include "MeshGL.hpp"
 
+#include "xe/DataType.hpp"
+#include "xe/DataFormat.hpp"
+
 namespace gl3 {
+
+	struct UniformDescriptor : public xe::Attrib {
+		int location = -1;	//! Location
+		int size = 0;		//! How many elements has the array
+
+		size_t getSize() const {
+			return size * xe::Attrib::getSize();
+		}
+	};
+	
+	typedef xe::DataFormat<UniformDescriptor> UniformFormat;
 
     class DeviceGL {
     public:
@@ -117,6 +131,8 @@ namespace gl3 {
 			// assert(location > 0);
             glUniformMatrix4fv(location, total, transpose?GL_TRUE:GL_FALSE, values);
         }
+
+		void setUniform(const UniformFormat& format, void *uniforms);
 
     private:
         GLFWwindow *window = nullptr;

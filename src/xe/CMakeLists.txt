@@ -20,6 +20,12 @@ set (sources_gfx
     gfx/Program.hpp
     gfx/ShaderType.hpp
     gfx/Mesh.hpp
+	gfx/Texture.hpp
+
+	gfx/Image.hpp
+	
+	gfx/PixelFormat.hpp
+	gfx/PixelFormat.cpp
 )
 
 set (sources_sg    

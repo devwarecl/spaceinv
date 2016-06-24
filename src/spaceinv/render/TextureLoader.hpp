@@ -7,7 +7,7 @@
 #include <string>
 
 #include "xe/FileLocator.hpp"
-#include "gl3/Texture.hpp"
+#include "gl3/TextureGL.hpp"
 
 class TextureLoader {
 public:
