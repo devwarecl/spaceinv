@@ -110,14 +110,14 @@ void SpaceInvApp::initScene() {
 	}
 }
 
-gl3::MeshFormat SpaceInvApp::createMeshFormat() const {
-	gl3::MeshFormat::AttribVector attribs = {
+xe::gfx::gl3::MeshFormat SpaceInvApp::createMeshFormat() const {
+	xe::gfx::gl3::MeshFormat::AttribVector attribs = {
 		{"v_coord", 3, xe::DataType::Float32, 0},
 		{"v_normal", 3, xe::DataType::Float32, 1},
 		{"v_texcoord", 2, xe::DataType::Float32, 2}
     };
 
-    return gl3::MeshFormat(attribs);
+    return xe::gfx::gl3::MeshFormat(attribs);
 }
 
 void SpaceInvApp::initGeometry() {

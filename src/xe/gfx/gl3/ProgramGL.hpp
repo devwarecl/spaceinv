@@ -9,33 +9,9 @@
 #include "OpenGL.hpp"
 
 #include "xe/gfx/UniformFormat.hpp"
+#include "xe/gfx/gl3/ShaderGL.hpp"
 
-namespace gl3 {
-
-    class ShaderGL {
-    public:
-        ShaderGL() {}
-
-        ShaderGL(GLenum type_, const std::string &glsl) ;
-
-        ~ShaderGL();
-
-        GLenum getType() const {
-            return type;
-        }
-
-        GLuint getId() const {
-            return m_id;
-        }
-
-    private:
-        GLenum type;
-        GLuint m_id = 0;
-    };
-    
-    typedef std::unique_ptr<ShaderGL> ShaderPtr;
-    typedef std::vector<ShaderPtr> ShaderVector;
-    
+namespace xe { namespace gfx { namespace gl3  {
     class ProgramGL {
     public:
         ProgramGL() {}
@@ -58,6 +34,6 @@ namespace gl3 {
     };
     
     typedef std::unique_ptr<ProgramGL> ProgramPtr;
-}
+}}}
 
 #endif

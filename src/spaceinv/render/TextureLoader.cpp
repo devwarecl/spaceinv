@@ -12,8 +12,8 @@ TextureLoader::~TextureLoader() {
     ::FreeImage_DeInitialise();
 }
 
-gl3::TexturePtr TextureLoader::loadTexture(const std::string &file) {
-    gl3::TexturePtr texture;
+xe::gfx::gl3::TexturePtr TextureLoader::loadTexture(const std::string &file) {
+    xe::gfx::gl3::TexturePtr texture;
 
 	std::string location = file;
 
@@ -25,13 +25,13 @@ gl3::TexturePtr TextureLoader::loadTexture(const std::string &file) {
     return texture;
 }
 
-gl3::TexturePtr TextureLoader::doLoadTexture(const std::string &file) {
+xe::gfx::gl3::TexturePtr TextureLoader::doLoadTexture(const std::string &file) {
     FIBITMAP *bitmap = ::FreeImage_Load(FIF_BMP, file.c_str());
 
     if (!bitmap) {
         std::cerr << "No se pudo cargar textura '" << file << "'." << std::endl;
 
-        return gl3::TexturePtr();
+        return xe::gfx::gl3::TexturePtr();
     }
 
     bitmap = FreeImage_ConvertTo24Bits(bitmap);
@@ -41,7 +41,7 @@ gl3::TexturePtr TextureLoader::doLoadTexture(const std::string &file) {
     auto bpp = ::FreeImage_GetBPP(bitmap);
     void* data = ::FreeImage_GetBits(bitmap);
         
-    auto texture = std::make_unique<gl3::TextureGL>(width, height, data, GL_BGR);
+    auto texture = std::make_unique<xe::gfx::gl3::TextureGL>(width, height, data, GL_BGR);
 
     ::FreeImage_Unload(bitmap);
 

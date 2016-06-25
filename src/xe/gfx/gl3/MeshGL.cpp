@@ -1,7 +1,7 @@
 
 #include "MeshGL.hpp"
 
-namespace gl3 {
+namespace xe { namespace gfx { namespace gl3  {
     static GLenum conv_type(xe::DataType type) {
         switch (type) {
             case xe::DataType::Float32: return GL_FLOAT;
@@ -58,4 +58,4 @@ namespace gl3 {
             assert(glGetError() == GL_NO_ERROR);
         }
     }
-}
+}}}

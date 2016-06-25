@@ -8,8 +8,8 @@
 #include "xe/sg/Geometry.hpp"
 #include "xe/gfx/UniformFormat.hpp"
 
-#include "gl3/TextureGL.hpp"
-#include "gl3/MeshGL.hpp"
+#include "xe/gfx/gl3/TextureGL.hpp"
+#include "xe/gfx/gl3/MeshGL.hpp"
 
 struct Box {
     xe::Vector3f pmin;
@@ -25,8 +25,8 @@ struct Box {
 };
 
 struct MaterialData {
-	static gl3::UniformFormat getFormat() {
-		gl3::UniformDescriptor descriptors[] = {
+	static xe::gfx::gl3::UniformFormat getFormat() {
+		xe::gfx::gl3::UniformDescriptor descriptors[] = {
 			{"mat_ambient", 4, xe::DataType::Float32},
 			{"mat_diffuse", 4, xe::DataType::Float32},
 			{"mat_specular", 4, xe::DataType::Float32},
@@ -35,7 +35,7 @@ struct MaterialData {
 			{"tex_diffuse", 1, xe::DataType::Int32}
 		};
 
-		gl3::UniformFormat format;
+		xe::gfx::gl3::UniformFormat format;
 
 		format.attribs.resize(6);
 
@@ -58,7 +58,7 @@ struct Material {
 
 	// Material render
 	bool cullface = true;
-    gl3::TexturePtr texture;
+    xe::gfx::gl3::TexturePtr texture;
 };
 
 struct Patch {
@@ -67,11 +67,11 @@ struct Patch {
 };
 
 struct Mesh : public xe::sg::Geometry {
-    gl3::MeshFormat format;
-    gl3::MeshPtr subset;
+    xe::gfx::gl3::MeshFormat format;
+    xe::gfx::gl3::MeshPtr subset;
     size_t count = 0;
 
-	gl3::UniformFormat materialFormat = MaterialData::getFormat();
+	xe::gfx::gl3::UniformFormat materialFormat = MaterialData::getFormat();
 
     std::vector<Material> materials;
     std::vector<Patch> patches;

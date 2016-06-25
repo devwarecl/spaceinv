@@ -132,7 +132,7 @@ std::vector<Patch> createPatchArray(const bdm::Mesh &bdm_mesh) {
     return patches;
 }
 
-Mesh createMesh(const bdm::Mesh &bdm_mesh, const gl3::MeshFormat &format, TextureLoader *loader) {    
+Mesh createMesh(const bdm::Mesh &bdm_mesh, const xe::gfx::gl3::MeshFormat &format, TextureLoader *loader) {    
     auto materials = createMaterialArray(*loader, bdm_mesh);
     auto vertices = createVertexArray(bdm_mesh);
     auto normals = generateNormals(vertices);
@@ -142,17 +142,17 @@ Mesh createMesh(const bdm::Mesh &bdm_mesh, const gl3::MeshFormat &format, Textur
     scale(getBox(vertices), vertices);
 
     // cargar datos a OpenGL
-    gl3::BufferVector buffers;
-    buffers.emplace_back(new gl3::BufferGL(GL_ARRAY_BUFFER, GL_STATIC_DRAW, vertices));
-    buffers.emplace_back(new gl3::BufferGL(GL_ARRAY_BUFFER, GL_STATIC_DRAW, normals));
-    buffers.emplace_back(new gl3::BufferGL(GL_ARRAY_BUFFER, GL_STATIC_DRAW, texcoords));
+    xe::gfx::gl3::BufferVector buffers;
+    buffers.emplace_back(new xe::gfx::gl3::BufferGL(GL_ARRAY_BUFFER, GL_STATIC_DRAW, vertices));
+    buffers.emplace_back(new xe::gfx::gl3::BufferGL(GL_ARRAY_BUFFER, GL_STATIC_DRAW, normals));
+    buffers.emplace_back(new xe::gfx::gl3::BufferGL(GL_ARRAY_BUFFER, GL_STATIC_DRAW, texcoords));
     
     // finalizar construccion modelo
     Mesh mesh;
 
     mesh.count = vertices.size();
     mesh.primitive = GL_TRIANGLES;
-    mesh.subset = std::make_unique<gl3::MeshGL>(format, std::move(buffers));
+    mesh.subset = std::make_unique<xe::gfx::gl3::MeshGL>(format, std::move(buffers));
     mesh.materials = std::move(materials);
     mesh.patches = std::move(patches);
     mesh.format = format;
@@ -160,7 +160,7 @@ Mesh createMesh(const bdm::Mesh &bdm_mesh, const gl3::MeshFormat &format, Textur
     return mesh;
 }
 
-std::vector<Mesh> MeshLoader::createMeshSet(const std::string &path, const gl3::MeshFormat &format) {
+std::vector<Mesh> MeshLoader::createMeshSet(const std::string &path, const xe::gfx::gl3::MeshFormat &format) {
     std::vector<Mesh> meshes;
 
 	std::string location = path;

@@ -2,7 +2,7 @@
 #include "DeviceGL.hpp"
 #include <cassert>
 
-namespace gl3 {
+namespace xe { namespace gfx { namespace gl3  {
 	void window_size_callback(GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 	}
@@ -166,4 +166,4 @@ namespace gl3 {
 			uniform += size;
 		}
 	}
-}
+}}}

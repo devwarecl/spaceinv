@@ -6,7 +6,7 @@
 
 #include "xe/Buffer.hpp"
 
-namespace gl3 {
+namespace xe { namespace gfx { namespace gl3  {
 
 	class TextureGL;
 	class TextureBufferGL : public xe::Buffer {
@@ -24,6 +24,6 @@ namespace gl3 {
 	private:
 		TextureGL *m_texture = nullptr;
 	};
-}
+}}}
 
 #endif 

@@ -15,9 +15,9 @@
 #include "xe/sg/Scene.hpp"
 #include "xe/sg/SceneRendererImpl.hpp"
 
-#include "render/gl3/MeshGL.hpp"
-#include "render/gl3/ProgramGL.hpp"
-#include "render/gl3/DeviceGL.hpp"
+#include "xe/gfx/gl3/MeshGL.hpp"
+#include "xe/gfx/gl3/ProgramGL.hpp"
+#include "xe/gfx/gl3/DeviceGL.hpp"
 
 #include "render/Mesh.hpp"
 #include "render/TextureLoader.hpp"
@@ -41,8 +41,8 @@ public:
     void render();
     
 private:
-    gl3::DeviceGL m_device;
-    gl3::MeshFormat m_format;
+    xe::gfx::gl3::DeviceGL m_device;
+    xe::gfx::gl3::MeshFormat m_format;
 
 	PhongPipelinePtr m_pipeline;
 	MeshLoader m_meshLoader;
@@ -66,7 +66,7 @@ private:
     
 	void initScene();
 
-	gl3::MeshFormat createMeshFormat() const;
+	xe::gfx::gl3::MeshFormat createMeshFormat() const;
 
     void initGeometry();
 };

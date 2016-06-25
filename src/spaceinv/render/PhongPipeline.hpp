@@ -4,14 +4,14 @@
 #define __phongpipeline__
 
 #include "xe/sg/Pipeline.hpp"
-#include "gl3/DeviceGL.hpp"
-#include "gl3/ProgramGL.hpp"
+#include "xe/gfx/gl3/DeviceGL.hpp"
+#include "xe/gfx/gl3/ProgramGL.hpp"
 
 #include "Mesh.hpp"
 
 class PhongPipeline : public xe::sg::Pipeline {
 public:
-	explicit PhongPipeline(gl3::DeviceGL *device);
+	explicit PhongPipeline(xe::gfx::gl3::DeviceGL *device);
 
 	~PhongPipeline();
 
@@ -29,15 +29,15 @@ public:
 protected:
 	xe::Matrix4f getPVW() const;
 
-	void renderMaterial(const gl3::UniformFormat &format, Material &material);
+	void renderMaterial(const xe::gfx::gl3::UniformFormat &format, Material &material);
 
 	void renderMesh(Mesh &mesh);
 
 	void updateMvp();
 
 private:
-	gl3::DeviceGL *m_device = nullptr;
-	gl3::ProgramPtr m_program;
+	xe::gfx::gl3::DeviceGL *m_device = nullptr;
+	xe::gfx::gl3::ProgramPtr m_program;
 
 	xe::Matrix4f m_proj;
     xe::Matrix4f m_view;

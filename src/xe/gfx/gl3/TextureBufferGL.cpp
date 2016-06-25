@@ -2,7 +2,7 @@
 #include "TextureGL.hpp"
 #include "TextureBufferGL.hpp"
 
-namespace gl3 {
+namespace xe { namespace gfx { namespace gl3  {
 
 	std::size_t TextureBufferGL::getSize() const {
 		xe::gfx::TextureDesc desc = m_texture->getDesc();
@@ -54,4 +54,4 @@ namespace gl3 {
 		}
 
 	}
-}
+}}}

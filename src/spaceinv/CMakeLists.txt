@@ -11,14 +11,7 @@ set (sources_render
 )
 
 set (sources_render_gl3 
-	render/gl3/GL.hpp 
-	render/gl3/BufferGL.hpp render/gl3/BufferGL.cpp
-	render/gl3/DeviceGL.hpp render/gl3/DeviceGL.cpp 
-	render/gl3/TextureGL.hpp render/gl3/TextureGL.cpp 
-	render/gl3/TextureBufferGL.hpp render/gl3/TextureBufferGL.cpp 
-	render/gl3/MaterialGL.hpp 
-	render/gl3/ProgramGL.hpp render/gl3/ProgramGL.cpp 
-	render/gl3/MeshGL.hpp render/gl3/MeshGL.cpp
+
 )
 
 source_group(\\     		FILES ${sources})

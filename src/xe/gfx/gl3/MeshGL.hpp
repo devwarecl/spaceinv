@@ -8,14 +8,14 @@
 #include "xe/DataFormat.hpp"
 #include "BufferGL.hpp"
 
-namespace gl3 {
+namespace xe { namespace gfx { namespace gl3  {
 
-    struct MeshAttrib : public xe::Attrib {
+    struct MeshAttrib : public Attrib {
         int bufferIndex = 0;
 
         MeshAttrib() {}
 
-        MeshAttrib(const std::string &name_, std::size_t count_, xe::DataType type_, int bufferIndex_) {
+        MeshAttrib(const std::string &name_, std::size_t count_, DataType type_, int bufferIndex_) {
             name = name_;
             count = count_;
             type = type_;
@@ -23,7 +23,7 @@ namespace gl3 {
         }
     };
 
-    typedef xe::DataFormat<MeshAttrib> MeshFormat;
+    typedef DataFormat<MeshAttrib> MeshFormat;
 
     class MeshGL {
     public:
@@ -61,6 +61,6 @@ namespace gl3 {
     };
     
     typedef std::unique_ptr<MeshGL> MeshPtr;
-}
+}}}
 
 #endif

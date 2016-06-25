@@ -7,7 +7,7 @@
 #include <string>
 
 #include "xe/FileLocator.hpp"
-#include "gl3/TextureGL.hpp"
+#include "xe/gfx/gl3/TextureGL.hpp"
 
 class TextureLoader {
 public:
@@ -23,10 +23,10 @@ public:
 		return m_locator;
 	}
 
-    gl3::TexturePtr loadTexture(const std::string &file);
+    xe::gfx::gl3::TexturePtr loadTexture(const std::string &file);
 
 protected:
-    gl3::TexturePtr doLoadTexture(const std::string &file);
+    xe::gfx::gl3::TexturePtr doLoadTexture(const std::string &file);
 
 private:
 	xe::FileLocator *m_locator = nullptr;

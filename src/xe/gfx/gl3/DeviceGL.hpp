@@ -11,7 +11,7 @@
 
 #include "xe/gfx/UniformFormat.hpp"
 
-namespace gl3 {
+namespace xe { namespace gfx { namespace gl3  {
 
     class DeviceGL {
     public:
@@ -64,6 +64,6 @@ namespace gl3 {
     private:
         GLFWwindow *window = nullptr;
     };
-}
+}}}
 
 #endif

@@ -1,7 +1,7 @@
 
 #include "TextureGL.hpp"
 
-namespace gl3 {
+namespace xe { namespace gfx { namespace gl3  {
 	TextureGL::TextureGL(unsigned int width, unsigned int height, const void *data, GLenum srcformat) {
         assert(width);
         assert(height);
@@ -28,4 +28,4 @@ namespace gl3 {
 	const xe::Buffer* TextureGL::getBuffer(xe::gfx::TextureCubeSide side, size_t level) const {
 		return nullptr;
 	}
-}
+}}}

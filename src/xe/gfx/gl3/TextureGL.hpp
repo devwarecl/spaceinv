@@ -9,7 +9,7 @@
 #include "xe/Vector.hpp"
 #include "xe/gfx/Texture.hpp"
 
-namespace gl3 {
+namespace xe { namespace gfx { namespace gl3  {
 
     class TextureGL : public xe::gfx::Texture {
     public:
@@ -34,6 +34,6 @@ namespace gl3 {
     };
 
     typedef std::unique_ptr<TextureGL> TexturePtr;
-}
+}}}
 
 #endif 

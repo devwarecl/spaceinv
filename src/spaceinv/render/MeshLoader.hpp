@@ -36,7 +36,7 @@ public:
 		return m_textureLoader;
 	}
 
-	std::vector<Mesh> createMeshSet(const std::string &path, const gl3::MeshFormat &format);
+	std::vector<Mesh> createMeshSet(const std::string &path, const xe::gfx::gl3::MeshFormat &format);
 
 private:
 	TextureLoader *m_textureLoader = nullptr;

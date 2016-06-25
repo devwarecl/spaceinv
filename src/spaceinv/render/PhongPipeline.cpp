@@ -24,7 +24,7 @@ std::string loadTextFile(const std::string &file) {
     return content;
 }
 
-PhongPipeline::PhongPipeline(gl3::DeviceGL *device) {
+PhongPipeline::PhongPipeline(xe::gfx::gl3::DeviceGL *device) {
 	assert(device);
 
 	m_device = device;
@@ -38,11 +38,11 @@ PhongPipeline::PhongPipeline(gl3::DeviceGL *device) {
 	std::string vshader = loadTextFile("assets/shaders/vertex.glsl");
 	std::string fshader = loadTextFile("assets/shaders/fragment.glsl");
 
-	gl3::ShaderVector shaders;
-	shaders.emplace_back(new gl3::ShaderGL (GL_VERTEX_SHADER, vshader));
-	shaders.emplace_back(new gl3::ShaderGL (GL_FRAGMENT_SHADER, fshader));
+	xe::gfx::gl3::ShaderVector shaders;
+	shaders.emplace_back(new xe::gfx::gl3::ShaderGL (GL_VERTEX_SHADER, vshader));
+	shaders.emplace_back(new xe::gfx::gl3::ShaderGL (GL_FRAGMENT_SHADER, fshader));
 
-	m_program = std::make_unique<gl3::ProgramGL>(std::move(shaders));
+	m_program = std::make_unique<xe::gfx::gl3::ProgramGL>(std::move(shaders));
 
 	m_device->setProgram(m_program.get());
 }
@@ -96,7 +96,7 @@ xe::Matrix4f PhongPipeline::getPVW() const {
 	return mvp;
 }
 
-void PhongPipeline::renderMaterial(const gl3::UniformFormat &format, Material &material) {
+void PhongPipeline::renderMaterial(const xe::gfx::gl3::UniformFormat &format, Material &material) {
 	glEnable(GL_DEPTH_TEST);
 
     if (material.cullface) {
