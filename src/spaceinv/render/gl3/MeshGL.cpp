@@ -11,9 +11,9 @@ namespace gl3 {
     }
 
 	MeshGL::~MeshGL() {
-        if (id) {
-            glDeleteVertexArrays(1, &id);
-            id = 0;
+        if (m_id) {
+            glDeleteVertexArrays(1, &m_id);
+            m_id = 0;
         }
 
         assert(glGetError() == GL_NO_ERROR);
@@ -23,10 +23,10 @@ namespace gl3 {
         buffers = std::move(buffers_);
         ibuffer = std::move(ibuffer_);
         
-        glGenVertexArrays(1, &id);
+        glGenVertexArrays(1, &m_id);
         assert(glGetError() == GL_NO_ERROR);
 
-        glBindVertexArray(id);
+        glBindVertexArray(m_id);
         assert(glGetError() == GL_NO_ERROR);
 
         GLuint vertexAttrib = 0;

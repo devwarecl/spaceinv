@@ -96,7 +96,7 @@ xe::Matrix4f PhongPipeline::getPVW() const {
 	return mvp;
 }
 
-void PhongPipeline::renderMaterial(Material &material) {
+void PhongPipeline::renderMaterial(const gl3::UniformFormat &format, Material &material) {
 	glEnable(GL_DEPTH_TEST);
 
     if (material.cullface) {
@@ -115,19 +115,20 @@ void PhongPipeline::renderMaterial(Material &material) {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureId);
 
-    m_device->setUniform(m_program->getLocation("tex_diffuse"), 0);
-    m_device->setUniform4(m_program->getLocation("mat_ambient"), 1, material.ambient.values);
-    m_device->setUniform4(m_program->getLocation("mat_diffuse"), 1, material.diffuse.values);
-    m_device->setUniform4(m_program->getLocation("mat_specular"), 1, material.specular.values);
-    m_device->setUniform4(m_program->getLocation("mat_emissive"), 1, material.emissive.values);
-    m_device->setUniform(m_program->getLocation("mat_shininess"), material.shininess);
+	Material *m = &material;
+
+	const size_t size = sizeof(material.data);
+
+	m_device->setUniform(format, &m->data);
 }
 
 void PhongPipeline::renderMesh(Mesh &mesh) {
+	m_program->getUniformLocations(&mesh.materialFormat);
+
 	for (size_t mindex=0; mindex<mesh.materials.size(); mindex++) {
         Patch patch = mesh.patches[mindex];
 
-        this->renderMaterial(mesh.materials[mindex]);
+        this->renderMaterial(mesh.materialFormat, mesh.materials[mindex]);
 
         m_device->render(mesh.subset.get(), mesh.primitive, patch.start, patch.count);
     }

@@ -43,7 +43,7 @@ namespace gl3 {
         ~MeshGL();
 
         GLuint getId() const {
-            return id;
+            return m_id;
         }
 
         bool indexed() const {
@@ -54,7 +54,7 @@ namespace gl3 {
         void construct(const MeshFormat &format, std::vector<BufferPtr> buffers_, BufferPtr ibuffer_);
 
     private:
-        GLuint id = 0;
+        GLuint m_id = 0;
         bool _indexed = false;
         std::vector<BufferPtr> buffers;
         BufferPtr ibuffer;

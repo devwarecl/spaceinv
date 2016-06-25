@@ -110,6 +110,48 @@ namespace gl3 {
 		assert(glGetError() == GL_NO_ERROR);
 	}
 
+	void DeviceGL::setUniform(const UniformDescriptor &desc, void* uniform) {
+		assert(desc.count>=1);
+		assert(desc.count<=4);
+
+		switch (desc.type) {
+		case xe::DataType::Int32:
+			switch (desc.count) {
+			case 1: glUniform1iv(desc.location, desc.size, (const GLint*)uniform); break;
+			case 2: glUniform2iv(desc.location, desc.size, (const GLint*)uniform); break;
+			case 3: glUniform3iv(desc.location, desc.size, (const GLint*)uniform); break;
+			case 4: glUniform4iv(desc.location, desc.size, (const GLint*)uniform); break;
+			}
+
+			break;
+			
+		case xe::DataType::Float32:
+			switch (desc.count) {
+			case 1: glUniform1fv(desc.location, desc.size, (const GLfloat*)uniform); break;
+			case 2: glUniform2fv(desc.location, desc.size, (const GLfloat*)uniform); break;
+			case 3: glUniform3fv(desc.location, desc.size, (const GLfloat*)uniform); break;
+			case 4: glUniform4fv(desc.location, desc.size, (const GLfloat*)uniform); break;
+			}
+
+			break;
+
+		case xe::DataType::UInt32:
+			switch (desc.count) {
+			case 1: glUniform1uiv(desc.location, desc.size, (const GLuint*)uniform); break;
+			case 2: glUniform2uiv(desc.location, desc.size, (const GLuint*)uniform); break;
+			case 3: glUniform3uiv(desc.location, desc.size, (const GLuint*)uniform); break;
+			case 4: glUniform4uiv(desc.location, desc.size, (const GLuint*)uniform); break;
+			}
+
+			break;
+
+		default:
+			assert(false);
+		}
+
+		assert(glGetError() == GL_NO_ERROR);
+	}
+
 	void DeviceGL::setUniform(const UniformFormat &format, void *uniforms) {
 		assert(uniforms);
 		assert(format.attribs.size() > 0);
@@ -117,46 +159,11 @@ namespace gl3 {
 		auto uniform = static_cast<std::uint8_t*>(uniforms);
 
 		for (const UniformDescriptor &desc : format.attribs) {
-			if (desc.location < 0) {
-				continue;
-			}
+			this->setUniform(desc, uniform);
 
-			switch (desc.type) {
-			case xe::DataType::Int32:
-				switch (desc.count) {
-				case 1: glUniform1iv(desc.location, desc.size, (const GLint*)uniform);
-				case 2: glUniform2iv(desc.location, desc.size, (const GLint*)uniform);
-				case 3: glUniform3iv(desc.location, desc.size, (const GLint*)uniform);
-				case 4: glUniform4iv(desc.location, desc.size, (const GLint*)uniform);
-				}
+			const size_t size = desc.getSize();
 
-				break;
-			
-			case xe::DataType::Float32:
-				switch (desc.count) {
-				case 1: glUniform1fv(desc.location, desc.size, (const GLfloat*)uniform);
-				case 2: glUniform2fv(desc.location, desc.size, (const GLfloat*)uniform);
-				case 3: glUniform3fv(desc.location, desc.size, (const GLfloat*)uniform);
-				case 4: glUniform4fv(desc.location, desc.size, (const GLfloat*)uniform);
-				}
-
-				break;
-
-			case xe::DataType::UInt32:
-				switch (desc.count) {
-				case 1: glUniform1uiv(desc.location, desc.size, (const GLuint*)uniform);
-				case 2: glUniform2uiv(desc.location, desc.size, (const GLuint*)uniform);
-				case 3: glUniform3uiv(desc.location, desc.size, (const GLuint*)uniform);
-				case 4: glUniform4uiv(desc.location, desc.size, (const GLuint*)uniform);
-				}
-
-				break;
-
-			default:
-				assert(false);
-			}
-
-			uniform += desc.getSize();
+			uniform += size;
 		}
 	}
 }

@@ -5,7 +5,7 @@
 
 #include <cassert>
 
-#include "GL.hpp"
+#include "OpenGL.hpp"
 #include "xe/Vector.hpp"
 #include "xe/gfx/Texture.hpp"
 

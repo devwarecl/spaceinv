@@ -7,7 +7,7 @@
 #include <memory>
 #include <cassert>
 
-#include "GL.hpp"
+#include "OpenGL.hpp"
 #include "xe/Buffer.hpp"
 
 namespace gl3 {

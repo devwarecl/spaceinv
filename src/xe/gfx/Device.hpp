@@ -21,7 +21,7 @@ namespace xe { namespace gfx {
 		ProgramPtr createProgram(const ShaderSource &source) {
 			std::list<ShaderSource> sources = {source};
 
-			return this->createProgram(sources);
+			return this->createProgram({source});
 		}
 
 		virtual ProgramPtr createProgram(const std::list<ShaderSource> &sources) = 0;
@@ -31,12 +31,12 @@ namespace xe { namespace gfx {
 		virtual Program* getProgram() = 0;
 	};
 
-	struct ClearData {
+	struct ClearParams {
 		xe::Vector4f color;
 		float depth;
 		float stencil;
 
-		ClearData(xe::Vector4f color_ = {0.0f, 0.0f, 0.0f, 1.0f}, float depth_ = 0.0f, float stencil_ = 0.0f) 
+		ClearParams(xe::Vector4f color_ = {0.0f, 0.0f, 0.0f, 1.0f}, float depth_ = 0.0f, float stencil_ = 0.0f) 
 			: color(color_), depth(depth_), stencil(stencil_){}
 	};
 
@@ -55,11 +55,11 @@ namespace xe { namespace gfx {
 
 		virtual void pollEvents() = 0;
 
-        virtual BufferPtr createBuffer(BufferType type, std::size_t size) = 0;
+        virtual BufferPtr createBuffer(const BufferType type, const std::size_t size) = 0;
 
-		virtual TexturePtr createTexture(const TextureDesc &desc) = 0;
+		virtual TexturePtr createTexture(const TextureDesc &desc, const PixelFormat sourceFormat, const DataType sourceType, const void* sourceData) = 0;
 
-		virtual void beginScene(ClearFlags flags=ClearFlags::All, const ClearData &data=ClearData()) = 0;
+		virtual void beginScene(const ClearFlags flags=ClearFlags::All, const ClearParams &params=ClearParams()) = 0;
 
 		virtual void endScene() = 0;
     };

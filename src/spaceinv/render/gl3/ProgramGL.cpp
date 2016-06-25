@@ -7,22 +7,22 @@ namespace gl3 {
 
 	ShaderGL::ShaderGL(GLenum type_, const std::string &glsl) {
         type = type_;
-        id = glCreateShader(type);
+        m_id = glCreateShader(type);
 
         auto source = static_cast<const GLchar *const>(glsl.c_str());
         auto size = static_cast<GLsizei>(glsl.size());
-        glShaderSource (id, 1, &source, &size);
-        glCompileShader(id);
+        glShaderSource (m_id, 1, &source, &size);
+        glCompileShader(m_id);
 
         // check for errors
         GLint status;
-        glGetShaderiv(id, GL_COMPILE_STATUS, &status);
+        glGetShaderiv(m_id, GL_COMPILE_STATUS, &status);
 
         if (status == static_cast<GLint>(GL_FALSE)) {
             const GLint logsize = 4096;
             char buffer[logsize] = {};
                 
-            glGetShaderInfoLog(id, logsize, nullptr, buffer);
+            glGetShaderInfoLog(m_id, logsize, nullptr, buffer);
                 
             std::cerr << buffer << std::endl;
 
@@ -33,9 +33,9 @@ namespace gl3 {
     }
 
     ShaderGL::~ShaderGL() {
-        if (id) {
-            glDeleteShader(id);
-            id = 0;
+        if (m_id) {
+            glDeleteShader(m_id);
+            m_id = 0;
         }
 
         assert(glGetError() == GL_NO_ERROR);
@@ -43,34 +43,34 @@ namespace gl3 {
 }
 
 namespace gl3 {
-	ProgramGL::ProgramGL(ShaderVector shaders_) {
-        shaders = std::move(shaders_);
+	ProgramGL::ProgramGL(ShaderVector shaders) {
+        m_shaders = std::move(shaders);
 
-        id = glCreateProgram();
+        m_id = glCreateProgram();
 
         assert(glGetError() == GL_NO_ERROR);
 
-        for (auto &shader : shaders) {
+        for (auto &shader : m_shaders) {
             assert(shader->getId());
 
-            glAttachShader(id, shader->getId());
+            glAttachShader(m_id, shader->getId());
         }
 
-        glLinkProgram(id);
+        glLinkProgram(m_id);
 
         assert(glGetError() == GL_NO_ERROR);
 
         // check for errors
         GLint status;
 
-        glGetProgramiv(id, GL_LINK_STATUS, &status);
+        glGetProgramiv(m_id, GL_LINK_STATUS, &status);
         assert(glGetError() == GL_NO_ERROR);
 
         if (status == static_cast<GLint>(GL_FALSE)) {
             const GLint logsize = 4096;
             char buffer[logsize] = {};
 
-            glGetProgramInfoLog(id, logsize, nullptr, buffer);
+            glGetProgramInfoLog(m_id, logsize, nullptr, buffer);
                 
             std::cerr << buffer << std::endl;
                 
@@ -81,9 +81,9 @@ namespace gl3 {
     }
 
     ProgramGL::~ProgramGL() {
-        if (id) {
-            glDeleteProgram(id);
-            id = 0;
+        if (m_id) {
+            glDeleteProgram(m_id);
+            m_id = 0;
         }
 
         assert(glGetError() == GL_NO_ERROR);
@@ -92,7 +92,7 @@ namespace gl3 {
     GLint ProgramGL::getLocation(const char *uniformName) const {
         assert(uniformName);
 
-        GLint location = glGetUniformLocation(id, uniformName);
+        GLint location = glGetUniformLocation(m_id, uniformName);
 
         if (location < 0) {
             // std::cerr << uniformName << std::endl;
@@ -102,4 +102,14 @@ namespace gl3 {
 
         return location;
     }
+
+	void ProgramGL::getUniformLocations(UniformFormat *uniformFormat) {
+		assert(uniformFormat);
+
+		for (UniformDescriptor &desc : uniformFormat->attribs) {
+			desc.location = glGetUniformLocation(m_id, desc.name.c_str());
+		}
+
+		assert(glGetError() == GL_NO_ERROR);
+	}
 }

@@ -29,7 +29,7 @@ public:
 protected:
 	xe::Matrix4f getPVW() const;
 
-	void renderMaterial(Material &material);
+	void renderMaterial(const gl3::UniformFormat &format, Material &material);
 
 	void renderMesh(Mesh &mesh);
 
@@ -47,4 +47,3 @@ private:
 typedef std::unique_ptr<PhongPipeline> PhongPipelinePtr;
 
 #endif
-

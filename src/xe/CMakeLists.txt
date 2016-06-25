@@ -26,6 +26,8 @@ set (sources_gfx
 	
 	gfx/PixelFormat.hpp
 	gfx/PixelFormat.cpp
+
+	gfx/UniformFormat.hpp
 )
 
 set (sources_sg    

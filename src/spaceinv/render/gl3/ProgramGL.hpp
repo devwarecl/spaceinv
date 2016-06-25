@@ -6,7 +6,9 @@
 
 #include <memory>
 #include <cassert>
-#include "GL.hpp"
+#include "OpenGL.hpp"
+
+#include "xe/gfx/UniformFormat.hpp"
 
 namespace gl3 {
 
@@ -23,12 +25,12 @@ namespace gl3 {
         }
 
         GLuint getId() const {
-            return id;
+            return m_id;
         }
 
     private:
         GLenum type;
-        GLuint id = 0;
+        GLuint m_id = 0;
     };
     
     typedef std::unique_ptr<ShaderGL> ShaderPtr;
@@ -38,19 +40,21 @@ namespace gl3 {
     public:
         ProgramGL() {}
 
-        explicit ProgramGL(ShaderVector shaders_);
+        explicit ProgramGL(ShaderVector shaders);
 
         GLuint getId() const {
-            return id;
+            return m_id;
         }
 
         ~ProgramGL();
 
         GLint getLocation(const char *uniformName) const;
 
+		void getUniformLocations(UniformFormat *uniformFormat);
+
     private:
-        GLuint id = 0;
-        ShaderVector shaders;
+        GLuint m_id = 0;
+        ShaderVector m_shaders;
     };
     
     typedef std::unique_ptr<ProgramGL> ProgramPtr;
