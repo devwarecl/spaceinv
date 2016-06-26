@@ -3,18 +3,19 @@
 #ifndef __meshloader__
 #define __meshloader__
 
-#include "Mesh.hpp"
+#include "../Model.hpp"
 #include "TextureLoader.hpp"
 
 #include "xe/FileLocator.hpp"
+#include "xe/gfx/Device.hpp"
 
-class MeshLoader {
+class ModelLoader {
 public:
-	explicit MeshLoader(xe::FileLocator *locator=nullptr) {
+	ModelLoader(xe::FileLocator *locator=nullptr, xe::gfx::Device *device=nullptr) {
 		this->setLocator(locator);
 	}
 
-	~MeshLoader() {}
+	~ModelLoader() {}
 
 	void setTextureLoader(TextureLoader *textureLoader) {
 		m_textureLoader = textureLoader;
@@ -32,15 +33,28 @@ public:
 		return m_textureLoader;
 	}
 
+	void setDevice(xe::gfx::Device *device) {
+		m_device = device;
+	}
+
+	xe::gfx::Device* getDevice() {
+		return m_device;
+	}
+
+	const xe::gfx::Device* getDevice() const {
+		return m_device;
+	}
+
 	const TextureLoader *getTextureLoader() const {
 		return m_textureLoader;
 	}
 
-	std::vector<Mesh> createMeshSet(const std::string &path, const xe::gfx::gl3::MeshFormat &format);
+	ModelPtr createModel(const std::string &path, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format);
 
 private:
 	TextureLoader *m_textureLoader = nullptr;
 	xe::FileLocator *m_locator = nullptr;
+	xe::gfx::Device *m_device = nullptr;
 };
 
 #endif

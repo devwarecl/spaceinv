@@ -20,13 +20,6 @@ namespace xe { namespace gfx { namespace gl3  {
             construct(target_, usage, size_, data);
         }
 
-        template<typename Container>
-        BufferGL(GLenum target_, GLenum usage, const Container& values) {
-            typedef typename Container::value_type Type;
-
-            construct(target_, usage, sizeof(Type) * values.size(), values.data());
-        }
-
         ~BufferGL();
 
         virtual void write(const void *source, const int size = 0, const int offset = 0, const int source_offset = 0) override;
@@ -58,8 +51,8 @@ namespace xe { namespace gfx { namespace gl3  {
         std::size_t m_size = 0;
     };
     
-    typedef std::unique_ptr<BufferGL> BufferPtr;
-    typedef std::vector<BufferPtr> BufferVector;
+    typedef std::unique_ptr<BufferGL> BufferGLPtr;
+    typedef std::vector<BufferPtr> BufferGLVector;
 }}}
 
 #endif

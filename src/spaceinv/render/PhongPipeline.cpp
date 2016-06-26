@@ -24,7 +24,7 @@ std::string loadTextFile(const std::string &file) {
     return content;
 }
 
-PhongPipeline::PhongPipeline(xe::gfx::gl3::DeviceGL *device) {
+PhongPipeline::PhongPipeline(xe::gfx::Device *device) {
 	assert(device);
 
 	m_device = device;
@@ -38,11 +38,12 @@ PhongPipeline::PhongPipeline(xe::gfx::gl3::DeviceGL *device) {
 	std::string vshader = loadTextFile("assets/shaders/vertex.glsl");
 	std::string fshader = loadTextFile("assets/shaders/fragment.glsl");
 
-	xe::gfx::gl3::ShaderVector shaders;
-	shaders.emplace_back(new xe::gfx::gl3::ShaderGL (GL_VERTEX_SHADER, vshader));
-	shaders.emplace_back(new xe::gfx::gl3::ShaderGL (GL_FRAGMENT_SHADER, fshader));
+	std::list<xe::gfx::ShaderSource> sources = {
+		{xe::gfx::ShaderType::Vertex, vshader},
+		{xe::gfx::ShaderType::Fragment, fshader}
+	};
 
-	m_program = std::make_unique<xe::gfx::gl3::ProgramGL>(std::move(shaders));
+	m_program = m_device->createProgram(sources);
 
 	m_device->setProgram(m_program.get());
 }
@@ -70,12 +71,12 @@ void PhongPipeline::render(xe::sg::Camera *camera) {
 
 void PhongPipeline::render(xe::sg::Geometry *geometry) {
 	
-	if (auto *mesh = dynamic_cast<Mesh*>(geometry)) {
+	if (auto *mesh = dynamic_cast<ModelPart*>(geometry)) {
 		this->renderMesh(*mesh);
 	}
 }
 
-void PhongPipeline::render(Mesh *mesh) {
+void PhongPipeline::render(ModelPart *mesh) {
 	this->renderMesh(*mesh);
 }
 
@@ -96,40 +97,14 @@ xe::Matrix4f PhongPipeline::getPVW() const {
 	return mvp;
 }
 
-void PhongPipeline::renderMaterial(const xe::gfx::gl3::UniformFormat &format, Material &material) {
-	glEnable(GL_DEPTH_TEST);
-
-    if (material.cullface) {
-        glEnable(GL_CULL_FACE);
-
-    } else {
-        glDisable(GL_CULL_FACE);
-    }
-
-    GLuint textureId = 0;
-
-    if (material.texture) {
-        textureId = material.texture->getId();
-    }
-        
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureId);
-
-	Material *m = &material;
-
-	const size_t size = sizeof(material.data);
-
-	m_device->setUniform(format, &m->data);
-}
-
-void PhongPipeline::renderMesh(Mesh &mesh) {
-	m_program->getUniformLocations(&mesh.materialFormat);
+void PhongPipeline::renderMesh(ModelPart &mesh) {
+	m_program->fillUniformLocations(mesh.materialFormat);
 
 	for (size_t mindex=0; mindex<mesh.materials.size(); mindex++) {
         Patch patch = mesh.patches[mindex];
 
-        this->renderMaterial(mesh.materialFormat, mesh.materials[mindex]);
-
-        m_device->render(mesh.subset.get(), mesh.primitive, patch.start, patch.count);
+		m_device->setMaterial(&mesh.materials[mindex]);
+		m_device->setMesh(mesh.mesh.get());
+		m_device->render(mesh.primitive, patch.start, patch.count);
     }
 }

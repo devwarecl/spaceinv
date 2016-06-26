@@ -27,7 +27,7 @@ namespace xe { namespace gfx { namespace gl3  {
         GLuint m_id = 0;
     };
     
-    typedef std::unique_ptr<ShaderGL> ShaderPtr;
-    typedef std::vector<ShaderPtr> ShaderVector;
+    typedef std::unique_ptr<ShaderGL> ShaderGLPtr;
+    typedef std::vector<ShaderGLPtr> ShaderGLVector;
     
 }}}

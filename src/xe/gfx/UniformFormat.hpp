@@ -4,7 +4,7 @@
 #include "xe/DataType.hpp"
 #include "xe/DataFormat.hpp"
 
-namespace xe { namespace gfx { namespace gl3  {
+namespace xe { namespace gfx {
 	struct UniformDescriptor : public xe::Attrib {
 		int location = -1;	//! Location
 		int size = 0;		//! How many elements has the array
@@ -24,4 +24,4 @@ namespace xe { namespace gfx { namespace gl3  {
 	};
 	
 	typedef xe::DataFormat<UniformDescriptor> UniformFormat;
-}}}
+}}

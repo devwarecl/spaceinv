@@ -9,31 +9,33 @@
 #include "OpenGL.hpp"
 
 #include "xe/gfx/UniformFormat.hpp"
+#include "xe/gfx/Program.hpp"
 #include "xe/gfx/gl3/ShaderGL.hpp"
 
 namespace xe { namespace gfx { namespace gl3  {
-    class ProgramGL {
+
+    class ProgramGL : public Program {
     public:
         ProgramGL() {}
 
-        explicit ProgramGL(ShaderVector shaders);
+        explicit ProgramGL(ShaderGLVector shaders);
 
         GLuint getId() const {
             return m_id;
         }
 
-        ~ProgramGL();
+        virtual ~ProgramGL();
 
-        GLint getLocation(const char *uniformName) const;
+        virtual int getLocation(const std::string &uniformName) const override;
 
-		void getUniformLocations(UniformFormat *uniformFormat);
+		virtual void fillUniformLocations(UniformFormat *uniformFormat) const override;
 
     private:
         GLuint m_id = 0;
-        ShaderVector m_shaders;
+        ShaderGLVector m_shaders;
     };
     
-    typedef std::unique_ptr<ProgramGL> ProgramPtr;
+    typedef std::unique_ptr<ProgramGL> ProgramGLPtr;
 }}}
 
 #endif

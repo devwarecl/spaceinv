@@ -11,12 +11,60 @@
 #include "xe/gfx/ShaderType.hpp"
 #include "xe/gfx/Program.hpp"
 #include "xe/gfx/Texture.hpp"
+#include "xe/gfx/UniformFormat.hpp"
+#include "xe/gfx/Material.hpp"
+#include "xe/gfx/Primitive.hpp"
 
 namespace xe { namespace gfx {
 
-	class ProgrammableUnit {
-	public:
-		virtual ~ProgrammableUnit() {}
+	struct ClearParams {
+		xe::Vector4f color;
+		double depth;
+		int stencil;
+
+		ClearParams(xe::Vector4f color_ = {0.0f, 0.0f, 0.0f, 1.0f}, double depth_ = 0.0f, int stencil_ = 0) 
+			: color(color_), depth(depth_), stencil(stencil_){}
+	};
+
+	enum class ClearFlags {
+		Color = 1,
+		Depth = 2,
+		Stencil = 4,
+		ColorDepth = Color | Depth,
+		All = Color | Depth | Stencil
+	};
+
+	inline bool operator&(const ClearFlags flags, const ClearFlags value) {
+		int nflags = static_cast<int>(flags);
+		int nvalue = static_cast<int>(value);
+
+		if (nflags & nvalue) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+    class Device {
+    public:
+        virtual ~Device() {}
+
+        virtual int getKey(int key) const = 0;
+
+		virtual void pollEvents() = 0;
+
+		virtual MeshPtr createMesh(const MeshFormat &format, std::vector<BufferPtr> buffers) = 0;
+
+        virtual BufferPtr createBuffer(const BufferType type, const std::size_t size, const void *data=nullptr) = 0;
+
+		template<typename Container>
+        BufferPtr  createBuffer(const BufferType type, const Container& values) {
+            typedef typename Container::value_type Type;
+
+			return this->createBuffer(type, sizeof(Type) * values.size(), values.data());
+        }
+
+		virtual TexturePtr createTexture(const TextureDesc &desc, const PixelFormat sourceFormat, const DataType sourceType, const void* sourceData) = 0;
 
 		ProgramPtr createProgram(const ShaderSource &source) {
 			std::list<ShaderSource> sources = {source};
@@ -29,39 +77,39 @@ namespace xe { namespace gfx {
 		virtual void setProgram(Program *program) = 0;
 
 		virtual Program* getProgram() = 0;
-	};
+		
+		virtual void setMaterial(Material *material) = 0;
 
-	struct ClearParams {
-		xe::Vector4f color;
-		float depth;
-		float stencil;
+		virtual void setMesh(Mesh *mesh) = 0;
 
-		ClearParams(xe::Vector4f color_ = {0.0f, 0.0f, 0.0f, 1.0f}, float depth_ = 0.0f, float stencil_ = 0.0f) 
-			: color(color_), depth(depth_), stencil(stencil_){}
-	};
+		virtual void render(Primitive primitive, size_t start, size_t count) = 0;
 
-	enum class ClearFlags {
-		Color = 1,
-		Depth = 2,
-		Stencil = 4,
-		All = Color | Depth | Stencil
-	};
+		virtual void beginFrame(const ClearFlags flags=ClearFlags::All, const ClearParams &params=ClearParams()) = 0;
 
-    class Device {
-    public:
-        virtual ~Device() {}
+		virtual void endFrame() = 0;
 
-		virtual ProgrammableUnit* getProgrammableUnit() = 0;
+		virtual void setUniformMatrix(int location, int total, bool transpose, float *values) = 0;
 
-		virtual void pollEvents() = 0;
+		virtual void setUniform(const UniformDescriptor &desc, void* uniform) = 0;
 
-        virtual BufferPtr createBuffer(const BufferType type, const std::size_t size) = 0;
+		virtual void setUniform(const UniformFormat* format, void *uniforms);
 
-		virtual TexturePtr createTexture(const TextureDesc &desc, const PixelFormat sourceFormat, const DataType sourceType, const void* sourceData) = 0;
+		template<typename Type>
+		void setUniform(const int location, const int count, const Type *values, const int size) {
+			UniformDescriptor desc;
 
-		virtual void beginScene(const ClearFlags flags=ClearFlags::All, const ClearParams &params=ClearParams()) = 0;
+			desc.type = xe::getDataType<Type>();
+			desc.count = count;
+			desc.location = location;
+			desc.size = size;
 
-		virtual void endScene() = 0;
+			this->setUniform(desc, values);
+		}
+
+		template<typename Type>
+		void setUniform(const int location, const int count, const Type value) {
+			this->setUniform(location, count, &value, 1);
+		}
     };
 }}
 

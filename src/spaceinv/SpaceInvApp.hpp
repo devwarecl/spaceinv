@@ -19,9 +19,9 @@
 #include "xe/gfx/gl3/ProgramGL.hpp"
 #include "xe/gfx/gl3/DeviceGL.hpp"
 
-#include "render/Mesh.hpp"
+#include "ModelPart.hpp"
 #include "render/TextureLoader.hpp"
-#include "render/MeshLoader.hpp"
+#include "render/ModelLoader.hpp"
 #include "render/PhongPipeline.hpp"
 #include "render/LookAtCamera.hpp"
 
@@ -42,10 +42,11 @@ public:
     
 private:
     xe::gfx::gl3::DeviceGL m_device;
-    xe::gfx::gl3::MeshFormat m_format;
+    xe::gfx::MeshFormat m_format;
+	xe::gfx::UniformFormat m_materialFormat;
 
 	PhongPipelinePtr m_pipeline;
-	MeshLoader m_meshLoader;
+	ModelLoader m_modelLoader;
 	TextureLoader m_textureLoader;
 	LookAtCamera m_camera;
 
@@ -66,7 +67,9 @@ private:
     
 	void initScene();
 
-	xe::gfx::gl3::MeshFormat createMeshFormat() const;
+	xe::gfx::MeshFormat createMeshFormat() const;
+
+	xe::gfx::UniformFormat createMaterialFormat() const;
 
     void initGeometry();
 };

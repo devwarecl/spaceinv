@@ -13,11 +13,15 @@ namespace xe { namespace gfx { namespace gl3  {
 
     class TextureGL : public xe::gfx::Texture {
     public:
-        TextureGL(unsigned int width, unsigned int height, const void *data, GLenum srcformat = GL_RGB);
+		TextureGL(const TextureDesc &desc, const PixelFormat sourceFormat, const DataType sourceType, const void* sourceData);
 
         GLuint getId() const {
             return m_id;
         }
+
+		GLenum getTarget() const {
+			return m_target;
+		}
 
 		virtual xe::gfx::TextureDesc getDesc() const override {
 			return m_desc;
@@ -29,11 +33,11 @@ namespace xe { namespace gfx { namespace gl3  {
 
     private:
         GLuint m_id = 0;
-        
-		xe::gfx::TextureDesc m_desc;
+		GLenum m_target;
+		TextureDesc m_desc;
     };
 
-    typedef std::unique_ptr<TextureGL> TexturePtr;
+    typedef std::unique_ptr<TextureGL> TextureGLPtr;
 }}}
 
 #endif 

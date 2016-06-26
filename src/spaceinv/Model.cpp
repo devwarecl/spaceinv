@@ -1,7 +1,7 @@
 
 #include "Model.hpp"
 
-Model::Model(std::vector<Mesh> meshes) {
+Model::Model(std::vector<ModelPart> meshes) {
 	m_meshes = std::move(meshes);
 }
 

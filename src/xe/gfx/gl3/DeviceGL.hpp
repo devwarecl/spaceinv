@@ -9,60 +9,59 @@
 #include "ProgramGL.hpp"
 #include "MeshGL.hpp"
 
+#include "xe/gfx/Device.hpp"
 #include "xe/gfx/UniformFormat.hpp"
 
 namespace xe { namespace gfx { namespace gl3  {
 
-    class DeviceGL {
+    class DeviceGL : public Device {
     public:
         DeviceGL();
 
-        ~DeviceGL();
+        virtual ~DeviceGL();
 
-		void pollEvents();
+        virtual int getKey(int key) const  override;
 
-        void beginFrame();
+		virtual void pollEvents()  override;
 
-        void endFrame();
+		virtual MeshPtr createMesh(const MeshFormat &format, std::vector<BufferPtr> buffers)  override;
 
-        int getKey(int key) const;
+        virtual BufferPtr createBuffer(const BufferType type, const std::size_t size, const void *data)  override;
 
-        void setProgram(const ProgramGL *program);
+		virtual TexturePtr createTexture(const TextureDesc &desc, const PixelFormat sourceFormat, const DataType sourceType, const void* sourceData)  override;
 
-        void setSubset(const MeshGL *subset);
+		virtual ProgramPtr createProgram(const std::list<ShaderSource> &sources) override;
 
-        void render(const MeshGL *subset, GLenum primitive, std::size_t count);
+		virtual void setProgram(Program *program) override;
 
-        void render(const MeshGL *subset, GLenum primitive, size_t start, size_t count);
+		virtual Program* getProgram() override {
+			return m_program;
+		}
+		
+		virtual void setMaterial(Material *material) override;
 
-        void setUniformMatrix(GLint location, int total, bool transpose, float *values) {
-			// assert(location > 0);
-            glUniformMatrix4fv(location, total, transpose?GL_TRUE:GL_FALSE, values);
-        }
+		virtual void setMesh(Mesh *mesh) override;
 
-		void setUniform(const UniformDescriptor &desc, void* uniform);
+		virtual void render(Primitive primitive, size_t start, size_t count) override;
 
-		void setUniform(const UniformFormat& format, void *uniforms);
+		virtual void beginFrame(const ClearFlags flags, const ClearParams &params)  override;
 
-		template<typename Type>
-		void setUniform(const int location, const int count, const Type *values, const int size) {
-			UniformDescriptor desc;
+		virtual void endFrame()  override;
 
-			desc.type = xe::getDataType<Type>();
-			desc.count = count;
-			desc.location = location;
-			desc.size = size;
-
-			this->setUniform(desc, values);
+		virtual void setUniformMatrix(int location, int total, bool transpose, float *values) override {
+			glUniformMatrix4fv(location, total, transpose?GL_TRUE:GL_FALSE, values);
 		}
 
-		template<typename Type>
-		void setUniform(const int location, const int count, const Type value) {
-			this->setUniform(location, count, &value, 1);
-		}
+		virtual void setUniform(const UniformDescriptor &desc, void* uniform) override;
+
+		virtual void setUniform(const UniformFormat* format, void *uniforms) override;
 
     private:
-        GLFWwindow *window = nullptr;
+        GLFWwindow *m_window = nullptr;
+
+		Material *m_material = nullptr;
+		MeshGL *m_mesh = nullptr;
+		ProgramGL *m_program = nullptr;
     };
 }}}
 

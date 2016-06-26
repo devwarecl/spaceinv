@@ -8,6 +8,7 @@
 #include <string>
 #include <list>
 
+#include "xe/gfx/UniformFormat.hpp"
 #include "xe/gfx/ShaderType.hpp"
 
 namespace xe { namespace gfx {
@@ -20,7 +21,9 @@ namespace xe { namespace gfx {
     public:
         virtual ~Program() {}
 
-		virtual std::list<ShaderSource> getSources() const = 0;
+		virtual int getLocation(const std::string &name) const = 0;
+
+		virtual void fillUniformLocations(UniformFormat *uniformFormat) const = 0;
     };
 
 	typedef std::unique_ptr<Program> ProgramPtr;

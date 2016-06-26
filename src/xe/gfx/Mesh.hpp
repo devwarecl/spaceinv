@@ -12,6 +12,17 @@ namespace xe { namespace gfx {
 
     struct MeshAttrib : public Attrib {
         int bufferIndex = 0;
+		BufferType bufferType = BufferType::Unknown;
+
+        MeshAttrib() {}
+
+        MeshAttrib(const std::string &name_, const std::size_t count_, const DataType type_, const int bufferIndex_, const BufferType bufferType_) {
+            name = name_;
+            count = count_;
+            type = type_;
+            bufferIndex = bufferIndex_;
+			bufferType = bufferType_;
+        }
     };
 
 	typedef xe::DataFormat<MeshAttrib> MeshFormat;
@@ -20,10 +31,16 @@ namespace xe { namespace gfx {
     public:
         virtual ~Mesh() {}
 
+		virtual MeshFormat getFormat() const = 0;
+
         virtual std::size_t getBufferCount() const = 0;
         virtual Buffer* getBuffer(const std::size_t index) = 0;
         virtual const Buffer* getBuffer(const std::size_t index) const = 0;
+
+		virtual bool isIndexed() const;
     };
+
+    typedef std::unique_ptr<Mesh> MeshPtr;
 }}
 
 #endif 

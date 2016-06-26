@@ -4,7 +4,7 @@
 #include <iostream>
 
 namespace xe { namespace gfx { namespace gl3  {
-	ProgramGL::ProgramGL(ShaderVector shaders) {
+	ProgramGL::ProgramGL(ShaderGLVector shaders) {
         m_shaders = std::move(shaders);
 
         m_id = glCreateProgram();
@@ -50,21 +50,11 @@ namespace xe { namespace gfx { namespace gl3  {
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    GLint ProgramGL::getLocation(const char *uniformName) const {
-        assert(uniformName);
-
-        GLint location = glGetUniformLocation(m_id, uniformName);
-
-        if (location < 0) {
-            // std::cerr << uniformName << std::endl;
-        }
-
-        // assert(location >= 0);
-
-        return location;
+    int ProgramGL::getLocation(const std::string &uniformName) const {
+		return glGetUniformLocation(m_id, uniformName.c_str());
     }
 
-	void ProgramGL::getUniformLocations(UniformFormat *uniformFormat) {
+	void ProgramGL::fillUniformLocations(UniformFormat *uniformFormat) const {
 		assert(uniformFormat);
 
 		for (UniformDescriptor &desc : uniformFormat->attribs) {

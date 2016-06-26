@@ -1,15 +1,9 @@
 
 #include "MeshGL.hpp"
+#include "Util.hpp"
 
 namespace xe { namespace gfx { namespace gl3  {
-    static GLenum conv_type(xe::DataType type) {
-        switch (type) {
-            case xe::DataType::Float32: return GL_FLOAT;
-            case xe::DataType::Int32:   return GL_INT;
-            default: assert(false); return GL_UNSIGNED_SHORT;
-        }
-    }
-
+    
 	MeshGL::~MeshGL() {
         if (m_id) {
             glDeleteVertexArrays(1, &m_id);
@@ -19,13 +13,15 @@ namespace xe { namespace gfx { namespace gl3  {
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    void MeshGL::construct(const MeshFormat &format, std::vector<BufferPtr> buffers_, BufferPtr ibuffer_) {
-        buffers = std::move(buffers_);
-        ibuffer = std::move(ibuffer_);
-        
-        glGenVertexArrays(1, &m_id);
-        assert(glGetError() == GL_NO_ERROR);
+    void MeshGL::construct(const MeshFormat &format, std::vector<BufferPtr> buffers) {
+		//!TODO: Implement proper construction with only one buffer for all attributes
+		m_format = format;
 
+		for (BufferPtr &buffer : buffers) {
+			m_buffers.emplace_back(static_cast<BufferGL*>(buffer.release()));
+		}
+
+        glGenVertexArrays(1, &m_id);
         glBindVertexArray(m_id);
         assert(glGetError() == GL_NO_ERROR);
 
@@ -36,26 +32,18 @@ namespace xe { namespace gfx { namespace gl3  {
                 break;
             }
 
-            auto buffer = buffers[attrib.bufferIndex].get();
+			if (attrib.bufferType == BufferType::Index) {
+				m_indexed = true;
+			}
+
+            auto buffer = m_buffers[attrib.bufferIndex].get();
 
             glBindBuffer(buffer->getTarget(), buffer->getId());
-            assert(glGetError() == GL_NO_ERROR);
-                
             glEnableVertexAttribArray(vertexAttrib);
-            assert(glGetError() == GL_NO_ERROR);
-
-            glVertexAttribPointer(vertexAttrib, attrib.count, conv_type(attrib.type), GL_FALSE, 0, nullptr);
+            glVertexAttribPointer(vertexAttrib, attrib.count, convertDataType(attrib.type), GL_FALSE, 0, nullptr);
             assert(glGetError() == GL_NO_ERROR);
 
             ++vertexAttrib;
-        }
-
-        if (ibuffer) {
-            glBindBuffer(ibuffer->getTarget(), ibuffer->getId());
-            glBindVertexArray(0);
-            _indexed = true;
-
-            assert(glGetError() == GL_NO_ERROR);
-        }
+        }		
     }
 }}}

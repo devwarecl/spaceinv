@@ -6,61 +6,56 @@
 
 #include <memory>
 #include "xe/DataFormat.hpp"
+#include "xe/gfx/Mesh.hpp"
 #include "BufferGL.hpp"
 
 namespace xe { namespace gfx { namespace gl3  {
 
-    struct MeshAttrib : public Attrib {
-        int bufferIndex = 0;
-
-        MeshAttrib() {}
-
-        MeshAttrib(const std::string &name_, std::size_t count_, DataType type_, int bufferIndex_) {
-            name = name_;
-            count = count_;
-            type = type_;
-            bufferIndex = bufferIndex_;
-        }
-    };
-
-    typedef DataFormat<MeshAttrib> MeshFormat;
-
-    class MeshGL {
+    class MeshGL : public Mesh {
     public:
         MeshGL() {}
         
-        MeshGL(const MeshFormat &format, std::vector<BufferPtr> buffers_) {
-            
-            BufferPtr ibuffer_;
-            
-            construct(format, std::move(buffers_), std::move(ibuffer_));
+        MeshGL(const MeshFormat &format, std::vector<BufferPtr> buffers) {
+            this->construct(format, std::move(buffers));
         }
         
-        MeshGL(const MeshFormat &format, std::vector<BufferPtr> buffers_, BufferPtr ibuffer_) {
-            construct(format, std::move(buffers_), std::move(ibuffer_));
-        }
-
         ~MeshGL();
 
         GLuint getId() const {
             return m_id;
         }
 
-        bool indexed() const {
-            return _indexed;
+        virtual bool isIndexed() const override {
+            return m_indexed;
         }
 
+		virtual std::size_t getBufferCount() const override {
+			return m_buffers.size();
+		}
+
+		virtual Buffer* getBuffer(const std::size_t index)  override {
+			return m_buffers[index].get();
+		}
+
+		virtual const Buffer* getBuffer(const std::size_t index) const override {
+			return m_buffers[index].get();
+		}
+
+		MeshFormat getFormat() const override {
+			return m_format;
+		}
+
     protected:
-        void construct(const MeshFormat &format, std::vector<BufferPtr> buffers_, BufferPtr ibuffer_);
+        void construct(const MeshFormat &format, std::vector<BufferPtr> buffers);
 
     private:
         GLuint m_id = 0;
-        bool _indexed = false;
-        std::vector<BufferPtr> buffers;
-        BufferPtr ibuffer;
+        bool m_indexed = false;
+        std::vector<BufferGLPtr> m_buffers;
+		MeshFormat m_format;
     };
-    
-    typedef std::unique_ptr<MeshGL> MeshPtr;
+
+	typedef std::unique_ptr<MeshGL> MeshGLPtr;
 }}}
 
 #endif

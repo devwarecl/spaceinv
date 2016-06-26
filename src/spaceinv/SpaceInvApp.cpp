@@ -10,8 +10,8 @@ SpaceInvApp::SpaceInvApp() {
 		
 	m_textureLoader.setLocator(&m_locator);
 
-	m_meshLoader.setLocator(&m_locator);
-	m_meshLoader.setTextureLoader(&m_textureLoader);
+	m_modelLoader.setLocator(&m_locator);
+	m_modelLoader.setTextureLoader(&m_textureLoader);
 
     initGeometry();
     initCamera();
@@ -56,7 +56,7 @@ Model* SpaceInvApp::getModel(const std::string &name) {
 	auto modelIt = m_models.find(name);
 
 	if (modelIt == std::end(m_models)) {
-		m_models[name] = std::make_unique<Model>(m_meshLoader.createMeshSet(name, m_format));
+		m_models[name] = m_modelLoader.createModel(name, &m_materialFormat, m_format);
 		model = m_models[name].get();
 
 	} else {
@@ -110,20 +110,39 @@ void SpaceInvApp::initScene() {
 	}
 }
 
-xe::gfx::gl3::MeshFormat SpaceInvApp::createMeshFormat() const {
-	xe::gfx::gl3::MeshFormat::AttribVector attribs = {
-		{"v_coord", 3, xe::DataType::Float32, 0},
-		{"v_normal", 3, xe::DataType::Float32, 1},
-		{"v_texcoord", 2, xe::DataType::Float32, 2}
+xe::gfx::MeshFormat SpaceInvApp::createMeshFormat() const {
+	xe::gfx::MeshFormat::AttribVector attribs = {
+		{"v_coord", 3, xe::DataType::Float32, 0, xe::gfx::BufferType::Vertex},
+		{"v_normal", 3, xe::DataType::Float32, 1, xe::gfx::BufferType::Vertex},
+		{"v_texcoord", 2, xe::DataType::Float32, 2, xe::gfx::BufferType::Vertex}
     };
 
-    return xe::gfx::gl3::MeshFormat(attribs);
+    return xe::gfx::MeshFormat(attribs);
+}
+
+xe::gfx::UniformFormat SpaceInvApp::createMaterialFormat() const {
+	xe::gfx::UniformDescriptor descriptors[] = {
+		{"mat_ambient", 4, xe::DataType::Float32},
+		{"mat_diffuse", 4, xe::DataType::Float32},
+		{"mat_specular", 4, xe::DataType::Float32},
+		{"mat_emissive", 4, xe::DataType::Float32},
+		{"mat_shininess", 1, xe::DataType::Float32},
+		{"tex_diffuse", 1, xe::DataType::Int32}
+	};
+
+	xe::gfx::UniformFormat format;
+
+	format.attribs.resize(6);
+
+	std::copy(std::begin(descriptors), std::end(descriptors), std::begin(format.attribs));
+
+	return format;
 }
 
 void SpaceInvApp::initGeometry() {
     m_format = this->createMeshFormat();
+	m_materialFormat = this->createMaterialFormat();
 }
-
 
 int main() {
     SpaceInvApp app;
