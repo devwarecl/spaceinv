@@ -52,9 +52,9 @@ namespace xe { namespace gfx { namespace gl3  {
 			glUniformMatrix4fv(location, total, transpose?GL_TRUE:GL_FALSE, values);
 		}
 
-		virtual void setUniform(const UniformDescriptor &desc, void* uniform) override;
+		virtual void setUniform(const UniformDescriptor &desc, const void* uniform) override;
 
-		virtual void setUniform(const UniformFormat* format, void *uniforms) override;
+		virtual void setUniform(const UniformFormat* format, const void *uniforms) override;
 
     private:
         GLFWwindow *m_window = nullptr;

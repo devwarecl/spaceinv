@@ -5,6 +5,8 @@
 #include "xe/gfx/ShaderType.hpp"
 #include "xe/gfx/gl3/OpenGL.hpp"
 
+#include <iostream>
+
 namespace xe { namespace gfx { namespace gl3 {
 	inline GLenum convertFormat(xe::gfx::PixelFormat pixelFormat) {
 		switch (pixelFormat) {
@@ -17,8 +19,10 @@ namespace xe { namespace gfx { namespace gl3 {
 		case PixelFormat::B8G8R8: return GL_BGR;
 		case PixelFormat::B8G8R8A8: return GL_BGR;
 
-		default: assert(false);
+		default: assert(false); 
 		}
+
+		return GLenum();
 	}
 
 	inline GLenum convertTarget(TextureType textureType) {
@@ -29,6 +33,8 @@ namespace xe { namespace gfx { namespace gl3 {
 		case TextureType::TexCube: return GL_TEXTURE_CUBE_MAP;
 		default: assert(false);
 		}
+
+		return GLenum();
 	}
 
 	inline GLenum convertCubeFace(TextureCubeSide face) {
@@ -41,6 +47,8 @@ namespace xe { namespace gfx { namespace gl3 {
 		case TextureCubeSide::NegZ: return GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
 		default: assert(false);
 		}
+
+		return GLenum();
 	}
 
 	inline GLenum convertDataType(DataType dataType) {
@@ -54,6 +62,8 @@ namespace xe { namespace gfx { namespace gl3 {
 		case DataType::Float32:	return GL_FLOAT;
 		default: assert(false);
 		}
+
+		return GLenum();
 	}
 
 	inline GLenum converShaderType(ShaderType shaderType) {
@@ -63,5 +73,36 @@ namespace xe { namespace gfx { namespace gl3 {
 		case ShaderType::Geometry: return GL_GEOMETRY_SHADER;
 		default: assert(false);
 		}
+
+		return GLenum();
 	}
+
+	inline std::string convertErrorCode(GLenum errorCode) {
+		switch (errorCode) {
+			case GL_INVALID_ENUM:	return "GL_INVALID_ENUM";
+			case GL_INVALID_VALUE:	return "GL_INVALID_VALUE";
+			case GL_INVALID_OPERATION:	return "GL_INVALID_OPERATION";
+			// case GL_STACK_OVERFLOW:	return "";
+			// case GL_STACK_UNDERFLOW:	return "";
+			case GL_OUT_OF_MEMORY:	return "GL_OUT_OF_MEMORY";
+			case GL_INVALID_FRAMEBUFFER_OPERATION:	return "GL_INVALID_FRAMEBUFFER_OPERATION";
+			// case GL_CONTEXT_LOST:	return "";
+			// case GL_TABLE_TOO_LARGE:	return "";
+			default: return "";
+		}
+	}
+
+	inline void checkError(const std::string &file, const int line) {
+#if defined(_DEBUG)
+		GLenum error;
+
+		while ( (error = glGetError()) != GL_NO_ERROR) {
+			std::string str = convertErrorCode(error);
+			std::cout << "OpenGL error '"<< str << "' ocurred at " << file << ":" << line << std::endl;
+		}
+#endif
+	}
+
 }}}
+
+#define XE_GL_CHECK_ERROR() xe::gfx::gl3::checkError(__FILE__, __LINE__)

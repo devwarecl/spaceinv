@@ -134,7 +134,7 @@ std::vector<Patch> createPatchArray(const bdm::Mesh &bdm_mesh) {
     return patches;
 }
 
-ModelPart createMesh(const bdm::Mesh &bdm_mesh, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format, TextureLoader *loader, xe::gfx::Device *device) {    
+ModelPart createPart(const bdm::Mesh &bdm_mesh, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format, TextureLoader *loader, xe::gfx::Device *device) {    
     auto materials = createMaterialArray(materialFormat, *loader, bdm_mesh);
     auto vertices = createVertexArray(bdm_mesh);
     auto normals = generateNormals(vertices);
@@ -155,20 +155,21 @@ ModelPart createMesh(const bdm::Mesh &bdm_mesh, xe::gfx::UniformFormat *material
     //buffers.emplace_back(new xe::gfx::gl3::BufferGL(GL_ARRAY_BUFFER, GL_STATIC_DRAW, texcoords));
     
     // finalizar construccion modelo
-    ModelPart mesh;
+    ModelPart part;
 
-    mesh.count = vertices.size();
-    mesh.primitive = xe::gfx::Primitive::TriangleList;
-    mesh.mesh = device->createMesh(format, std::move(buffers));
-    mesh.materials = std::move(materials);
-    mesh.patches = std::move(patches);
-    mesh.format = format;
+    part.count = vertices.size();
+    part.primitive = xe::gfx::Primitive::TriangleList;
+    part.mesh = device->createMesh(format, std::move(buffers));
+    part.materials = std::move(materials);
+    part.patches = std::move(patches);
+    part.format = format;
+	part.materialFormat = materialFormat;
     
-    return mesh;
+    return part;
 }
 
 ModelPtr ModelLoader::createModel(const std::string &path, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format) {
-    std::vector<ModelPart> meshes;
+    std::vector<ModelPart> parts;
 
 	std::string location = path;
 	if (m_locator) {
@@ -178,8 +179,8 @@ ModelPtr ModelLoader::createModel(const std::string &path, xe::gfx::UniformForma
     bdm::BdmFile bdm_file(location.c_str());
     
     for (auto &bdm_mesh : bdm_file.meshes()) {
-        meshes.push_back(createMesh(bdm_mesh, materialFormat, format, m_textureLoader, m_device));
+        parts.push_back(createPart(bdm_mesh, materialFormat, format, m_textureLoader, m_device));
     }
 
-    return std::make_unique<Model>(std::move(meshes));
+    return std::make_unique<Model>(std::move(parts));
 }

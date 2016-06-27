@@ -39,7 +39,7 @@ namespace xe { namespace gfx { namespace gl3  {
 
         ::glBindTexture(target, 0);
 
-        assert(glGetError() == GL_NO_ERROR);
+        XE_GL_CHECK_ERROR();
 
 		m_target = target;
 		m_desc = desc;

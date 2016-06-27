@@ -2,11 +2,11 @@
 #include "Device.hpp"
 
 namespace xe { namespace gfx {
-	void Device::setUniform(const UniformFormat* format, void *uniforms) {
+	void Device::setUniform(const UniformFormat* format, const void *uniforms) {
 		assert(uniforms);
 		assert(format->attribs.size() > 0);
 
-		auto uniform = static_cast<std::uint8_t*>(uniforms);
+		auto uniform = static_cast<const std::uint8_t*>(uniforms);
 
 		for (const UniformDescriptor &desc : format->attribs) {
 			this->setUniform(desc, uniform);

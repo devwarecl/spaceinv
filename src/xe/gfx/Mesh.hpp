@@ -16,9 +16,9 @@ namespace xe { namespace gfx {
 
         MeshAttrib() {}
 
-        MeshAttrib(const std::string &name_, const std::size_t count_, const DataType type_, const int bufferIndex_, const BufferType bufferType_) {
+        MeshAttrib(const std::string &name_, const std::size_t dim_, const DataType type_, const int bufferIndex_, const BufferType bufferType_) {
             name = name_;
-            count = count_;
+            dim = dim_;
             type = type_;
             bufferIndex = bufferIndex_;
 			bufferType = bufferType_;

@@ -1,5 +1,6 @@
 
 #include "ShaderGL.hpp"
+#include "Util.hpp"
 
 #include <cassert>
 #include <iostream>
@@ -30,7 +31,7 @@ namespace xe { namespace gfx { namespace gl3  {
             throw std::runtime_error(buffer);
         }
 
-        assert(glGetError() == GL_NO_ERROR);
+        XE_GL_CHECK_ERROR();
     }
 
     ShaderGL::~ShaderGL() {
@@ -39,6 +40,6 @@ namespace xe { namespace gfx { namespace gl3  {
             m_id = 0;
         }
 
-        assert(glGetError() == GL_NO_ERROR);
+        XE_GL_CHECK_ERROR();
     }
 }}}

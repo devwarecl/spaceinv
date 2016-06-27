@@ -12,11 +12,11 @@ namespace xe {
 
     struct Attrib {
         std::string name;
-        std::size_t count = 1;
+        std::size_t dim = 1;
         DataType    type = DataType::Unknown;
         
         std::size_t getSize() const {
-            return count * xe::getSize(type);
+            return dim * xe::getSize(type);
         }
     };
 

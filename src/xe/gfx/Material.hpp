@@ -36,7 +36,8 @@ namespace xe { namespace gfx {
 		explicit MaterialLayer(Texture *texture_) : texture(texture_) {}
     };
     
-	struct Material {
+	class Material {
+	public:
 		enum Enum {
 			None = 0,
 			CullFace = 2,
@@ -49,10 +50,13 @@ namespace xe { namespace gfx {
 		std::vector<MaterialLayer> layers;
 
 		UniformFormat *format = nullptr;
-		void* uniforms = nullptr;
-
+		
 		explicit Material(UniformFormat *format) {
 			this->format = format;
 		}
+
+		virtual const void* getUniformPointer() const = 0;
 	};
+
+	typedef std::unique_ptr<Material> MaterialPtr;
 }}

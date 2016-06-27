@@ -18,7 +18,7 @@ xe::gfx::Texture* TextureLoader::loadTexture(const std::string &file) {
 	std::string location = file;
 
 	if (m_locator) {
-		std::string location = m_locator->locate(file);
+		location = m_locator->locate(file);
 	}
 
 	if (m_textures.find(location) == m_textures.end()) {

@@ -15,18 +15,17 @@
 #include "xe/sg/Scene.hpp"
 #include "xe/sg/SceneRendererImpl.hpp"
 
-#include "xe/gfx/gl3/MeshGL.hpp"
-#include "xe/gfx/gl3/ProgramGL.hpp"
-#include "xe/gfx/gl3/DeviceGL.hpp"
+#include "xe/gfx/Mesh.hpp"
+#include "xe/gfx/Program.hpp"
+#include "xe/gfx/Device.hpp"
 
+#include "Player.hpp"
+#include "Model.hpp"
 #include "ModelPart.hpp"
 #include "render/TextureLoader.hpp"
 #include "render/ModelLoader.hpp"
 #include "render/PhongPipeline.hpp"
 #include "render/LookAtCamera.hpp"
-
-#include "Player.hpp"
-#include "Model.hpp"
 
 class SpaceInvApp {
 public:
@@ -41,7 +40,7 @@ public:
     void render();
     
 private:
-    xe::gfx::gl3::DeviceGL m_device;
+	xe::gfx::DevicePtr m_device;
     xe::gfx::MeshFormat m_format;
 	xe::gfx::UniformFormat m_materialFormat;
 

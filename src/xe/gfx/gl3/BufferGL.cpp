@@ -1,5 +1,6 @@
 
-#include "BufferGL.hpp"
+#include "xe/gfx/gl3/BufferGL.hpp"
+#include "xe/gfx/gl3/Util.hpp"
 
 namespace xe { namespace gfx { namespace gl3  {
 	BufferGL::~BufferGL() {
@@ -8,7 +9,7 @@ namespace xe { namespace gfx { namespace gl3  {
             m_id = 0;
         }
 
-        assert(glGetError() == GL_NO_ERROR);
+        XE_GL_CHECK_ERROR();
     }
 
     void BufferGL::write(const void *source, const int size, const int offset, const int source_offset) {
@@ -22,7 +23,7 @@ namespace xe { namespace gfx { namespace gl3  {
 
         glBindBuffer(m_target, 0);
 
-        assert(glGetError() == GL_NO_ERROR);
+        XE_GL_CHECK_ERROR();
     }
 
     void BufferGL::read(void* destination, const int size, const int offset, const int destination_offset) const {
@@ -36,7 +37,7 @@ namespace xe { namespace gfx { namespace gl3  {
 
         glBindBuffer(m_target, 0);
 
-        assert(glGetError() == GL_NO_ERROR);
+        XE_GL_CHECK_ERROR();
     }
 
     void BufferGL::construct(GLenum target_, GLenum usage, std::size_t size_, const void *data) {
@@ -48,7 +49,7 @@ namespace xe { namespace gfx { namespace gl3  {
         glBufferData(m_target, m_size, nullptr, usage);
         glBindBuffer(m_target, 0);
 
-        assert(glGetError() == GL_NO_ERROR);
+        XE_GL_CHECK_ERROR();
 
         if (data) {
             this->write(data);

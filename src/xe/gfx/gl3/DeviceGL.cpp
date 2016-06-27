@@ -5,6 +5,8 @@
 #include "xe/gfx/gl3/TextureGL.hpp"
 #include "xe/gfx/gl3/Util.hpp"
 
+#include "spaceinv/ModelPart.hpp"
+
 namespace xe { namespace gfx { namespace gl3  {
 	void window_size_callback(GLFWwindow* m_window, int width, int height) {
 		glViewport(0, 0, width, height);
@@ -18,7 +20,8 @@ namespace xe { namespace gfx { namespace gl3  {
 			{GLFW_CONTEXT_VERSION_MAJOR, 3},
 			{GLFW_CONTEXT_VERSION_MINOR, 3},
 			{GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE},
-        
+			{GLFW_OPENGL_DEBUG_CONTEXT, 1},
+			
 			// framebuffer
 			{GLFW_RED_BITS, 8},
 			{GLFW_GREEN_BITS, 8},
@@ -39,7 +42,7 @@ namespace xe { namespace gfx { namespace gl3  {
 		glbinding::Binding::useCurrentContext();
 		glbinding::Binding::initialize(true);
 
-		assert(glGetError() == GL_NO_ERROR);
+		XE_GL_CHECK_ERROR();
 
 		glfwSetWindowSizeCallback(m_window, window_size_callback);
 	}
@@ -103,14 +106,14 @@ namespace xe { namespace gfx { namespace gl3  {
 		glClearStencil(params.stencil);
 		glClear(clearFlags);
 
-		assert(glGetError() == GL_NO_ERROR);
+		XE_GL_CHECK_ERROR();
 	}
 
 	void DeviceGL::endFrame() {
 		glFlush();
 		glfwSwapBuffers(m_window);
 
-		assert(glGetError() == GL_NO_ERROR);
+		XE_GL_CHECK_ERROR();
 	}
 
 	int DeviceGL::getKey(int key) const {
@@ -122,13 +125,10 @@ namespace xe { namespace gfx { namespace gl3  {
 
 		glUseProgram(m_program->getId());
 
-		assert(glGetError() == GL_NO_ERROR);
+		XE_GL_CHECK_ERROR();
 	}
 
 	void DeviceGL::setMaterial(Material *material) {
-		if (m_material == material) {
-			return;
-		}
 
 		// set rendering flags
 		auto flags = material->flags;
@@ -151,7 +151,7 @@ namespace xe { namespace gfx { namespace gl3  {
 			glDisable(GL_BLEND);
 		}
 
-		assert(glGetError() == GL_NO_ERROR);
+		XE_GL_CHECK_ERROR();
 
 		// apply texturing
 		const auto &layers = material->layers;
@@ -167,19 +167,19 @@ namespace xe { namespace gfx { namespace gl3  {
 			} else {
 				GLenum target = GL_TEXTURE_2D;
 
-				if (m_material && i < m_material->layers.size()) {
-					auto textureGL = static_cast<TextureGL*>(m_material->layers[i].texture);
-					target = textureGL->getTarget();
-				}
+				//if (m_material && i < m_material->layers.size()) {
+				//	auto textureGL = static_cast<TextureGL*>(m_material->layers[i].texture);
+				//	target = textureGL->getTarget();
+				//}
 
 				glBindTexture(target, 0);
 			}
 		}
 
-		assert(glGetError() == GL_NO_ERROR);
+		XE_GL_CHECK_ERROR();
 
 		// set the uniforms data
-		this->setUniform(material->format, material->uniforms);
+		this->setUniform(material->format, material->getUniformPointer());
 
 		// change the current material
 		m_material = material;
@@ -218,40 +218,175 @@ namespace xe { namespace gfx { namespace gl3  {
 		}
 
 		glBindVertexArray(0);
-		assert(glGetError() == GL_NO_ERROR);
+		XE_GL_CHECK_ERROR();
 	}
 
-	void DeviceGL::setUniform(const UniformDescriptor &desc, void* uniform) {
-		assert(desc.count>=1);
-		assert(desc.count<=4);
+	void DeviceGL::setUniform(const UniformDescriptor &desc, const void* uniform) {
+		assert(desc.dim>=1);
+		assert(desc.dim<=4);
+		assert(desc.count>0);
+
+		XE_GL_CHECK_ERROR();
 
 		switch (desc.type) {
 		case xe::DataType::Int32:
-			switch (desc.count) {
-			case 1: glUniform1iv(desc.location, desc.size, (const GLint*)uniform); break;
-			case 2: glUniform2iv(desc.location, desc.size, (const GLint*)uniform); break;
-			case 3: glUniform3iv(desc.location, desc.size, (const GLint*)uniform); break;
-			case 4: glUniform4iv(desc.location, desc.size, (const GLint*)uniform); break;
+			switch (desc.dim) {
+
+			case 1:
+				if (desc.count==1) {
+					glUniform1i(desc.location, *(const GLint*)uniform);
+				} else {
+					glUniform1iv(desc.location, desc.count, (const GLint*)uniform);
+				};
+				XE_GL_CHECK_ERROR();  
+				break;
+
+			case 2: 
+				if (desc.count==1) {
+					GLint v0 = *((const GLint*)(uniform) + 0);
+					GLint v1 = *((const GLint*)(uniform) + 1);
+
+					glUniform2i(desc.location, v0, v1);
+				} else {
+					glUniform2iv(desc.location, desc.count, (const GLint*)uniform);
+				};
+				XE_GL_CHECK_ERROR();  
+				break;
+
+			case 3: 
+				if (desc.count==1) {
+					GLint v0 = *((const GLint*)(uniform) + 0);
+					GLint v1 = *((const GLint*)(uniform) + 1);
+					GLint v2 = *((const GLint*)(uniform) + 2);
+
+					glUniform3i(desc.location, v0, v1, v2);
+				} else {
+					glUniform3iv(desc.location, desc.count, (const GLint*)uniform);
+				};
+				XE_GL_CHECK_ERROR();  
+				break;
+
+			case 4: 
+				if (desc.count==1) {
+					GLint v0 = *((const GLint*)(uniform) + 0);
+					GLint v1 = *((const GLint*)(uniform) + 1);
+					GLint v2 = *((const GLint*)(uniform) + 2);
+					GLint v3 = *((const GLint*)(uniform) + 3);
+
+					glUniform4i(desc.location, v0, v1, v2, v3);
+				} else {
+					glUniform4iv(desc.location, desc.count, (const GLint*)uniform);
+				};
+				XE_GL_CHECK_ERROR();  
+				break;
 			}
 
 			break;
 			
 		case xe::DataType::Float32:
-			switch (desc.count) {
-			case 1: glUniform1fv(desc.location, desc.size, (const GLfloat*)uniform); break;
-			case 2: glUniform2fv(desc.location, desc.size, (const GLfloat*)uniform); break;
-			case 3: glUniform3fv(desc.location, desc.size, (const GLfloat*)uniform); break;
-			case 4: glUniform4fv(desc.location, desc.size, (const GLfloat*)uniform); break;
+			switch (desc.dim) {
+
+			case 1:
+				if (desc.count==1) {
+					glUniform1f(desc.location, *(const GLfloat*)uniform);
+				} else {
+					glUniform1fv(desc.location, desc.count, (const GLfloat*)uniform);
+				};
+				XE_GL_CHECK_ERROR();  
+				break;
+
+			case 2: 
+				if (desc.count==1) {
+					GLfloat v0 = *((const GLfloat*)(uniform) + 0);
+					GLfloat v1 = *((const GLfloat*)(uniform) + 1);
+
+					glUniform2f(desc.location, v0, v1);
+				} else {
+					glUniform2fv(desc.location, desc.count, (const GLfloat*)uniform);
+				};
+				XE_GL_CHECK_ERROR();  
+				break;
+
+			case 3: 
+				if (desc.count==1) {
+					GLfloat v0 = *((const GLfloat*)(uniform) + 0);
+					GLfloat v1 = *((const GLfloat*)(uniform) + 1);
+					GLfloat v2 = *((const GLfloat*)(uniform) + 2);
+
+					glUniform3f(desc.location, v0, v1, v2);
+				} else {
+					glUniform3fv(desc.location, desc.count, (const GLfloat*)uniform);
+				};
+				XE_GL_CHECK_ERROR();  
+				break;
+
+			case 4: 
+				if (desc.count==1) {
+					GLfloat v0 = *((const GLfloat*)(uniform) + 0);
+					GLfloat v1 = *((const GLfloat*)(uniform) + 1);
+					GLfloat v2 = *((const GLfloat*)(uniform) + 2);
+					GLfloat v3 = *((const GLfloat*)(uniform) + 3);
+
+					glUniform4f(desc.location, v0, v1, v2, v3);
+				} else {
+					glUniform4fv(desc.location, desc.count, (const GLfloat*)uniform);
+				};
+				XE_GL_CHECK_ERROR();  
+				break;
 			}
 
 			break;
 
 		case xe::DataType::UInt32:
-			switch (desc.count) {
-			case 1: glUniform1uiv(desc.location, desc.size, (const GLuint*)uniform); break;
-			case 2: glUniform2uiv(desc.location, desc.size, (const GLuint*)uniform); break;
-			case 3: glUniform3uiv(desc.location, desc.size, (const GLuint*)uniform); break;
-			case 4: glUniform4uiv(desc.location, desc.size, (const GLuint*)uniform); break;
+			switch (desc.dim) {
+
+			case 1:
+				if (desc.count==1) {
+					glUniform1ui(desc.location, *(const GLuint*)uniform);
+				} else {
+					glUniform1uiv(desc.location, desc.count, (const GLuint*)uniform);
+				};
+				XE_GL_CHECK_ERROR();  
+				break;
+
+			case 2: 
+				if (desc.count==1) {
+					GLuint v0 = *((const GLuint*)(uniform) + 0);
+					GLuint v1 = *((const GLuint*)(uniform) + 1);
+
+					glUniform2ui(desc.location, v0, v1);
+				} else {
+					glUniform2uiv(desc.location, desc.count, (const GLuint*)uniform);
+				};
+				XE_GL_CHECK_ERROR();  
+				break;
+
+			case 3: 
+				if (desc.count==1) {
+					GLuint v0 = *((const GLuint*)(uniform) + 0);
+					GLuint v1 = *((const GLuint*)(uniform) + 1);
+					GLuint v2 = *((const GLuint*)(uniform) + 2);
+
+					glUniform3ui(desc.location, v0, v1, v2);
+				} else {
+					glUniform3uiv(desc.location, desc.count, (const GLuint*)uniform);
+				};
+				XE_GL_CHECK_ERROR();  
+				break;
+
+			case 4: 
+				if (desc.count==1) {
+					GLuint v0 = *((const GLuint*)(uniform) + 0);
+					GLuint v1 = *((const GLuint*)(uniform) + 1);
+					GLuint v2 = *((const GLuint*)(uniform) + 2);
+					GLuint v3 = *((const GLuint*)(uniform) + 3);
+
+					glUniform4ui(desc.location, v0, v1, v2, v3);
+				} else {
+					glUniform4uiv(desc.location, desc.count, (const GLuint*)uniform);
+				};
+				XE_GL_CHECK_ERROR();  
+				break;
 			}
 
 			break;
@@ -259,15 +394,15 @@ namespace xe { namespace gfx { namespace gl3  {
 		default:
 			assert(false);
 		}
-
-		assert(glGetError() == GL_NO_ERROR);
 	}
 
-	void DeviceGL::setUniform(const UniformFormat *format, void *uniforms) {
+	void DeviceGL::setUniform(const UniformFormat *format, const void *uniforms) {
 		assert(uniforms);
 		assert(format->attribs.size() > 0);
 
-		auto uniform = static_cast<std::uint8_t*>(uniforms);
+		// auto mat = static_cast<const ModelMaterial::Attributes*>(uniforms);
+
+		auto uniform = static_cast<const std::uint8_t*>(uniforms);
 
 		for (const UniformDescriptor &desc : format->attribs) {
 			this->setUniform(desc, uniform);

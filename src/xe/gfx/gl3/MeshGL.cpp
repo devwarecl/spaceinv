@@ -10,7 +10,7 @@ namespace xe { namespace gfx { namespace gl3  {
             m_id = 0;
         }
 
-        assert(glGetError() == GL_NO_ERROR);
+        XE_GL_CHECK_ERROR();
     }
 
     void MeshGL::construct(const MeshFormat &format, std::vector<BufferPtr> buffers) {
@@ -23,7 +23,7 @@ namespace xe { namespace gfx { namespace gl3  {
 
         glGenVertexArrays(1, &m_id);
         glBindVertexArray(m_id);
-        assert(glGetError() == GL_NO_ERROR);
+        XE_GL_CHECK_ERROR();
 
         GLuint vertexAttrib = 0;
 
@@ -40,8 +40,8 @@ namespace xe { namespace gfx { namespace gl3  {
 
             glBindBuffer(buffer->getTarget(), buffer->getId());
             glEnableVertexAttribArray(vertexAttrib);
-            glVertexAttribPointer(vertexAttrib, attrib.count, convertDataType(attrib.type), GL_FALSE, 0, nullptr);
-            assert(glGetError() == GL_NO_ERROR);
+            glVertexAttribPointer(vertexAttrib, attrib.dim, convertDataType(attrib.type), GL_FALSE, 0, nullptr);
+            XE_GL_CHECK_ERROR();
 
             ++vertexAttrib;
         }		

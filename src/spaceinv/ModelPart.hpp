@@ -24,8 +24,6 @@ struct Box {
     }
 };
 
-
-
 struct ModelMaterial : public xe::gfx::Material {
 	struct Attributes {
 		xe::Vector4f ambient = {0.2f, 0.2f, 0.2f, 1.0f};
@@ -41,7 +39,10 @@ struct ModelMaterial : public xe::gfx::Material {
 	explicit ModelMaterial(xe::gfx::UniformFormat *format) : Material(format) {
 		flags.enable(xe::gfx::Material::CullFace);
 		flags.enable(xe::gfx::Material::DepthTest);
-		uniforms = &attribs;
+	}
+
+	virtual const void* getUniformPointer() const {
+		return &attribs;
 	}
 };
 

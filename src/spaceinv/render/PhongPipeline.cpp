@@ -97,14 +97,14 @@ xe::Matrix4f PhongPipeline::getPVW() const {
 	return mvp;
 }
 
-void PhongPipeline::renderMesh(ModelPart &mesh) {
-	m_program->fillUniformLocations(mesh.materialFormat);
+void PhongPipeline::renderMesh(ModelPart &part) {
+	m_program->fillUniformLocations(part.materialFormat);
 
-	for (size_t mindex=0; mindex<mesh.materials.size(); mindex++) {
-        Patch patch = mesh.patches[mindex];
+	for (size_t mindex=0; mindex<part.materials.size(); mindex++) {
+        Patch patch = part.patches[mindex];
 
-		m_device->setMaterial(&mesh.materials[mindex]);
-		m_device->setMesh(mesh.mesh.get());
-		m_device->render(mesh.primitive, patch.start, patch.count);
+		m_device->setMaterial(&part.materials[mindex]);
+		m_device->setMesh(part.mesh.get());
+		m_device->render(part.primitive, patch.start, patch.count);
     }
 }

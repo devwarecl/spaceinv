@@ -1,5 +1,6 @@
 
-#include "ProgramGL.hpp"
+#include "xe/gfx/gl3/ProgramGL.hpp"
+#include "xe/gfx/gl3/Util.hpp"
 
 #include <iostream>
 
@@ -9,7 +10,7 @@ namespace xe { namespace gfx { namespace gl3  {
 
         m_id = glCreateProgram();
 
-        assert(glGetError() == GL_NO_ERROR);
+        XE_GL_CHECK_ERROR();
 
         for (auto &shader : m_shaders) {
             assert(shader->getId());
@@ -19,13 +20,13 @@ namespace xe { namespace gfx { namespace gl3  {
 
         glLinkProgram(m_id);
 
-        assert(glGetError() == GL_NO_ERROR);
+        XE_GL_CHECK_ERROR();
 
         // check for errors
         GLint status;
 
         glGetProgramiv(m_id, GL_LINK_STATUS, &status);
-        assert(glGetError() == GL_NO_ERROR);
+        XE_GL_CHECK_ERROR();
 
         if (status == static_cast<GLint>(GL_FALSE)) {
             const GLint logsize = 4096;
@@ -38,7 +39,7 @@ namespace xe { namespace gfx { namespace gl3  {
             throw std::runtime_error(buffer);
         }
 
-        assert(glGetError() == GL_NO_ERROR);
+        XE_GL_CHECK_ERROR();
     }
 
     ProgramGL::~ProgramGL() {
@@ -47,7 +48,7 @@ namespace xe { namespace gfx { namespace gl3  {
             m_id = 0;
         }
 
-        assert(glGetError() == GL_NO_ERROR);
+        XE_GL_CHECK_ERROR();
     }
 
     int ProgramGL::getLocation(const std::string &uniformName) const {
@@ -61,6 +62,6 @@ namespace xe { namespace gfx { namespace gl3  {
 			desc.location = glGetUniformLocation(m_id, desc.name.c_str());
 		}
 
-		assert(glGetError() == GL_NO_ERROR);
+		XE_GL_CHECK_ERROR();
 	}
 }}}

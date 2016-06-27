@@ -1,17 +1,23 @@
 
 #include "SpaceInvApp.hpp"
 
+#include "xe/gfx/gl3/DeviceGL.hpp"
+
 SpaceInvApp::SpaceInvApp() {
-	m_pipeline = std::make_unique<PhongPipeline>(&m_device);
+	m_device = std::make_unique<xe::gfx::gl3::DeviceGL>();
+
+	m_pipeline = std::make_unique<PhongPipeline>(m_device.get());
 	m_renderer = std::make_unique<xe::sg::SceneRendererImpl>(m_pipeline.get());
-		
+	
 	m_locator.addPath("assets/uprising/models/");
 	m_locator.addPath("assets/uprising/bitmaps/");
 		
 	m_textureLoader.setLocator(&m_locator);
+	m_textureLoader.setDevice(m_device.get());
 
 	m_modelLoader.setLocator(&m_locator);
 	m_modelLoader.setTextureLoader(&m_textureLoader);
+	m_modelLoader.setDevice(m_device.get());
 
     initGeometry();
     initCamera();
@@ -21,27 +27,27 @@ SpaceInvApp::SpaceInvApp() {
 SpaceInvApp::~SpaceInvApp() {}
 
 bool SpaceInvApp::running() {
-    return m_device.getKey(GLFW_KEY_ESCAPE)==GLFW_RELEASE;
+    return m_device->getKey(GLFW_KEY_ESCAPE)==GLFW_RELEASE;
 }
     
 void SpaceInvApp::update() {
-	m_device.pollEvents();
+	m_device->pollEvents();
 
 	m_player.setTime(0.25f);
 
-	if (m_device.getKey(GLFW_KEY_LEFT)) {
+	if (m_device->getKey(GLFW_KEY_LEFT)) {
 		m_camera.turn(0.025f);
 	}
 
-	if (m_device.getKey(GLFW_KEY_RIGHT)) {
+	if (m_device->getKey(GLFW_KEY_RIGHT)) {
 		m_camera.turn(-0.025f);
 	}
 
-	if (m_device.getKey(GLFW_KEY_UP)) {
+	if (m_device->getKey(GLFW_KEY_UP)) {
 		m_camera.move(0.1f);
 	}
 
-	if (m_device.getKey(GLFW_KEY_DOWN)) {
+	if (m_device->getKey(GLFW_KEY_DOWN)) {
 		m_camera.move(-0.1f);
 	}
 }
