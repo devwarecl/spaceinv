@@ -48,9 +48,7 @@ namespace xe { namespace gfx { namespace gl3  {
 
 		virtual void endFrame()  override;
 
-		virtual void setUniformMatrix(int location, int total, bool transpose, float *values) override {
-			glUniformMatrix4fv(location, total, transpose?GL_TRUE:GL_FALSE, values);
-		}
+		virtual void setUniformMatrix(int location, int total, bool transpose, float *values) override;
 
 		virtual void setUniform(const UniformDescriptor &desc, const void* uniform) override;
 

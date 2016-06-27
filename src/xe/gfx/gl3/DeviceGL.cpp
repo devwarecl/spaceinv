@@ -221,6 +221,11 @@ namespace xe { namespace gfx { namespace gl3  {
 		XE_GL_CHECK_ERROR();
 	}
 
+	void DeviceGL::setUniformMatrix(int location, int total, bool transpose, float *values) {
+		glUniformMatrix4fv(location, total, transpose?GL_TRUE:GL_FALSE, values);
+		XE_GL_CHECK_ERROR();
+	}
+
 	void DeviceGL::setUniform(const UniformDescriptor &desc, const void* uniform) {
 		assert(desc.dim>=1);
 		assert(desc.dim<=4);

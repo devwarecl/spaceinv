@@ -184,3 +184,19 @@ ModelPtr ModelLoader::createModel(const std::string &path, xe::gfx::UniformForma
 
     return std::make_unique<Model>(std::move(parts));
 }
+
+Model* ModelLoader::getModel(const std::string &name, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat *format) {
+	Model* model = nullptr;
+
+	auto modelIt = m_models.find(name);
+
+	if (modelIt == std::end(m_models)) {
+		m_models[name] = this->createModel(name, materialFormat, *format);
+		model = m_models[name].get();
+
+	} else {
+		model = modelIt->second.get();
+	}
+
+	return model;
+}

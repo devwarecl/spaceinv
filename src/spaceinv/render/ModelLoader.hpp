@@ -9,6 +9,8 @@
 #include "xe/FileLocator.hpp"
 #include "xe/gfx/Device.hpp"
 
+#include <map>
+
 class ModelLoader {
 public:
 	ModelLoader(xe::FileLocator *locator=nullptr, xe::gfx::Device *device=nullptr) {
@@ -49,12 +51,16 @@ public:
 		return m_textureLoader;
 	}
 
-	ModelPtr createModel(const std::string &path, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format);
+	Model* getModel(const std::string &model, xe::gfx::UniformFormat *materialFormat=nullptr, const xe::gfx::MeshFormat *format=nullptr);
+
+protected:
+	ModelPtr createModel(const std::string &name, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format);
 
 private:
 	TextureLoader *m_textureLoader = nullptr;
 	xe::FileLocator *m_locator = nullptr;
 	xe::gfx::Device *m_device = nullptr;
+	std::map<std::string, ModelPtr> m_models;
 };
 
 #endif

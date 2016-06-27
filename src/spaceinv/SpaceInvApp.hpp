@@ -57,11 +57,7 @@ private:
 
     float m_angle = 0.0f;
 
-	std::map<std::string, ModelPtr> m_models;
-
 private:
-	Model* getModel(const std::string &name);
-
     void initCamera();
     
 	void initScene();

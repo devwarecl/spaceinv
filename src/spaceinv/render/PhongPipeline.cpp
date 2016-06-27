@@ -82,7 +82,10 @@ void PhongPipeline::render(ModelPart *mesh) {
 
 void PhongPipeline::updateMvp() {
 	xe::Matrix4f mvp = this->getPVW();
-	m_device->setUniformMatrix(m_program->getLocation("mvp"), 1, false, mvp.values);
+
+	int location = m_program->getLocation("mvp");
+
+	m_device->setUniformMatrix(location, 1, false, mvp.values);
 }
 
 void PhongPipeline::setWorldTransform(const xe::Matrix4f &world) {

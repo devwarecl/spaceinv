@@ -28,6 +28,10 @@ public:
 
 	void moveBackward();
 
+	void turnLeft();
+
+	void turnRight();
+
 	void fire();
 
 protected:
@@ -36,7 +40,11 @@ protected:
 private:
 	xe::sg::SceneNode *m_world = nullptr;
 	xe::sg::SceneNode *m_node = nullptr;
+
 	xe::Vector3f m_position = {0.0f, 0.0f, 0.0f};
+	xe::Vector3f m_direction = {0.0f, 0.0f, 1.0f};
+	xe::Vector3f m_up = {0.0f, 1.0f, 0.0f};
+
 	float m_time = 0.0f;
 };
 

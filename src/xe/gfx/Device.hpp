@@ -22,7 +22,7 @@ namespace xe { namespace gfx {
 		double depth;
 		int stencil;
 
-		ClearParams(xe::Vector4f color_ = {0.0f, 0.0f, 0.0f, 1.0f}, double depth_ = 0.0f, int stencil_ = 0) 
+		ClearParams(xe::Vector4f color_ = {0.0f, 0.0f, 0.0f, 1.0f}, double depth_ = 1.0f, int stencil_ = 0) 
 			: color(color_), depth(depth_), stencil(stencil_){}
 	};
 
