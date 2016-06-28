@@ -14,18 +14,32 @@ set (sources
 	FileLocator.hpp FileLocator.cpp
 )
 
+set (sources_input
+	input/EventImpl.hpp 
+	input/Event.hpp 
+	input/EventHandler.hpp 
+	input/InputDevice.hpp 
+	input/InputManager.hpp 
+	input/Keyboard.hpp 
+	input/Mouse.hpp 
+	input/InputManagerImpl.hpp	input/InputManagerImpl.cpp 
+	input/KeyboardStatus.hpp	input/KeyboardStatus.cpp 
+	input/KeyCode.hpp 
+	input/KeyStatus.hpp 
+	input/KeyStroke.hpp 
+)
+
 set (sources_gfx 
     gfx/Device.hpp gfx/Device.cpp 
     gfx/BufferType.hpp
     gfx/Program.hpp
     gfx/ShaderType.hpp
-    gfx/Mesh.hpp
+    gfx/Mesh.hpp gfx/Mesh.cpp
 	gfx/Texture.hpp
 
 	gfx/Image.hpp
 	
-	gfx/PixelFormat.hpp
-	gfx/PixelFormat.cpp
+	gfx/PixelFormat.hpp gfx/PixelFormat.cpp
 
 	gfx/UniformFormat.hpp
 )
@@ -89,7 +103,8 @@ source_group(\\         FILES ${sources})
 source_group(\\gfx      FILES ${sources_gfx})
 source_group(\\gfx\\gl3 FILES ${sources_gfx_gl3})
 source_group(\\sg       FILES ${sources_sg})
+source_group(\\input      FILES ${sources_input})
 
-add_library(${target} ${sources} ${sources_gfx} ${sources_gfx_gl3} ${sources_sg})
+add_library(${target} ${sources} ${sources_gfx} ${sources_gfx_gl3} ${sources_sg} ${sources_input})
 
 target_link_libraries(${target} ${Boost_LIBRARIES})

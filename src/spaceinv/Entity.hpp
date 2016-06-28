@@ -6,19 +6,23 @@
 
 #include "xe/sg/SceneNode.hpp"
 
-class Player {
+class Entity {
 public:
-	Player() {}
+	Entity() {}
 
-	Player(xe::sg::SceneNode *world, xe::sg::SceneNode *node);
+	Entity(xe::sg::SceneNode *world, xe::sg::SceneNode *node);
 
-	~Player() {}
+	~Entity() {}
 
 	void setTime(float time) {
 		m_time = time;
 	}
 
 	void move(const float distancePerSecond);
+
+	void move(const float distancePerSecond, const xe::Vector3f &direction);
+
+	void step(const float distancePerSecond);
 
 	void turn(const float anglePerSecond);
 
@@ -33,7 +37,7 @@ private:
 	xe::sg::SceneNode *m_world = nullptr;
 	xe::sg::SceneNode *m_node = nullptr;
 
-	xe::Vector3f m_position = {0.0f, 0.0f, 0.0f};
+	xe::Vector3f m_position = {0.0f, 0.0f, -8.0f};
 	xe::Vector3f m_direction;
 	xe::Vector3f m_up = {0.0f, 1.0f, 0.0f};
 

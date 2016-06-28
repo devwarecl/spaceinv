@@ -19,7 +19,7 @@
 #include "xe/gfx/Program.hpp"
 #include "xe/gfx/Device.hpp"
 
-#include "Player.hpp"
+#include "Entity.hpp"
 #include "Model.hpp"
 #include "ModelPart.hpp"
 #include "render/TextureLoader.hpp"
@@ -49,7 +49,7 @@ private:
 	TextureLoader m_textureLoader;
 	LookAtCamera m_camera;
 
-	Player m_player;
+	Entity m_player;
 
 	xe::FileLocator m_locator;
 	xe::sg::Scene m_scene;

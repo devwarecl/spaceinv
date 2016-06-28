@@ -1,12 +1,11 @@
 
 set (target spaceinv)
 
-set (sources SpaceInvApp.hpp SpaceInvApp.cpp Player.hpp Player.cpp Model.cpp Model.hpp)
+set (sources SpaceInvApp.hpp SpaceInvApp.cpp Entity.hpp Entity.cpp Model.cpp Model.hpp ModelPart.hpp)
 
 set (sources_render
-	render/Mesh.hpp 
 	render/TextureLoader.hpp render/TextureLoader.cpp 
-	render/MeshLoader.cpp render/MeshLoader.hpp 
+	render/ModelLoader.cpp render/ModelLoader.hpp 
 	render/PhongPipeline.hpp render/PhongPipeline.cpp
 )
 

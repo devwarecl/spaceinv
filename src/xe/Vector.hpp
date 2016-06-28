@@ -314,8 +314,14 @@ namespace xe {
 		}
 
         bool operator== (const Vector &Other) const {
-			// return arrayCompare<Type, Size>(this->values, Other.values);
-            return false;
+			
+			for (int i=0; i<Size; i++){
+				if (values[i] != Other.values[i]) {
+					return false;
+				}
+			}
+
+            return true;
 		}
 
         bool operator!= (const Vector &Other) const {
