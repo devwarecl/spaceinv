@@ -10,9 +10,7 @@ class Player {
 public:
 	Player() {}
 
-	Player(xe::sg::SceneNode *world, xe::sg::SceneNode *node) : m_world(world), m_node(node) {
-		assert(m_node);
-	}
+	Player(xe::sg::SceneNode *world, xe::sg::SceneNode *node);
 
 	~Player() {}
 
@@ -20,19 +18,13 @@ public:
 		m_time = time;
 	}
 
-	void moveLeft();
+	void move(const float distancePerSecond);
 
-	void moveRight();
-
-	void moveForward();
-
-	void moveBackward();
-
-	void turnLeft();
-
-	void turnRight();
+	void turn(const float anglePerSecond);
 
 	void fire();
+
+	void updateNode();
 
 protected:
 	xe::Matrix4f getTranform();
@@ -42,7 +34,7 @@ private:
 	xe::sg::SceneNode *m_node = nullptr;
 
 	xe::Vector3f m_position = {0.0f, 0.0f, 0.0f};
-	xe::Vector3f m_direction = {0.0f, 0.0f, 1.0f};
+	xe::Vector3f m_direction;
 	xe::Vector3f m_up = {0.0f, 1.0f, 0.0f};
 
 	float m_time = 0.0f;

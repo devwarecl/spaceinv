@@ -1,6 +1,7 @@
 
 #include "SpaceInvApp.hpp"
 
+#include <chrono>
 #include "xe/gfx/gl3/DeviceGL.hpp"
 
 SpaceInvApp::SpaceInvApp() {
@@ -33,31 +34,43 @@ bool SpaceInvApp::running() {
 void SpaceInvApp::update() {
 	m_device->pollEvents();
 
-	m_player.setTime(0.25f);
+	float time = 0.0f;
+	
+	static auto lastTime = std::chrono::high_resolution_clock::now();
+	const auto current = std::chrono::high_resolution_clock::now();
+	
+	auto span = std::chrono::duration_cast<std::chrono::duration<float>>(current - lastTime);
+	lastTime = std::chrono::high_resolution_clock::now();
+
+	const float seconds = span.count();
+
+	m_player.setTime(seconds);
 
 	if (m_device->getKey(GLFW_KEY_LEFT)) {
 		// m_camera.turn(0.025f);
 
-		m_player.turnLeft();
+		m_player.turn(xe::rad(60.0f));
 
 	}
 
 	if (m_device->getKey(GLFW_KEY_RIGHT)) {
 		// m_camera.turn(-0.025f);
 
-		m_player.turnRight();
+		m_player.turn(xe::rad(-60.0f));
 	}
 
 	if (m_device->getKey(GLFW_KEY_UP)) {
 		// m_camera.move(0.1f);
-		m_player.moveForward();
+		m_player.move(2.0f);
 	}
 
 	if (m_device->getKey(GLFW_KEY_DOWN)) {
 		// m_camera.move(-0.1f);
 
-		m_player.moveBackward();
+		m_player.move(-2.0f);
 	}
+
+	m_player.updateNode();
 }
 
 void SpaceInvApp::render() {
