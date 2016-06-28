@@ -80,7 +80,7 @@ void SpaceInvApp::render() {
 }
     
 void SpaceInvApp::initCamera() {
-	m_camera.position = {0.0f, 12.5f, -15.5f};
+	m_camera.position = {0.0f, 7.5f, -17.5f};
 	m_camera.lookat = {0.0f, 0.5f, 0.0f};
 	m_camera.up = {0.0f, 1.0f, 0.0f};
 }
