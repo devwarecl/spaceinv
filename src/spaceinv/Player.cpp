@@ -5,17 +5,6 @@
 
 static const xe::Vector3f s_initialDirection = {0.0f, 0.0f, 1.0f};
 
-//
-//void Player::moveLeft() {
-//	m_position -= xe::Vector3f(1.0f, 0.0f, 0.0f) * m_time;
-//	m_node->transform = this->getTranform();
-//}
-//
-//void Player::moveRight() {
-//	m_position += xe::Vector3f(1.0f, 0.0f, 0.0f) * m_time;
-//	m_node->transform = this->getTranform();
-//}
-
 Player::Player(xe::sg::SceneNode *world, xe::sg::SceneNode *node) : m_world(world), m_node(node) {
 	assert(m_node);
 
@@ -34,7 +23,6 @@ void Player::turn(const float anglePerSecond) {
 }
 
 xe::Matrix4f Player::getTranform() {
-
 	xe::Matrix4f rotation = xe::identity<float, 4>();
 
 	if (m_direction != s_initialDirection) {
