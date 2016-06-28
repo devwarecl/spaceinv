@@ -28,11 +28,13 @@ SpaceInvApp::SpaceInvApp() {
 SpaceInvApp::~SpaceInvApp() {}
 
 bool SpaceInvApp::running() {
-    return m_device->getKey(GLFW_KEY_ESCAPE)==GLFW_RELEASE;
+	auto status = m_device->getInputManager()->getKeyboard()->getStatus()->getKeyStatus(xe::input::KeyCode::KeyEsc);
+
+    return status == xe::input::KeyStatus::Release;
 }
     
 void SpaceInvApp::update() {
-	m_device->pollEvents();
+	m_device->getInputManager()->poll();
 
 	float time = 0.0f;
 	
@@ -46,27 +48,29 @@ void SpaceInvApp::update() {
 
 	m_player.setTime(seconds);
 
-	if (m_device->getKey(GLFW_KEY_LEFT)) {
+	auto status = m_device->getInputManager()->getKeyboard()->getStatus();
+
+	if (status->getKeyStatus(xe::input::KeyCode::KeyLeft)==xe::input::KeyStatus::Press) {
 		// m_player.turn(xe::rad(70.0f));
 		m_player.step(-10.0f);
 	}
 
-	if (m_device->getKey(GLFW_KEY_RIGHT)) {
+	if (status->getKeyStatus(xe::input::KeyCode::KeyRight)==xe::input::KeyStatus::Press) {
 		// m_player.turn(xe::rad(-70.0f));
 		m_player.step(10.0f);
 	}
 
-	if (m_device->getKey(GLFW_KEY_UP)) {
+	if (status->getKeyStatus(xe::input::KeyCode::KeyUp)==xe::input::KeyStatus::Press) {
 		m_player.move(10.0f);
 	}
 
-	if (m_device->getKey(GLFW_KEY_DOWN)) {
+	if (status->getKeyStatus(xe::input::KeyCode::KeyDown)==xe::input::KeyStatus::Press) {
 		m_player.move(-10.0f);
 	}
 
-	if (m_device->getKey(GLFW_KEY_SPACE)) {
-		m_player.fire();
-	}
+	//if (status->getKeyStatus(xe::input::KeyCode::KeySpace)==xe::input::KeyStatus::Press) {
+	//	m_player.fire();
+	//}
 
 	m_player.updateNode();
 }

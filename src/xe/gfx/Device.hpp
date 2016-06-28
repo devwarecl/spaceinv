@@ -14,6 +14,7 @@
 #include "xe/gfx/UniformFormat.hpp"
 #include "xe/gfx/Material.hpp"
 #include "xe/gfx/Primitive.hpp"
+#include "xe/input/InputManager.hpp"
 
 namespace xe { namespace gfx {
 
@@ -49,9 +50,9 @@ namespace xe { namespace gfx {
     public:
         virtual ~Device() {}
 
-        virtual int getKey(int key) const = 0;
+		virtual xe::input::InputManager* getInputManager() = 0;
 
-		virtual void pollEvents() = 0;
+		virtual const xe::input::InputManager* getInputManager() const = 0;
 
 		virtual MeshPtr createMesh(const MeshFormat &format, std::vector<BufferPtr> buffers) = 0;
 

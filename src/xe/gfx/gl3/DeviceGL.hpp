@@ -1,16 +1,17 @@
 
 #pragma once
 
-#ifndef __gl3_device__
-#define __gl3_device__
+#ifndef __xe_gfx_gl3_device__
+#define __xe_gfx_gl3_device__
 
 #include <cassert>
-#include "OpenGL.hpp"
-#include "ProgramGL.hpp"
-#include "MeshGL.hpp"
 
 #include "xe/gfx/Device.hpp"
 #include "xe/gfx/UniformFormat.hpp"
+#include "xe/gfx/gl3/InputManagerGLFW.hpp"
+#include "xe/gfx/gl3/OpenGL.hpp"
+#include "xe/gfx/gl3/ProgramGL.hpp"
+#include "xe/gfx/gl3/MeshGL.hpp"
 
 namespace xe { namespace gfx { namespace gl3  {
 
@@ -20,9 +21,13 @@ namespace xe { namespace gfx { namespace gl3  {
 
         virtual ~DeviceGL();
 
-        virtual int getKey(int key) const  override;
+		virtual xe::input::InputManager* getInputManager() override {
+			return &m_inputManager;
+		}
 
-		virtual void pollEvents()  override;
+		virtual const xe::input::InputManager* getInputManager() const override {
+			return &m_inputManager;
+		}
 
 		virtual MeshPtr createMesh(const MeshFormat &format, std::vector<BufferPtr> buffers)  override;
 
@@ -60,6 +65,8 @@ namespace xe { namespace gfx { namespace gl3  {
 		Material *m_material = nullptr;
 		MeshGL *m_mesh = nullptr;
 		ProgramGL *m_program = nullptr;
+
+		InputManagerGLFW m_inputManager;
     };
 }}}
 

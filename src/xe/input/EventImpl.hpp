@@ -8,12 +8,12 @@
 #include <algorithm>
 #include <xe/input/Event.hpp>
 
-namespace xe { namespace input2 {
+namespace xe { namespace input {
 	template<typename EventData>
-	class Event : public Event<EventData> {
+	class EventImpl : public Event<EventData> {
 	public:
-		Event() {}
-		virtual ~Event() {}
+		EventImpl() {}
+		virtual ~EventImpl() {}
 
 		virtual int getHandlerCount() const override {
 			return handlers.size();

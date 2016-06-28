@@ -44,7 +44,10 @@ namespace xe { namespace gfx { namespace gl3  {
 
 		XE_GL_CHECK_ERROR();
 
+		glfwSetWindowUserPointer(m_window, this);
 		glfwSetWindowSizeCallback(m_window, window_size_callback);
+
+		m_inputManager.setWindow(m_window);
 	}
 
 	DeviceGL::~DeviceGL() {
@@ -52,9 +55,6 @@ namespace xe { namespace gfx { namespace gl3  {
 		::glfwTerminate();
 	}
 
-	void DeviceGL::pollEvents() {
-		glfwPollEvents();
-	}
 
     BufferPtr DeviceGL::createBuffer(const BufferType type, const std::size_t size, const void *data) { 
 		GLenum target;
@@ -114,10 +114,6 @@ namespace xe { namespace gfx { namespace gl3  {
 		glfwSwapBuffers(m_window);
 
 		XE_GL_CHECK_ERROR();
-	}
-
-	int DeviceGL::getKey(int key) const {
-		return ::glfwGetKey(m_window, key);
 	}
 
 	void DeviceGL::setProgram(Program *program) {

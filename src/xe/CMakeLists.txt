@@ -54,6 +54,7 @@ set (sources_gfx_gl3
 	gfx/gl3/ProgramGL.hpp gfx/gl3/ProgramGL.cpp 
 	gfx/gl3/ShaderGL.hpp gfx/gl3/ShaderGL.cpp 
 	gfx/gl3/MeshGL.hpp gfx/gl3/MeshGL.cpp
+	gfx/gl3/InputManagerGLFW.hpp gfx/gl3/InputManagerGLFW.cpp
 )
 
 set (sources_sg    
