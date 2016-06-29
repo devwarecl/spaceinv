@@ -1,6 +1,7 @@
 
 #include "SpaceInvApp.hpp"
 
+
 #include <chrono>
 #include "xe/gfx/gl3/DeviceGL.hpp"
 
@@ -12,7 +13,7 @@ SpaceInvApp::SpaceInvApp() {
 	
 	m_locator.addPath("assets/uprising/models/");
 	m_locator.addPath("assets/uprising/bitmaps/");
-		
+	
 	m_textureLoader.setLocator(&m_locator);
 	m_textureLoader.setDevice(m_device.get());
 
@@ -33,46 +34,35 @@ bool SpaceInvApp::running() {
     return status == xe::input::KeyStatus::Release;
 }
     
-void SpaceInvApp::update() {
+void SpaceInvApp::update(const float seconds) {
 	m_device->getInputManager()->poll();
-
-	float time = 0.0f;
-	
-	static auto lastTime = std::chrono::high_resolution_clock::now();
-	const auto current = std::chrono::high_resolution_clock::now();
-	
-	auto span = std::chrono::duration_cast<std::chrono::duration<float>>(current - lastTime);
-	lastTime = std::chrono::high_resolution_clock::now();
-
-	const float seconds = span.count();
-
-	m_player.setTime(seconds);
 
 	auto status = m_device->getInputManager()->getKeyboard()->getStatus();
 
-	if (status->getKeyStatus(xe::input::KeyCode::KeyLeft)==xe::input::KeyStatus::Press) {
-		// m_player.turn(xe::rad(70.0f));
-		m_player.step(-10.0f);
+	const float distance = 10.0f * seconds;
+	
+	if (status->isKeyPressed(xe::input::KeyCode::KeyLeft)) {
+		m_player.step(-distance);
 	}
 
-	if (status->getKeyStatus(xe::input::KeyCode::KeyRight)==xe::input::KeyStatus::Press) {
-		// m_player.turn(xe::rad(-70.0f));
-		m_player.step(10.0f);
+	if (status->isKeyPressed(xe::input::KeyCode::KeyRight)) {
+		m_player.step(distance);
 	}
 
-	if (status->getKeyStatus(xe::input::KeyCode::KeyUp)==xe::input::KeyStatus::Press) {
-		m_player.move(10.0f);
+	if (status->isKeyPressed(xe::input::KeyCode::KeyUp)) {
+		m_player.move(distance);
 	}
 
-	if (status->getKeyStatus(xe::input::KeyCode::KeyDown)==xe::input::KeyStatus::Press) {
-		m_player.move(-10.0f);
+	if (status->isKeyPressed(xe::input::KeyCode::KeyDown)) {
+		m_player.move(-distance);
 	}
 
-	//if (status->getKeyStatus(xe::input::KeyCode::KeySpace)==xe::input::KeyStatus::Press) {
-	//	m_player.fire();
-	//}
+	if (status->isKeyPushed(xe::input::KeyCode::KeySpace)) {
+		m_player.fire();
+	}
 
-	m_player.updateNode();
+	m_scenario->update(seconds);
+	m_player.syncNode();
 }
 
 void SpaceInvApp::render() {
@@ -113,37 +103,17 @@ void SpaceInvApp::initScene() {
 	}
 
 	// create the scene structure
+	m_scene.rootNode.renderable = &m_camera;
+
+	// create the scenario
+	m_scenario = std::make_unique<Scenario>(&m_scene.rootNode, m_modelLoader.getModel("iav5.bdm"));
+
+	// create the player
 	auto playerNode = new xe::sg::SceneNode(m_modelLoader.getModel("iav5.bdm"), xe::translate(xe::Vector3f(0.0f, 0.0f, 0.0f)));
 
-	std::list<xe::sg::SceneNode*> nodes;
+	m_player = Entity(m_scenario.get(), playerNode);
 
-	//const int count_per_width = 10;
-	//int current = 0;
-
-	//float diff = 5.0f;
-	//float x = -diff * float(count_per_width / 2);
-	//float z = x;
-
-	//for (const char *model : models) {
-	//	nodes.push_back(new xe::sg::SceneNode(m_modelLoader.getModel(model), xe::translate(xe::Vector3f(x, 0.0f, z))));
-
-	//	if (++current % count_per_width == 0) {
-	//		x = -diff * float(count_per_width / 2);
-	//		z += diff;
-
-	//	} else {
-	//		x += diff;
-	//	}
-	//}
-
-	m_player = Entity(&m_scene.rootNode, playerNode);
-
-	m_scene.rootNode.renderable = &m_camera;
 	m_scene.rootNode.childs.emplace_back(playerNode);
-
-	for (auto node : nodes) {
-		m_scene.rootNode.childs.emplace_back(node);
-	}
 }
 
 xe::gfx::MeshFormat SpaceInvApp::createMeshFormat() const {
@@ -182,9 +152,15 @@ void SpaceInvApp::initGeometry() {
 
 int main() {
     SpaceInvApp app;
-
+	
     while (app.running()) {
-        app.update();
+		static auto lastTime = std::chrono::high_resolution_clock::now();
+		const auto current = std::chrono::high_resolution_clock::now();
+	
+		auto span = std::chrono::duration_cast<std::chrono::duration<float>>(current - lastTime);
+		lastTime = std::chrono::high_resolution_clock::now();
+
+        app.update(span.count());
         app.render();
     }
 

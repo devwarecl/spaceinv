@@ -22,6 +22,7 @@
 #include "Entity.hpp"
 #include "Model.hpp"
 #include "ModelPart.hpp"
+#include "Scenario.hpp"
 #include "render/TextureLoader.hpp"
 #include "render/ModelLoader.hpp"
 #include "render/PhongPipeline.hpp"
@@ -35,7 +36,7 @@ public:
 
     bool running();
     
-    void update();
+    void update(const float seconds);
 
     void render();
     
@@ -49,6 +50,7 @@ private:
 	TextureLoader m_textureLoader;
 	LookAtCamera m_camera;
 
+	std::unique_ptr<Scenario> m_scenario;
 	Entity m_player;
 
 	xe::FileLocator m_locator;

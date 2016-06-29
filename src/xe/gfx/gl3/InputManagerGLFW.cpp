@@ -3,7 +3,19 @@
 #include "InputManagerGLFW.hpp"
 #include "xe/gfx/gl3/DeviceGL.hpp"
 
+#include <map>
+
 namespace xe { namespace gfx { namespace gl3 {
+
+	static std::map<int, xe::input::KeyCode> keymaps = {
+		{GLFW_KEY_ESCAPE	, xe::input::KeyCode::KeyEsc},
+		{GLFW_KEY_LEFT		, xe::input::KeyCode::KeyLeft},
+		{GLFW_KEY_RIGHT		, xe::input::KeyCode::KeyRight},
+		{GLFW_KEY_UP		, xe::input::KeyCode::KeyUp},
+		{GLFW_KEY_DOWN		, xe::input::KeyCode::KeyDown},
+		{GLFW_KEY_ENTER		, xe::input::KeyCode::KeyEnter}, 
+		{GLFW_KEY_SPACE		, xe::input::KeyCode::KeySpace}
+	};
 
 	void xe_handle_key(GLFWwindow* window, int key, int scancode, int action, int mods) {
         if (action == GLFW_REPEAT) {
@@ -16,14 +28,10 @@ namespace xe { namespace gfx { namespace gl3 {
 		// determine key code
 		auto code = xe::input::KeyCode::Unknown;
 
-        switch (key) {
-            case GLFW_KEY_ESCAPE:	code = xe::input::KeyCode::KeyEsc;		break;
-            case GLFW_KEY_LEFT:		code = xe::input::KeyCode::KeyLeft;	break;
-            case GLFW_KEY_RIGHT:	code = xe::input::KeyCode::KeyRight;	break;
-            case GLFW_KEY_UP:		code = xe::input::KeyCode::KeyUp;		break;
-            case GLFW_KEY_DOWN:		code = xe::input::KeyCode::KeyDown;	break;
-            case GLFW_KEY_ENTER:	code = xe::input::KeyCode::KeyEnter;	break;
-        }
+		auto keyIterator = keymaps.find(key);
+		if (keyIterator != keymaps.end()) {
+			code = keyIterator->second;
+		}
 
 		// determine key status
         auto status = xe::input::KeyStatus::Unknown;
@@ -35,16 +43,6 @@ namespace xe { namespace gfx { namespace gl3 {
 		
 		// set the key status
 		manager->getKeyboard()->getStatus()->setKeyStatus(code, status);
-		
-		/*
-		else if (action == GLFW_REPEAT) {
-			xe::input::KeyStroke keyStroke;
-			keyStroke.code = code;
-			keyStroke.status = status;
-
-			manager->getKeyboard()->getKeyStrokeEvent()->raise(keyStroke);
-		}
-		*/
 	}
 
 	InputManagerGLFW::InputManagerGLFW() {}

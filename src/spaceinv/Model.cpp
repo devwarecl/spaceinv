@@ -1,8 +1,8 @@
 
 #include "Model.hpp"
 
-Model::Model(std::vector<ModelPart> meshes) {
-	m_meshes = std::move(meshes);
+Model::Model(std::vector<ModelPart> parts) {
+	m_parts = std::move(parts);
 }
 
 void Model::renderWith(xe::sg::Pipeline *pipeline) {
@@ -11,7 +11,7 @@ void Model::renderWith(xe::sg::Pipeline *pipeline) {
 
 void Model::renderWith(PhongPipeline *pipeline) {
 	assert(pipeline);
-	assert(m_meshes.size() > 0);
+	assert(m_parts.size() > 0);
 
-	pipeline->render(&m_meshes[0]);
+	pipeline->render(&m_parts[0]);
 }

@@ -8,14 +8,14 @@
 
 class Model : public xe::sg::Renderable {
 public:
-	explicit Model(std::vector<ModelPart> meshes);
+	explicit Model(std::vector<ModelPart> parts);
 
 	virtual void renderWith(xe::sg::Pipeline *pipeline) override;
 
 	virtual void renderWith(PhongPipeline *pipeline);
 
 private:
-	std::vector<ModelPart> m_meshes;
+	std::vector<ModelPart> m_parts;
 };
 
 typedef std::unique_ptr<Model> ModelPtr;

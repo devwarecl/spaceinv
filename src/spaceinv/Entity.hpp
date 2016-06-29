@@ -6,42 +6,41 @@
 
 #include "xe/sg/SceneNode.hpp"
 
+class Scenario;
+
 class Entity {
 public:
 	Entity() {}
 
-	Entity(xe::sg::SceneNode *world, xe::sg::SceneNode *node);
+	Entity(Scenario *scenario, xe::sg::SceneNode *node);
 
 	~Entity() {}
 
-	void setTime(float time) {
-		m_time = time;
-	}
+	void move(const float distance);
 
-	void move(const float distancePerSecond);
+	void move(const float distance, const xe::Vector3f &direction);
 
-	void move(const float distancePerSecond, const xe::Vector3f &direction);
+	void step(const float distance);
 
-	void step(const float distancePerSecond);
-
-	void turn(const float anglePerSecond);
+	void turn(const float angle);
 
 	void fire();
 
-	void updateNode();
+	void syncNode();
 
 protected:
 	xe::Matrix4f getTranform();
 
 private:
-	xe::sg::SceneNode *m_world = nullptr;
+	Scenario *m_scenario = nullptr;
+
 	xe::sg::SceneNode *m_node = nullptr;
 
 	xe::Vector3f m_position = {0.0f, 0.0f, -8.0f};
 	xe::Vector3f m_direction;
 	xe::Vector3f m_up = {0.0f, 1.0f, 0.0f};
-
-	float m_time = 0.0f;
 };
+
+typedef std::unique_ptr<Entity> EntityPtr;
 
 #endif

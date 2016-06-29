@@ -13,6 +13,9 @@ namespace xe { namespace input {
 		KeyDown,
 		KeyLeft,
 		KeyRight,
+		KeySpace,
+		KeyLShift,
+		KeyRShift,
 		Total
 	};
 }}

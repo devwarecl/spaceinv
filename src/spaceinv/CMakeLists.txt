@@ -1,7 +1,7 @@
 
 set (target spaceinv)
 
-set (sources SpaceInvApp.hpp SpaceInvApp.cpp Entity.hpp Entity.cpp Model.cpp Model.hpp ModelPart.hpp)
+set (sources SpaceInvApp.hpp SpaceInvApp.cpp Entity.hpp Entity.cpp Model.cpp Model.hpp ModelPart.hpp Scenario.hpp Scenario.cpp)
 
 set (sources_render
 	render/TextureLoader.hpp render/TextureLoader.cpp 
