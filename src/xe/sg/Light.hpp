@@ -4,6 +4,7 @@
 #ifndef __xe_sg_light__
 #define __xe_sg_light__
 
+#include <memory>
 #include "xe/Vector.hpp"
 #include "xe/sg/Renderable.hpp"
 
@@ -20,9 +21,7 @@ namespace xe { namespace sg {
     public:
         virtual ~Light() {}
 
-        virtual void renderWith(Pipeline *renderer) override {
-            renderer->render(this);
-        }
+        virtual void renderWith(Pipeline *pipeline) override;
 
     public:
         LightType type = LightType::Directional;

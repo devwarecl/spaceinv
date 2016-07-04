@@ -12,6 +12,8 @@ namespace xe { namespace sg {
     struct Scene {
         Vector4f backcolor = {0.2f, 0.2f, 0.2f, 1.0f};
         SceneNode rootNode;
+
+		Scene();
     };
 
 	typedef std::unique_ptr<Scene> ScenePtr;

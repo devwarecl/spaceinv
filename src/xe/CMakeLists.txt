@@ -35,7 +35,7 @@ set (sources_gfx
     gfx/Program.hpp
     gfx/ShaderType.hpp
     gfx/Mesh.hpp gfx/Mesh.cpp
-	gfx/Texture.hpp
+	gfx/Texture.hpp gfx/Texture.cpp
 
 	gfx/Image.hpp
 	

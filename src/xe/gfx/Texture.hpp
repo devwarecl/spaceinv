@@ -30,6 +30,21 @@ namespace xe { namespace gfx {
 		size_t width = 0;
 		size_t height = 0;
 		size_t depth = 0;
+
+		size_t getSize() const {
+			size_t result = 1;
+			size_t dimensions[] = {width, height, depth};
+
+			for (size_t dim : dimensions) {
+				if (dim) {
+					result *= dim;
+				}
+			}
+
+			result *= size(format);
+
+			return result;
+		}
 	};
 
 	class Texture {
@@ -39,6 +54,10 @@ namespace xe { namespace gfx {
 		virtual TextureDesc getDesc() const = 0;
 		virtual Buffer* getBuffer(TextureCubeSide side = TextureCubeSide::Unknown, size_t level = 0) = 0;
 		virtual const Buffer* getBuffer(TextureCubeSide side = TextureCubeSide::Unknown, size_t level = 0) const = 0;
+
+		virtual void buildMipmaps();
+
+		static void generateCheckerboard(Texture *texture, const int tilesInX, const int tilesInY);
 	};
 
 	typedef std::unique_ptr<Texture> TexturePtr;

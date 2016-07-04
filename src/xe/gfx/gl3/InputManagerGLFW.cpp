@@ -33,8 +33,12 @@ namespace xe { namespace gfx { namespace gl3 {
 			code = keyIterator->second;
 		}
 
+		if (code == xe::input::KeyCode::Unknown) {
+			return;
+		}
+
 		// determine key status
-        auto status = xe::input::KeyStatus::Unknown;
+        auto status = xe::input::KeyStatus::Release;
 		
 		switch (action) {
             case GLFW_RELEASE:  status = xe::input::KeyStatus::Release;    break;

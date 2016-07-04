@@ -15,12 +15,27 @@ public:
 	Missile() {}
 
 	Missile(xe::sg::SceneNode *node, const xe::Vector3f &position, const xe::Vector3f &direction) 
-		: m_node(node), m_position(position), m_direction(xe::normalize(direction)) {}
+		: m_node(node), m_position(position), m_direction(xe::normalize(direction)), m_alive(true) {}
 
 	virtual void update(const float seconds) override {
-		m_position += m_direction * m_speed * seconds;
+		m_lifetime -= seconds;
 
-		m_node->transform = xe::translate(m_position);
+		if (m_lifetime<=0.0f) {
+			m_lifetime = 0.0;
+			m_alive = false;
+		}
+
+		if (m_alive == false) {
+			m_node->renderable = nullptr;
+		} else {
+			m_position += m_direction * m_speed * seconds;
+
+			m_node->transform = xe::translate(m_position);
+		}
+	}
+
+	bool alive() const {
+		return m_lifetime;
 	}
 
 public:
@@ -30,8 +45,9 @@ public:
 	xe::sg::SceneNode *m_node = nullptr;
 
 	bool m_alive = false;
+	float m_lifetime = 3.0f;
 
-	const float m_speed = 50.0f;
+	const float m_speed = 100.0f;
 };
 
 typedef std::unique_ptr<Missile> MissilePtr;
