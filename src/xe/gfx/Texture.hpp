@@ -47,6 +47,10 @@ namespace xe { namespace gfx {
 		}
 	};
 
+	class Texture;
+	typedef std::unique_ptr<Texture> TexturePtr;
+
+	class Device;
 	class Texture {
 	public:
 		virtual ~Texture() {}
@@ -57,10 +61,8 @@ namespace xe { namespace gfx {
 
 		virtual void buildMipmaps();
 
-		static void generateCheckerboard(Texture *texture, const int tilesInX, const int tilesInY);
-	};
-
-	typedef std::unique_ptr<Texture> TexturePtr;
+		static TexturePtr createCheckerboard(Device *device, const TextureDesc &desc, const int tilesInX, const int tilesInY);
+	};	
 }}
 
 #endif

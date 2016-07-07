@@ -35,7 +35,7 @@ public:
 	}
 
 	bool alive() const {
-		return m_lifetime;
+		return m_lifetime > 0.0f;
 	}
 
 public:
