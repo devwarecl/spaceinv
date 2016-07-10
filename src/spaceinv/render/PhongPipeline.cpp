@@ -9,7 +9,7 @@ std::string loadTextFile(const std::string &file) {
 
     fs.open(file.c_str(), std::ios_base::in);
     if (!fs.is_open()) {
-        throw std::runtime_error("");
+        throw std::runtime_error("Couldn't open file '" + file + "'");
     }
 
     std::string content;

@@ -314,9 +314,8 @@ namespace xe {
 		}
 
         bool operator== (const Vector &Other) const {
-			
 			for (int i=0; i<Size; i++){
-				if (values[i] != Other.values[i]) {
+				if (this->values[i] != Other.values[i]) {
 					return false;
 				}
 			}

@@ -2,7 +2,7 @@
 #include "PixelFormat.hpp"
 
 namespace xe { namespace gfx {
-	size_t size(PixelFormat format) {
+	std::size_t size(PixelFormat format) {
 		switch (format) {
 		case PixelFormat::R5G5B5X1:
 		case PixelFormat::R5G5B5A1:

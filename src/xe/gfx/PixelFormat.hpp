@@ -20,7 +20,7 @@ namespace xe { namespace gfx {
 		B8G8R8A8
 	};
 
-	size_t size(PixelFormat format);
+	std::size_t size(PixelFormat format);
 }}
 
 #endif

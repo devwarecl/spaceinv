@@ -62,6 +62,7 @@ namespace xe { namespace gfx { namespace gl3  {
 		switch (type) {
 		case BufferType::Vertex: target=GL_ARRAY_BUFFER; break;
 		case BufferType::Index: target=GL_ELEMENT_ARRAY_BUFFER; break;
+        default: assert(false); 
 		}
 
 		GLenum usage = GL_DYNAMIC_DRAW;

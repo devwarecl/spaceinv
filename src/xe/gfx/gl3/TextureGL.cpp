@@ -32,6 +32,9 @@ namespace xe { namespace gfx { namespace gl3  {
 				::glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, iformat, desc.width, desc.height, 0, sformat, type, sourceData);
 			}
 			break;
+            
+            
+        default: assert(false);
 		}
 
         ::glTexParameteri(target, GL_TEXTURE_MAG_FILTER, static_cast<int>(GL_LINEAR));

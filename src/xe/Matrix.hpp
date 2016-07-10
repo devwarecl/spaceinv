@@ -564,7 +564,7 @@ namespace xe {
     }
 
 	template<typename Type, int Size>
-	Vector<Type, Size> transform(const Matrix<Type, Size, Size> &m, Vector<Type, Size> &v) {
+	Vector<Type, Size> transform(const Matrix<Type, Size, Size> &m, const Vector<Type, Size> &v) {
 		Vector<Type, Size> result;
 
 		for (int i=0; i<Size; i++) {
@@ -575,7 +575,7 @@ namespace xe {
 	}
 
 	template<typename Type, int Size>
-	Vector<Type, Size - 1> transform(const Matrix<Type, Size, Size> &m, Vector<Type, Size - 1> &v) {
+	Vector<Type, Size - 1> transform(const Matrix<Type, Size, Size> &m, const Vector<Type, Size - 1> &v) {
 		Vector<Type, Size - 1> result;
 
 		for (int i=0; i<Size - 1; i++) {

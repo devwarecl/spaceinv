@@ -41,8 +41,8 @@ public:
 	}
 	
 	void turn(float radians) {
-		auto rotation = xe::rotate(radians, up);
-
+		xe::Matrix4f rotation = xe::rotate(radians, up);
+        
 		lookat = position + xe::transform(rotation, this->getDirection());
 	}
 
