@@ -15,7 +15,7 @@ out vec4 p_color;
 
 void main() {
     vec4 color = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-    vec3 light_dir = normalize(vec3(0.0f, 0.0f, 1.0f));
+    vec3 light_dir = normalize(vec3(0.2f, 0.75f, 0.0f));
     float light_factor = max(dot(f_normal, light_dir), 0.0f);
     
     // ambient y emissive
@@ -25,7 +25,7 @@ void main() {
         // diffuse
         // color += (mat_diffuse*0.5f + texture(tex_diffuse, f_texcoord)*0.5f) * light_factor;
         // color += mat_diffuse * texture(tex_diffuse, f_texcoord) * light_factor;
-        color += texture(tex_diffuse, f_texcoord) * light_factor + mat_diffuse*0.0f;        
+        color += texture(tex_diffuse, f_texcoord) * mat_diffuse * light_factor;
         
         // specular
         vec3 light_dir_half = normalize(light_dir + vec3(0.0f, 0.0f, 1.0f));

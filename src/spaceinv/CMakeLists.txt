@@ -6,7 +6,7 @@ set (sources
 	Entity.hpp Entity.cpp 
 	Model.cpp Model.hpp 
 	ModelPart.hpp 
-	Missile.hpp
+	Missile.hpp Missile.cpp
 	Config.hpp
 	Updatable.hpp
 	Scenario.hpp Scenario.cpp
