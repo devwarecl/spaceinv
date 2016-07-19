@@ -10,8 +10,8 @@ namespace xe { namespace sfx {
     struct SourceDesc {
         float pitch = 1.0;
         float gain = 1.0;
-        xe::Vector3f position;
-        xe::Vector3f velocity;
+        xe::Vector3f position = {};
+        xe::Vector3f velocity = {};
         bool looping = false;
     };
     

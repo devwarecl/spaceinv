@@ -58,6 +58,16 @@ set (sources_gfx_gl3
 	gfx/gl3/InputManagerGLFW.hpp gfx/gl3/InputManagerGLFW.cpp
 )
 
+
+set (sources_sfx
+    sfx/Source.hpp sfx/Source.cpp 
+    sfx/Device.hpp sfx/Device.cpp 
+)
+
+set (sources_sfx_al
+    sfx/al/SourceAL.hpp sfx/al/SourceAL.cpp 
+)
+
 set (sources_sg    
 	sg/Renderable.cpp
 	sg/Pipeline.cpp
@@ -104,9 +114,11 @@ set (sources_sg
 source_group(\\         FILES ${sources})
 source_group(\\gfx      FILES ${sources_gfx})
 source_group(\\gfx\\gl3 FILES ${sources_gfx_gl3})
+source_group(\\sfx      FILES ${sources_sfx})
+source_group(\\sfx\\al  FILES ${sources_sfx_al})
 source_group(\\sg       FILES ${sources_sg})
-source_group(\\input      FILES ${sources_input})
+source_group(\\input    FILES ${sources_input})
 
-add_library(${target} ${sources} ${sources_gfx} ${sources_gfx_gl3} ${sources_sg} ${sources_input})
+add_library(${target} ${sources} ${sources_gfx} ${sources_gfx_gl3} ${sources_sfx} ${sources_sfx_al}  ${sources_sg} ${sources_input})
 
 target_link_libraries(${target} ${Boost_LIBRARIES})

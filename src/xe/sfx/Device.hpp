@@ -20,7 +20,6 @@ namespace xe { namespace sfx {
     
     class Device {
     public:
-        
         ~Device() {}
         
         virtual BufferPtr createBuffer() = 0;
