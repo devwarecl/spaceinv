@@ -12,6 +12,7 @@ set (sources
 	Quaternion.hpp 
 	Boundary.hpp
 	FileLocator.hpp FileLocator.cpp
+	FileUtil.hpp FileUtil.cpp
 )
 
 set (sources_input

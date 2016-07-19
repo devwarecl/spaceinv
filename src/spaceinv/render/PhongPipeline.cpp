@@ -2,27 +2,8 @@
 #include <fstream>
 #include "PhongPipeline.hpp"
 
+#include "xe/FileUtil.hpp"
 #include "xe/sg/Camera.hpp"
-
-std::string loadTextFile(const std::string &file) {
-    std::fstream fs;
-
-    fs.open(file.c_str(), std::ios_base::in);
-    if (!fs.is_open()) {
-        throw std::runtime_error("Couldn't open file '" + file + "'");
-    }
-
-    std::string content;
-
-    while (!fs.eof()) {
-        std::string line;
-        std::getline(fs, line);
-
-        content += line + "\n";
-    }
-
-    return content;
-}
 
 PhongPipeline::PhongPipeline(xe::gfx::Device *device) {
 	assert(device);
@@ -35,8 +16,8 @@ PhongPipeline::PhongPipeline(xe::gfx::Device *device) {
     m_world = xe::identity<float, 4>();
 
 	// programa shader
-	std::string vshader = loadTextFile("assets/shaders/vertex.glsl");
-	std::string fshader = loadTextFile("assets/shaders/fragment.glsl");
+	std::string vshader = xe::FileUtil::loadTextFile("assets/shaders/vertex.glsl");
+	std::string fshader = xe::FileUtil::loadTextFile("assets/shaders/fragment.glsl");
 
 	std::list<xe::gfx::ShaderSource> sources = {
 		{xe::gfx::ShaderType::Vertex, vshader},
