@@ -29,10 +29,11 @@ namespace xe { namespace gfx { namespace gl3 {
             return &keyStrokeEvent;
         }
 
-        virtual void poll() override {}
+        virtual void poll() override;
 
         xe::input::KeyboardStatus status;
         xe::input::EventImpl<xe::input::KeyStroke> keyStrokeEvent;
+        GLFWwindow *window = nullptr;
     };
 
     class MouseGLFW : public xe::input::Mouse {
@@ -54,29 +55,29 @@ namespace xe { namespace gfx { namespace gl3 {
         virtual ~InputManagerGLFW() {}
 
         virtual KeyboardGLFW* getKeyboard() override {
-            return &keyboard;
+            return &m_keyboard;
         }
 
         virtual MouseGLFW* getMouse() override {
-            return &mouse;
+            return &m_mouse;
         }
 
         void setWindow(GLFWwindow *window);
 
         GLFWwindow* getWindow() {
-            return this->window;
+            return this->m_window;
         }
 
         const GLFWwindow* getWindow() const {
-            return this->window;
+            return this->m_window;
         }
 
         virtual void poll() override;
 
     private:
-        GLFWwindow *window = nullptr;
-        KeyboardGLFW keyboard;
-        MouseGLFW mouse;
+        GLFWwindow *m_window = nullptr;
+        KeyboardGLFW m_keyboard;
+        MouseGLFW m_mouse;
     };
 }}}
 

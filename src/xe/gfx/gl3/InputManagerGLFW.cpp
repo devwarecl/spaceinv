@@ -17,36 +17,48 @@ namespace xe { namespace gfx { namespace gl3 {
         {GLFW_KEY_SPACE     , xe::input::KeyCode::KeySpace}
     };
 
+    static xe::input::KeyStatus s_status[] = {
+        xe::input::KeyStatus::Release,
+        xe::input::KeyStatus::Press
+    };
+
+    void KeyboardGLFW::poll() {
+        if (!window) {
+            return;
+        }
+
+        for (const auto &pair : keymaps) {
+            auto keyStatus = s_status[::glfwGetKey(window, pair.first)];
+            
+            status.setKeyStatus(pair.second, keyStatus);
+        }
+    }
+
     void xe_handle_key(GLFWwindow* window, int key, int scancode, int action, int mods) {
         if (action == GLFW_REPEAT) {
             return;
         }
         
-        auto driver = static_cast<xe::gfx::gl3::DeviceGL*>(::glfwGetWindowUserPointer(window));
-        auto manager = static_cast<InputManagerGLFW*>(driver->getInputManager());
+        //auto driver = static_cast<xe::gfx::gl3::DeviceGL*>(::glfwGetWindowUserPointer(window));
+        //auto manager = static_cast<InputManagerGLFW*>(driver->getInputManager());
 
-        // determine key code
-        auto code = xe::input::KeyCode::Unknown;
+        //// determine key code
+        //auto code = xe::input::KeyCode::Unknown;
 
-        auto keyIterator = keymaps.find(key);
-        if (keyIterator != keymaps.end()) {
-            code = keyIterator->second;
-        }
+        //auto keyIterator = keymaps.find(key);
+        //if (keyIterator != keymaps.end()) {
+        //    code = keyIterator->second;
+        //}
 
-        if (code == xe::input::KeyCode::Unknown) {
-            return;
-        }
+        //if (code == xe::input::KeyCode::Unknown) {
+        //    return;
+        //}
 
-        // determine key status
-        auto status = xe::input::KeyStatus::Release;
-        
-        switch (action) {
-            case GLFW_RELEASE:  status = xe::input::KeyStatus::Release;    break;
-            case GLFW_PRESS:    status = xe::input::KeyStatus::Press;      break;
-        }
-        
-        // set the key status
-        manager->getKeyboard()->getStatus()->setKeyStatus(code, status);
+        //// determine key status
+        //auto status = s_status[action];
+        //
+        //// set the key status
+        //manager->getKeyboard()->getStatus()->setKeyStatus(code, status);
     }
 
     InputManagerGLFW::InputManagerGLFW() {}
@@ -57,10 +69,14 @@ namespace xe { namespace gfx { namespace gl3 {
 
     void InputManagerGLFW::poll() {
         ::glfwPollEvents();
+
+        m_keyboard.poll();
     }
 
     void InputManagerGLFW::setWindow(GLFWwindow *window) {
         ::glfwSetKeyCallback(window, xe_handle_key);
-        this->window = window;
+
+        m_window = window;
+        m_keyboard.window = window;
     }
 }}}
