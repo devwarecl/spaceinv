@@ -21,7 +21,12 @@ set (sources_render
 source_group(\\             FILES ${sources})
 source_group(\\render          FILES ${sources_render})
 
-
 add_executable(${target} ${sources} ${sources_render} ${sources_render_gl3})
 
-target_link_libraries(${target} ${GLFW3_LIBRARY} ${OPENGL_LIBRARY} glbinding bdm freeimage xe stdc++ m)
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    set (target_libs stdc++ m)
+else ()
+    set (target_libs )
+endif ()
+
+target_link_libraries(${target} ${GLFW3_LIBRARY} ${OPENGL_LIBRARY} ${OPENAL_LIBRARY} ${target_libs} glbinding bdm freeimage xe)

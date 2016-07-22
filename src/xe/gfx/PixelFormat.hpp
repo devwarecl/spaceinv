@@ -2,6 +2,7 @@
 #ifndef __EXENG_GRAPHICS_PIXELFORMAT_HPP__
 #define __EXENG_GRAPHICS_PIXELFORMAT_HPP__
 
+#include <cstddef>
 #include <cstdint>
 
 namespace xe { namespace gfx {

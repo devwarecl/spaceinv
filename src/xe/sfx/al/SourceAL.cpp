@@ -1,7 +1,7 @@
 
 #include "SourceAL.hpp"
 
-namespace xe { namespace sfx { 
+namespace xe { namespace sfx { namespace al {
 
     SourceAL::SourceAL() {
         ALuint source;
@@ -14,7 +14,7 @@ namespace xe { namespace sfx {
     }
     
     SourceDesc SourceAL::getDesc() const {
-        
+        return SourceDesc();
     }
     
     void SourceAL::setDesc(const SourceDesc &desc)  {
@@ -22,10 +22,10 @@ namespace xe { namespace sfx {
     }
     
     Buffer* SourceAL::getBuffer() const {
-        
+        return nullptr;
     }
     
     void SourceAL::setBuffer(Buffer* buffer) {
         
     }
-}}
+}}}
