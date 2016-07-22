@@ -13,54 +13,54 @@
 
 class ModelLoader {
 public:
-	ModelLoader(xe::FileLocator *locator=nullptr, xe::gfx::Device *device=nullptr) {
-		this->setLocator(locator);
-	}
+    ModelLoader(xe::FileLocator *locator=nullptr, xe::gfx::Device *device=nullptr) {
+        this->setLocator(locator);
+    }
 
-	~ModelLoader() {}
+    ~ModelLoader() {}
 
-	void setTextureLoader(TextureLoader *textureLoader) {
-		m_textureLoader = textureLoader;
-	}
+    void setTextureLoader(TextureLoader *textureLoader) {
+        m_textureLoader = textureLoader;
+    }
 
-	void setLocator(xe::FileLocator *locator) {
-		m_locator = locator;
-	}
+    void setLocator(xe::FileLocator *locator) {
+        m_locator = locator;
+    }
 
-	xe::FileLocator* getLocator() {
-		return m_locator;
-	}
+    xe::FileLocator* getLocator() {
+        return m_locator;
+    }
 
-	TextureLoader *getTextureLoader() {
-		return m_textureLoader;
-	}
+    TextureLoader *getTextureLoader() {
+        return m_textureLoader;
+    }
 
-	void setDevice(xe::gfx::Device *device) {
-		m_device = device;
-	}
+    void setDevice(xe::gfx::Device *device) {
+        m_device = device;
+    }
 
-	xe::gfx::Device* getDevice() {
-		return m_device;
-	}
+    xe::gfx::Device* getDevice() {
+        return m_device;
+    }
 
-	const xe::gfx::Device* getDevice() const {
-		return m_device;
-	}
+    const xe::gfx::Device* getDevice() const {
+        return m_device;
+    }
 
-	const TextureLoader *getTextureLoader() const {
-		return m_textureLoader;
-	}
+    const TextureLoader *getTextureLoader() const {
+        return m_textureLoader;
+    }
 
-	Model* getModel(const std::string &model, xe::gfx::UniformFormat *materialFormat=nullptr, const xe::gfx::MeshFormat *format=nullptr);
+    Model* getModel(const std::string &model, xe::gfx::UniformFormat *materialFormat=nullptr, const xe::gfx::MeshFormat *format=nullptr);
 
 protected:
-	ModelPtr createModel(const std::string &name, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format);
+    ModelPtr createModel(const std::string &name, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format);
 
 private:
-	TextureLoader *m_textureLoader = nullptr;
-	xe::FileLocator *m_locator = nullptr;
-	xe::gfx::Device *m_device = nullptr;
-	std::map<std::string, ModelPtr> m_models;
+    TextureLoader *m_textureLoader = nullptr;
+    xe::FileLocator *m_locator = nullptr;
+    xe::gfx::Device *m_device = nullptr;
+    std::map<std::string, ModelPtr> m_models;
 };
 
 #endif

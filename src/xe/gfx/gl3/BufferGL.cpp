@@ -3,7 +3,7 @@
 #include "xe/gfx/gl3/Util.hpp"
 
 namespace xe { namespace gfx { namespace gl3  {
-	BufferGL::~BufferGL() {
+    BufferGL::~BufferGL() {
         if (m_id) {
             glDeleteBuffers(1, &m_id);
             m_id = 0;
@@ -15,11 +15,11 @@ namespace xe { namespace gfx { namespace gl3  {
     void BufferGL::write(const void *source, const int size, const int offset, const int source_offset) {
         glBindBuffer(m_target, m_id);
 
-		if (size) {
-			glBufferSubData(m_target, 0, size, source);
-		} else {
-			glBufferSubData(m_target, 0, m_size, source);
-		}
+        if (size) {
+            glBufferSubData(m_target, 0, size, source);
+        } else {
+            glBufferSubData(m_target, 0, m_size, source);
+        }
 
         glBindBuffer(m_target, 0);
 
@@ -29,11 +29,11 @@ namespace xe { namespace gfx { namespace gl3  {
     void BufferGL::read(void* destination, const int size, const int offset, const int destination_offset) const {
         glBindBuffer(m_target, m_id);
 
-		if (size) {
-			glGetBufferSubData(m_target, 0, size, destination);
-		} else {
-			glGetBufferSubData(m_target, 0, m_size, destination);
-		}
+        if (size) {
+            glGetBufferSubData(m_target, 0, size, destination);
+        } else {
+            glGetBufferSubData(m_target, 0, m_size, destination);
+        }
 
         glBindBuffer(m_target, 0);
 

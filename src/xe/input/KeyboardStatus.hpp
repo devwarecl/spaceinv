@@ -11,43 +11,43 @@
 #include <xe/input/KeyCode.hpp>
 
 namespace xe { namespace input {
-	class EXENGAPI KeyboardStatus {
-	public:
-		KeyboardStatus();
+    class EXENGAPI KeyboardStatus {
+    public:
+        KeyboardStatus();
 
-		void setKeyStatus(KeyCode keyCode, KeyStatus keyStatus);
+        void setKeyStatus(KeyCode keyCode, KeyStatus keyStatus);
 
-		KeyStatus getKeyStatus(KeyCode keyCode) const;
+        KeyStatus getKeyStatus(KeyCode keyCode) const;
 
-		bool isKeyPressed(KeyCode keyCode) const;
-		bool isKeyReleased(KeyCode keyCode) const;
-		bool isKeyPushed(KeyCode keyCode) const;
-		bool isKeyPopped(KeyCode keyCode) const;
+        bool isKeyPressed(KeyCode keyCode) const;
+        bool isKeyReleased(KeyCode keyCode) const;
+        bool isKeyPushed(KeyCode keyCode) const;
+        bool isKeyPopped(KeyCode keyCode) const;
 
-	private:
-		static const int KEY_COUNT = static_cast<int>(KeyCode::Total) + 1;
+    private:
+        static const int KEY_COUNT = static_cast<int>(KeyCode::Total) + 1;
 
-		struct EXENGAPI Status {
-			std::array<KeyStatus, KEY_COUNT> status;
+        struct EXENGAPI Status {
+            std::array<KeyStatus, KEY_COUNT> status;
 
-			Status() {
-				std::generate(std::begin(status), std::end(status), []() {
-					return KeyStatus::Release;
-				});
-			}
+            Status() {
+                std::generate(std::begin(status), std::end(status), []() {
+                    return KeyStatus::Release;
+                });
+            }
 
-			bool isPressed(KeyCode key) const {
-				return status[static_cast<int>(key)] == KeyStatus::Press;
-			}
+            bool isPressed(KeyCode key) const {
+                return status[static_cast<int>(key)] == KeyStatus::Press;
+            }
 
-			bool isReleased(KeyCode key) const {
-				return status[static_cast<int>(key)] == KeyStatus::Release;
-			}
-		};
+            bool isReleased(KeyCode key) const {
+                return status[static_cast<int>(key)] == KeyStatus::Release;
+            }
+        };
 
-		Status current;
-		Status previous;
-	};
+        Status current;
+        Status previous;
+    };
 }}
 
 #endif 

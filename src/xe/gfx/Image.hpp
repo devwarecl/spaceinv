@@ -24,32 +24,32 @@
 
 namespace xe { namespace gfx {
 
-	enum class ImageType {
-		Unknown,
-		Img1D,
-		Img2D,
-		Img3D
-	};
-	
-	struct ImageDesc {
-		ImageType type = ImageType::Unknown;
-		PixelFormat format = PixelFormat::Unknown;
-		size_t width = 0;
-		size_t height = 0;
-		size_t depth = 0;
-	};
+    enum class ImageType {
+        Unknown,
+        Img1D,
+        Img2D,
+        Img3D
+    };
+    
+    struct ImageDesc {
+        ImageType type = ImageType::Unknown;
+        PixelFormat format = PixelFormat::Unknown;
+        size_t width = 0;
+        size_t height = 0;
+        size_t depth = 0;
+    };
 
     class Image {
     public:
         virtual ~Image() {}
 
-		virtual ImageDesc getDesc() const = 0;
+        virtual ImageDesc getDesc() const = 0;
 
-		virtual void* getPointer() = 0;
-		virtual const void* getPointer() const = 0;
+        virtual void* getPointer() = 0;
+        virtual const void* getPointer() const = 0;
     };
 
-	typedef std::unique_ptr<Image> ImagePtr;
+    typedef std::unique_ptr<Image> ImagePtr;
 }}
 
 #endif 

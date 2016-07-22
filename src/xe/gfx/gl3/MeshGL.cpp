@@ -4,7 +4,7 @@
 
 namespace xe { namespace gfx { namespace gl3  {
     
-	MeshGL::~MeshGL() {
+    MeshGL::~MeshGL() {
         if (m_id) {
             glDeleteVertexArrays(1, &m_id);
             m_id = 0;
@@ -14,12 +14,12 @@ namespace xe { namespace gfx { namespace gl3  {
     }
 
     void MeshGL::construct(const MeshFormat &format, std::vector<BufferPtr> buffers) {
-		//!TODO: Implement proper construction with only one buffer for all attributes
-		m_format = format;
+        //!TODO: Implement proper construction with only one buffer for all attributes
+        m_format = format;
 
-		for (BufferPtr &buffer : buffers) {
-			m_buffers.emplace_back(static_cast<BufferGL*>(buffer.release()));
-		}
+        for (BufferPtr &buffer : buffers) {
+            m_buffers.emplace_back(static_cast<BufferGL*>(buffer.release()));
+        }
 
         glGenVertexArrays(1, &m_id);
         glBindVertexArray(m_id);
@@ -32,9 +32,9 @@ namespace xe { namespace gfx { namespace gl3  {
                 break;
             }
 
-			if (attrib.bufferType == BufferType::Index) {
-				m_indexed = true;
-			}
+            if (attrib.bufferType == BufferType::Index) {
+                m_indexed = true;
+            }
 
             auto buffer = m_buffers[attrib.bufferIndex].get();
 
@@ -44,6 +44,6 @@ namespace xe { namespace gfx { namespace gl3  {
             XE_GL_CHECK_ERROR();
 
             ++vertexAttrib;
-        }		
+        }        
     }
 }}}

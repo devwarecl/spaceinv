@@ -17,25 +17,25 @@ public:
 
     ~TextureLoader();
 
-	void setLocator(xe::FileLocator *locator) {
-		m_locator = locator;
-	}
+    void setLocator(xe::FileLocator *locator) {
+        m_locator = locator;
+    }
 
-	xe::FileLocator *getLocator() {
-		return m_locator;
-	}
+    xe::FileLocator *getLocator() {
+        return m_locator;
+    }
 
-	void setDevice(xe::gfx::Device *device) {
-		m_device = device;
-	}
+    void setDevice(xe::gfx::Device *device) {
+        m_device = device;
+    }
 
-	xe::gfx::Device* getDevice() {
-		return m_device;
-	}
+    xe::gfx::Device* getDevice() {
+        return m_device;
+    }
 
-	const xe::gfx::Device* getDevice() const {
-		return m_device;
-	}
+    const xe::gfx::Device* getDevice() const {
+        return m_device;
+    }
 
     xe::gfx::Texture* loadTexture(const std::string &file);
 
@@ -43,9 +43,9 @@ protected:
     xe::gfx::TexturePtr doLoadTexture(const std::string &file);
 
 private:
-	xe::FileLocator *m_locator = nullptr;
-	xe::gfx::Device *m_device = nullptr;
-	std::map<std::string, xe::gfx::TexturePtr> m_textures;
+    xe::FileLocator *m_locator = nullptr;
+    xe::gfx::Device *m_device = nullptr;
+    std::map<std::string, xe::gfx::TexturePtr> m_textures;
 };
 
 #endif 

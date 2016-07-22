@@ -8,25 +8,25 @@
 
 namespace xe { namespace input {
 
-	/**
-	 * @brief InputManager base implementation
-	 */
-	class EXENGAPI InputManagerImpl : public InputManager {
-	public:
-		InputManagerImpl();
+    /**
+     * @brief InputManager base implementation
+     */
+    class EXENGAPI InputManagerImpl : public InputManager {
+    public:
+        InputManagerImpl();
 
-		virtual ~InputManagerImpl();
+        virtual ~InputManagerImpl();
 
-		virtual Keyboard* getKeyboard() override;
+        virtual Keyboard* getKeyboard() override;
 
-		virtual Mouse* getMouse() override;
+        virtual Mouse* getMouse() override;
 
-		virtual void poll() override;
+        virtual void poll() override;
 
-	protected:
-		Keyboard *keyboard = nullptr;
-		Mouse *mouse = nullptr;
-	};
+    protected:
+        Keyboard *keyboard = nullptr;
+        Mouse *mouse = nullptr;
+    };
 }}
 
 #endif 

@@ -28,7 +28,7 @@ namespace xe { namespace gfx { namespace gl3  {
 
         virtual int getLocation(const std::string &uniformName) const override;
 
-		virtual void fillUniformLocations(UniformFormat *uniformFormat) const override;
+        virtual void fillUniformLocations(UniformFormat *uniformFormat) const override;
 
     private:
         GLuint m_id = 0;

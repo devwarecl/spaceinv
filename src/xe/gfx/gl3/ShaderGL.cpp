@@ -7,7 +7,7 @@
 
 namespace xe { namespace gfx { namespace gl3  {
 
-	ShaderGL::ShaderGL(GLenum type_, const std::string &glsl) {
+    ShaderGL::ShaderGL(GLenum type_, const std::string &glsl) {
         type = type_;
         m_id = glCreateShader(type);
 

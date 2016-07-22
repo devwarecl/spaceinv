@@ -41,32 +41,32 @@ public:
     void render();
     
 private:
-	xe::gfx::DevicePtr m_device;
+    xe::gfx::DevicePtr m_device;
     xe::gfx::MeshFormat m_format;
-	xe::gfx::UniformFormat m_materialFormat;
+    xe::gfx::UniformFormat m_materialFormat;
 
-	PhongPipelinePtr m_pipeline;
-	ModelLoader m_modelLoader;
-	TextureLoader m_textureLoader;
-	LookAtCamera m_camera;
+    PhongPipelinePtr m_pipeline;
+    ModelLoader m_modelLoader;
+    TextureLoader m_textureLoader;
+    LookAtCamera m_camera;
 
-	std::unique_ptr<Scenario> m_scenario;
-	Entity m_player;
+    std::unique_ptr<Scenario> m_scenario;
+    Entity m_player;
 
-	xe::FileLocator m_locator;
-	xe::sg::Scene m_scene;
-	xe::sg::SceneRendererPtr m_renderer;
+    xe::FileLocator m_locator;
+    xe::sg::Scene m_scene;
+    xe::sg::SceneRendererPtr m_renderer;
 
     float m_angle = 0.0f;
 
 private:
     void initCamera();
     
-	void initScene();
+    void initScene();
 
-	xe::gfx::MeshFormat createMeshFormat() const;
+    xe::gfx::MeshFormat createMeshFormat() const;
 
-	xe::gfx::UniformFormat createMaterialFormat() const;
+    xe::gfx::UniformFormat createMaterialFormat() const;
 
     void initGeometry();
 };

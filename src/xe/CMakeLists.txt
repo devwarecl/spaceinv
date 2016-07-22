@@ -2,32 +2,32 @@
 set (target xe)
 
 set (sources 
-	Buffer.hpp 
-	Common.hpp 
-	DataFormat.hpp 
-	DataType.hpp 
-	Traits.hpp 
-	Vector.hpp 
-	Matrix.hpp 
-	Quaternion.hpp 
-	Boundary.hpp
-	FileLocator.hpp FileLocator.cpp
-	FileUtil.hpp FileUtil.cpp
+    Buffer.hpp 
+    Common.hpp 
+    DataFormat.hpp 
+    DataType.hpp 
+    Traits.hpp 
+    Vector.hpp 
+    Matrix.hpp 
+    Quaternion.hpp 
+    Boundary.hpp
+    FileLocator.hpp FileLocator.cpp
+    FileUtil.hpp FileUtil.cpp
 )
 
 set (sources_input
-	input/EventImpl.hpp 
-	input/Event.hpp 
-	input/EventHandler.hpp 
-	input/InputDevice.hpp 
-	input/InputManager.hpp 
-	input/Keyboard.hpp 
-	input/Mouse.hpp 
-	input/InputManagerImpl.hpp	input/InputManagerImpl.cpp 
-	input/KeyboardStatus.hpp	input/KeyboardStatus.cpp 
-	input/KeyCode.hpp 
-	input/KeyStatus.hpp 
-	input/KeyStroke.hpp 
+    input/EventImpl.hpp 
+    input/Event.hpp 
+    input/EventHandler.hpp 
+    input/InputDevice.hpp 
+    input/InputManager.hpp 
+    input/Keyboard.hpp 
+    input/Mouse.hpp 
+    input/InputManagerImpl.hpp    input/InputManagerImpl.cpp 
+    input/KeyboardStatus.hpp    input/KeyboardStatus.cpp 
+    input/KeyCode.hpp 
+    input/KeyStatus.hpp 
+    input/KeyStroke.hpp 
 )
 
 set (sources_gfx 
@@ -36,26 +36,26 @@ set (sources_gfx
     gfx/Program.hpp
     gfx/ShaderType.hpp
     gfx/Mesh.hpp gfx/Mesh.cpp
-	gfx/Texture.hpp gfx/Texture.cpp
+    gfx/Texture.hpp gfx/Texture.cpp
 
-	gfx/Image.hpp
-	
-	gfx/PixelFormat.hpp gfx/PixelFormat.cpp
+    gfx/Image.hpp
+    
+    gfx/PixelFormat.hpp gfx/PixelFormat.cpp
 
-	gfx/UniformFormat.hpp
+    gfx/UniformFormat.hpp
 )
 
 set (sources_gfx_gl3
-	gfx/gl3/OpenGL.hpp 
-	gfx/gl3/BufferGL.hpp gfx/gl3/BufferGL.cpp
-	gfx/gl3/DeviceGL.hpp gfx/gl3/DeviceGL.cpp 
-	gfx/gl3/TextureGL.hpp gfx/gl3/TextureGL.cpp 
-	gfx/gl3/TextureBufferGL.hpp gfx/gl3/TextureBufferGL.cpp 
-	gfx/gl3/MaterialGL.hpp 
-	gfx/gl3/ProgramGL.hpp gfx/gl3/ProgramGL.cpp 
-	gfx/gl3/ShaderGL.hpp gfx/gl3/ShaderGL.cpp 
-	gfx/gl3/MeshGL.hpp gfx/gl3/MeshGL.cpp
-	gfx/gl3/InputManagerGLFW.hpp gfx/gl3/InputManagerGLFW.cpp
+    gfx/gl3/OpenGL.hpp 
+    gfx/gl3/BufferGL.hpp gfx/gl3/BufferGL.cpp
+    gfx/gl3/DeviceGL.hpp gfx/gl3/DeviceGL.cpp 
+    gfx/gl3/TextureGL.hpp gfx/gl3/TextureGL.cpp 
+    gfx/gl3/TextureBufferGL.hpp gfx/gl3/TextureBufferGL.cpp 
+    gfx/gl3/MaterialGL.hpp 
+    gfx/gl3/ProgramGL.hpp gfx/gl3/ProgramGL.cpp 
+    gfx/gl3/ShaderGL.hpp gfx/gl3/ShaderGL.cpp 
+    gfx/gl3/MeshGL.hpp gfx/gl3/MeshGL.cpp
+    gfx/gl3/InputManagerGLFW.hpp gfx/gl3/InputManagerGLFW.cpp
 )
 
 
@@ -69,25 +69,25 @@ set (sources_sfx_al
 )
 
 set (sources_sg    
-	sg/Renderable.cpp
-	sg/Pipeline.cpp
+    sg/Renderable.cpp
+    sg/Pipeline.cpp
     sg/SceneNode.cpp 
     sg/Scene.cpp
-	sg/SceneNodeAnimator.cpp
-	sg/SceneLoader.cpp
-	sg/SceneManager.cpp
-	sg/SceneRenderer.cpp
-	sg/SceneRendererImpl.cpp
-	sg/SceneLoader.cpp
+    sg/SceneNodeAnimator.cpp
+    sg/SceneLoader.cpp
+    sg/SceneManager.cpp
+    sg/SceneRenderer.cpp
+    sg/SceneRendererImpl.cpp
+    sg/SceneLoader.cpp
     sg/Camera.cpp 
     sg/Light.cpp
     sg/Geometry.cpp
-	sg/AssetsLibrary.cpp
-	sg/GeometryLibrary.cpp
+    sg/AssetsLibrary.cpp
+    sg/GeometryLibrary.cpp
 
-	sg/Forward.hpp 
-	sg/Renderable.hpp
-	sg/Pipeline.hpp
+    sg/Forward.hpp 
+    sg/Renderable.hpp
+    sg/Pipeline.hpp
     sg/SceneNode.hpp      
     sg/Scene.hpp          
     sg/Camera.hpp         
@@ -102,13 +102,13 @@ set (sources_sg
     sg/IntersectInfo.hpp  
     sg/Sphere.hpp
     sg/Triangle.hpp
-	sg/SceneRenderer.hpp
+    sg/SceneRenderer.hpp
     sg/SceneRendererImpl.hpp
-	sg/SceneLoader.hpp
-	sg/SceneManager.hpp
-	sg/SceneNodeAnimator.hpp
-	sg/AssetsLibrary.hpp
-	sg/GeometryLibrary.hpp
+    sg/SceneLoader.hpp
+    sg/SceneManager.hpp
+    sg/SceneNodeAnimator.hpp
+    sg/AssetsLibrary.hpp
+    sg/GeometryLibrary.hpp
 )
 
 source_group(\\         FILES ${sources})

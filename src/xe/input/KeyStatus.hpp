@@ -5,11 +5,11 @@
 #define __xe_input_keystatus__
 
 namespace xe { namespace input {
-	enum class KeyStatus {
-		Release,
-		Press,
-		Unknown
-	};
+    enum class KeyStatus {
+        Release,
+        Press,
+        Unknown
+    };
 }}
 
 #endif

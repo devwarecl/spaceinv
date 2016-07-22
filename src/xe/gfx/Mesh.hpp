@@ -12,7 +12,7 @@ namespace xe { namespace gfx {
 
     struct MeshAttrib : public Attrib {
         int bufferIndex = 0;
-		BufferType bufferType = BufferType::Unknown;
+        BufferType bufferType = BufferType::Unknown;
 
         MeshAttrib() {}
 
@@ -21,23 +21,23 @@ namespace xe { namespace gfx {
             dim = dim_;
             type = type_;
             bufferIndex = bufferIndex_;
-			bufferType = bufferType_;
+            bufferType = bufferType_;
         }
     };
 
-	typedef xe::DataFormat<MeshAttrib> MeshFormat;
+    typedef xe::DataFormat<MeshAttrib> MeshFormat;
 
     class Mesh {
     public:
         virtual ~Mesh() {}
 
-		virtual MeshFormat getFormat() const = 0;
+        virtual MeshFormat getFormat() const = 0;
 
         virtual std::size_t getBufferCount() const = 0;
         virtual Buffer* getBuffer(const std::size_t index) = 0;
         virtual const Buffer* getBuffer(const std::size_t index) const = 0;
 
-		virtual bool isIndexed() const;
+        virtual bool isIndexed() const;
     };
 
     typedef std::unique_ptr<Mesh> MeshPtr;

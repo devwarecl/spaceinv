@@ -7,11 +7,11 @@
 #include <xe/PreDef.hpp>
 
 namespace xe { namespace input {
-	class EXENGAPI InputDevice {
-	public:
-		virtual ~InputDevice() {}
-		virtual void poll() = 0;
-	};
+    class EXENGAPI InputDevice {
+    public:
+        virtual ~InputDevice() {}
+        virtual void poll() = 0;
+    };
 }}
 
 #endif 

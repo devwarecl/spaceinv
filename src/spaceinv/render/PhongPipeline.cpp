@@ -6,89 +6,89 @@
 #include "xe/sg/Camera.hpp"
 
 PhongPipeline::PhongPipeline(xe::gfx::Device *device) {
-	assert(device);
+    assert(device);
 
-	m_device = device;
+    m_device = device;
 
-	// inicializar las matrices por defecto
-	m_proj = xe::identity<float, 4>();
+    // inicializar las matrices por defecto
+    m_proj = xe::identity<float, 4>();
     m_view = xe::identity<float, 4>();
     m_world = xe::identity<float, 4>();
 
-	// programa shader
-	std::string vshader = xe::FileUtil::loadTextFile("assets/shaders/vertex.glsl");
-	std::string fshader = xe::FileUtil::loadTextFile("assets/shaders/fragment.glsl");
+    // programa shader
+    std::string vshader = xe::FileUtil::loadTextFile("assets/shaders/vertex.glsl");
+    std::string fshader = xe::FileUtil::loadTextFile("assets/shaders/fragment.glsl");
 
-	std::list<xe::gfx::ShaderSource> sources = {
-		{xe::gfx::ShaderType::Vertex, vshader},
-		{xe::gfx::ShaderType::Fragment, fshader}
-	};
+    std::list<xe::gfx::ShaderSource> sources = {
+        {xe::gfx::ShaderType::Vertex, vshader},
+        {xe::gfx::ShaderType::Fragment, fshader}
+    };
 
-	m_program = m_device->createProgram(sources);
+    m_program = m_device->createProgram(sources);
 
-	m_device->setProgram(m_program.get());
+    m_device->setProgram(m_program.get());
 }
 
 PhongPipeline::~PhongPipeline() {}
 
 void PhongPipeline::beginFrame(const xe::Vector4f &color) {
-	m_device->beginFrame();
+    m_device->beginFrame();
 }
 
 void PhongPipeline::endFrame() {
-	m_device->endFrame();
+    m_device->endFrame();
 }
 
 void PhongPipeline::render(xe::sg::Light *light) {}
 
 void PhongPipeline::render(xe::sg::Camera *camera) {
-	assert(camera);
+    assert(camera);
 
-	m_view = camera->computeView();
-	m_proj = camera->computeProj();
+    m_view = camera->computeView();
+    m_proj = camera->computeProj();
 
-	this->updateMvp();
+    this->updateMvp();
 }
 
 void PhongPipeline::render(xe::sg::Geometry *geometry) {
-	
-	if (auto *mesh = dynamic_cast<ModelPart*>(geometry)) {
-		this->renderMesh(*mesh);
-	}
+    
+    if (auto *mesh = dynamic_cast<ModelPart*>(geometry)) {
+        this->renderMesh(*mesh);
+    }
 }
 
 void PhongPipeline::render(ModelPart *mesh) {
-	this->renderMesh(*mesh);
+    this->renderMesh(*mesh);
 }
 
 void PhongPipeline::updateMvp() {
-	xe::Matrix4f mvp = this->getPVW();
+    xe::Matrix4f mvp = this->getPVW();
 
-	int location = m_program->getLocation("mvp");
+    int location = m_program->getLocation("mvp");
 
-	m_device->setUniformMatrix(location, 1, false, mvp.values);
+    m_device->setUniformMatrix(location, 1, false, mvp.values);
 }
 
 void PhongPipeline::setWorldTransform(const xe::Matrix4f &world) {
-	m_world = world;
+    m_world = world;
 
-	this->updateMvp();
+    this->updateMvp();
 }
 
 xe::Matrix4f PhongPipeline::getPVW() const {
-	xe::Matrix4f mvp = m_proj * m_view * m_world;
+    xe::Matrix4f mvp = m_proj * m_view * m_world;
 
-	return mvp;
+    return mvp;
 }
 
 void PhongPipeline::renderMesh(ModelPart &part) {
-	m_program->fillUniformLocations(part.materialFormat);
+    m_program->fillUniformLocations(part.materialFormat);
 
-	for (size_t mindex=0; mindex<part.materials.size(); mindex++) {
+    for (size_t mindex=0; mindex<part.materials.size(); mindex++) {
         Patch patch = part.patches[mindex];
 
-		m_device->setMaterial(&part.materials[mindex]);
-		m_device->setMesh(part.mesh.get());
-		m_device->render(part.primitive, patch.start, patch.count);
+        m_device->setMaterial(&part.materials[mindex]);
+        m_device->setMesh(part.mesh.get());
+        m_device->render(part.primitive, patch.start, patch.count);
     }
 }

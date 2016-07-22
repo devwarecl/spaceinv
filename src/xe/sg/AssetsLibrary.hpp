@@ -10,21 +10,21 @@
 
 namespace xe { namespace sg {
 
-	class AssetLibrary {
-	public:
-		AssetLibrary();
-		~AssetLibrary();
+    class AssetLibrary {
+    public:
+        AssetLibrary();
+        ~AssetLibrary();
 
-		void addAsset(const std::string &fileId, BufferPtr assetData);
-		Buffer* getAsset(const std::string &fileId);
-		const Buffer* getAsset(const std::string &fileId) const;
+        void addAsset(const std::string &fileId, BufferPtr assetData);
+        Buffer* getAsset(const std::string &fileId);
+        const Buffer* getAsset(const std::string &fileId) const;
 
-	private:
-		struct Private;
-		Private *impl = nullptr;
-	};
+    private:
+        struct Private;
+        Private *impl = nullptr;
+    };
 
-	typedef std::unique_ptr<AssetLibrary> AssetLibraryPtr;
+    typedef std::unique_ptr<AssetLibrary> AssetLibraryPtr;
 }}
 
-#endif	// __EXENG_SCENEGRAPH_ASSETLIBRARY_HPP__
+#endif    // __EXENG_SCENEGRAPH_ASSETLIBRARY_HPP__

@@ -102,10 +102,10 @@ inline Plane::Plane() : point(0.0f), normal(0.0f, 1.0, 0.0f) {}
 
     inline void Plane::set(const xe::Vector3f& p1, const xe::Vector3f& p2, const xe::Vector3f& p3) {
         const float factor = 1.0f/3.0f;
-		
+        
         xe::Vector3f normal = cross(p2 - p1, p3 - p1);
         xe::Vector3f point = factor * (p1 + p2 + p3);
-		
+        
         this->set(point, normal);
     }
 
@@ -137,7 +137,7 @@ inline Plane::Plane() : point(0.0f), normal(0.0f, 1.0, 0.0f) {}
         auto d = ray.getDirection();
     
         auto t = dot(n, p - r) / dot(n, d);
-		
+        
         bool result = false;
     
         if (t > 0.0f) {
@@ -163,4 +163,4 @@ inline std::ostream& operator<< (std::ostream& os, const xe::sg::Plane &plane) {
 }
 
 
-#endif	//__EXENG_SCENEGRAPH_PLANE_HPP__
+#endif    //__EXENG_SCENEGRAPH_PLANE_HPP__

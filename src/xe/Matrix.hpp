@@ -10,362 +10,362 @@
 #include <xe/Vector.hpp>
 
 namespace xe {
-	template<typename Type, int RowCount, int ColumnCount>
-	class Matrix {
-	public:
-		typedef Matrix<Type, RowCount, ColumnCount> MatrixType;
-		static const int ValueCount = RowCount * ColumnCount;
+    template<typename Type, int RowCount, int ColumnCount>
+    class Matrix {
+    public:
+        typedef Matrix<Type, RowCount, ColumnCount> MatrixType;
+        static const int ValueCount = RowCount * ColumnCount;
 
-	public:
-		Matrix() {}
+    public:
+        Matrix() {}
 
-		// accessors
-		const Type& get(const int i, const int j) const {
-			return values[offset(i, j)];
-		}
+        // accessors
+        const Type& get(const int i, const int j) const {
+            return values[offset(i, j)];
+        }
 
-		Type& get(const int i, const int j) {
-			return values[offset(i, j)];
-		}
-		
-		template<int i, int j>
-		const Type& get() const {
-			return values[offset(i, j)];
-		}
+        Type& get(const int i, const int j) {
+            return values[offset(i, j)];
+        }
+        
+        template<int i, int j>
+        const Type& get() const {
+            return values[offset(i, j)];
+        }
 
-		template<int i, int j>
-		Type& get() {
-			return values[offset(i, j)];
-		}
+        template<int i, int j>
+        Type& get() {
+            return values[offset(i, j)];
+        }
 
-		Vector<Type, RowCount> getColumn(const int j) const {
-			assert(j >= 0);
-			assert(j < RowCount);
+        Vector<Type, RowCount> getColumn(const int j) const {
+            assert(j >= 0);
+            assert(j < RowCount);
 
-			Vector<Type, RowCount> result;
+            Vector<Type, RowCount> result;
 
-			for (int i=0; i<RowCount; i++) {
-				result[i] = this->get(i, j);
-			}
+            for (int i=0; i<RowCount; i++) {
+                result[i] = this->get(i, j);
+            }
 
-			return result;
-		}
+            return result;
+        }
 
-		Vector<Type, ColumnCount> getRow(const int i) const {
-			assert(i >= 0);
-			assert(i < RowCount);
+        Vector<Type, ColumnCount> getRow(const int i) const {
+            assert(i >= 0);
+            assert(i < RowCount);
 
-			Vector<Type, ColumnCount> result;
+            Vector<Type, ColumnCount> result;
 
-			for (int j=0; j<ColumnCount; j++) {
-				result[j] = this->get(i, j);
-			}
+            for (int j=0; j<ColumnCount; j++) {
+                result[j] = this->get(i, j);
+            }
 
-			return result;
-		}
+            return result;
+        }
 
-		void setColumn(const int j, const Vector<Type, RowCount> &v) {
-			assert(j >= 0);
-			assert(j < RowCount);
+        void setColumn(const int j, const Vector<Type, RowCount> &v) {
+            assert(j >= 0);
+            assert(j < RowCount);
 
-			for (int i=0; i<RowCount; i++) {
-				this->get(i, j) = v[i];
-			}
-		}
+            for (int i=0; i<RowCount; i++) {
+                this->get(i, j) = v[i];
+            }
+        }
 
-		void setRow(const int i, const Vector<Type, ColumnCount> &v) {
-			assert(i >= 0);
-			assert(i < RowCount);
+        void setRow(const int i, const Vector<Type, ColumnCount> &v) {
+            assert(i >= 0);
+            assert(i < RowCount);
 
-			for (int j=0; j<ColumnCount; j++) {
-				this->get(i, j) = v[j];
-			}
-		}
+            for (int j=0; j<ColumnCount; j++) {
+                this->get(i, j) = v[j];
+            }
+        }
 
-		Matrix<Type, RowCount - 1, ColumnCount - 1> getSubMatrix(const int row, const int column) const {
-			assert(row >= 0);
-			assert(row < RowCount);
+        Matrix<Type, RowCount - 1, ColumnCount - 1> getSubMatrix(const int row, const int column) const {
+            assert(row >= 0);
+            assert(row < RowCount);
 
-			assert(column >= 0);
-			assert(column < ColumnCount);
+            assert(column >= 0);
+            assert(column < ColumnCount);
 
-			Matrix<Type, RowCount-1, ColumnCount-1> result;
+            Matrix<Type, RowCount-1, ColumnCount-1> result;
 
-			int ii = 0, jj = 0;
+            int ii = 0, jj = 0;
 
-			for (int i=0; i<RowCount; ++i) {
-				if (i == row) {
-					continue;
-				}
+            for (int i=0; i<RowCount; ++i) {
+                if (i == row) {
+                    continue;
+                }
 
-				for(int j=0; j<ColumnCount; ++j) {
-					if (j == column) {
-						continue;
-					}
+                for(int j=0; j<ColumnCount; ++j) {
+                    if (j == column) {
+                        continue;
+                    }
 
-					result(ii, jj) = this->get(i, j); 
-					++jj;
-				}
+                    result(ii, jj) = this->get(i, j); 
+                    ++jj;
+                }
             
-				++ii;
-				jj = 0;
-			}
+                ++ii;
+                jj = 0;
+            }
     
-			return result;
+            return result;
 
-		}
+        }
 
-		Type* getPtr() {
-			return values;
-		}
+        Type* getPtr() {
+            return values;
+        }
 
-		const Type* getPtr() const {
-			return values;
-		}
+        const Type* getPtr() const {
+            return values;
+        }
 
-		// operators
-		friend std::ostream& operator<< (std::ostream &os, const Matrix<Type, RowCount, ColumnCount>& Other) {
-			os << std::endl;
+        // operators
+        friend std::ostream& operator<< (std::ostream &os, const Matrix<Type, RowCount, ColumnCount>& Other) {
+            os << std::endl;
 
-			for (int i=0; i<RowCount; ++i) {
-				os << "[";
+            for (int i=0; i<RowCount; ++i) {
+                os << "[";
             
-				for(int j=0; j<ColumnCount; ++j) {
-					os << std::fixed << std::setprecision( 4 ) << Other.get(i, j);
+                for(int j=0; j<ColumnCount; ++j) {
+                    os << std::fixed << std::setprecision( 4 ) << Other.get(i, j);
                 
-					if (j + 1 != ColumnCount) {
-						os << ", ";
-					}
-				}
-				os << "]" << std::endl;
-			}
+                    if (j + 1 != ColumnCount) {
+                        os << ", ";
+                    }
+                }
+                os << "]" << std::endl;
+            }
 
-			os << std::endl;
+            os << std::endl;
 
-			return os;
-		}
+            return os;
+        }
 
-		const Type& operator() (const int i, const int j) const {
-			return this->get(i, j);
-		}
+        const Type& operator() (const int i, const int j) const {
+            return this->get(i, j);
+        }
 
-		Type& operator() (const int i, const int j) {
-			return this->get(i, j);
-		}
+        Type& operator() (const int i, const int j) {
+            return this->get(i, j);
+        }
 
-		MatrixType operator*(const Type factor) const {
-			MatrixType result;
+        MatrixType operator*(const Type factor) const {
+            MatrixType result;
 
-			for (int i=0; i<ValueCount; i++) {
-				result.values[i] = factor * values[i];
-			}
-			
-			return result;
-		}
+            for (int i=0; i<ValueCount; i++) {
+                result.values[i] = factor * values[i];
+            }
+            
+            return result;
+        }
 
-		friend MatrixType operator*(const Type factor, const MatrixType &m) {
-			return m * factor;
-		}
+        friend MatrixType operator*(const Type factor, const MatrixType &m) {
+            return m * factor;
+        }
 
-		MatrixType operator/(const Type factor) const {
-			return (*this) * (Type(1)/factor);
-		}
+        MatrixType operator/(const Type factor) const {
+            return (*this) * (Type(1)/factor);
+        }
 
-		MatrixType operator+() const {
-			return *this;
-		}
+        MatrixType operator+() const {
+            return *this;
+        }
 
-		MatrixType operator-() const {
-			return (*this) * Type(-1);
-		}
+        MatrixType operator-() const {
+            return (*this) * Type(-1);
+        }
 
-		MatrixType operator+(const MatrixType &other) const {
-			MatrixType result;
+        MatrixType operator+(const MatrixType &other) const {
+            MatrixType result;
 
-			for (int i=0; i<ValueCount; i++) {
-				result.values[i] = values[i] + other.values[i];
-			}
-			
-			return result;
-		}
+            for (int i=0; i<ValueCount; i++) {
+                result.values[i] = values[i] + other.values[i];
+            }
+            
+            return result;
+        }
 
-		MatrixType operator-(const MatrixType &other) const {
-			return *this + (-other);
-		}
+        MatrixType operator-(const MatrixType &other) const {
+            return *this + (-other);
+        }
 
-		MatrixType operator*(const MatrixType &other) const {
-			MatrixType result;
+        MatrixType operator*(const MatrixType &other) const {
+            MatrixType result;
 
-			for (int i=0; i<RowCount; i++) {
-				for (int j=0; j<ColumnCount; j++) {
-					result(i, j) = dot(this->getRow(i), other.getColumn(j));
-				}
-			}
+            for (int i=0; i<RowCount; i++) {
+                for (int j=0; j<ColumnCount; j++) {
+                    result(i, j) = dot(this->getRow(i), other.getColumn(j));
+                }
+            }
 
-			return result;
-		}
+            return result;
+        }
 
-		MatrixType& operator+= (const MatrixType &other) {
-			*this = *this + other;
+        MatrixType& operator+= (const MatrixType &other) {
+            *this = *this + other;
 
-			return *this;
-		}
+            return *this;
+        }
 
-		MatrixType& operator-= (const MatrixType &other) {
-			*this = *this - other;
+        MatrixType& operator-= (const MatrixType &other) {
+            *this = *this - other;
 
-			return *this;
-		}
+            return *this;
+        }
 
-		MatrixType& operator*= (const MatrixType &other) {
-			*this = *this * other;
+        MatrixType& operator*= (const MatrixType &other) {
+            *this = *this * other;
 
-			return *this;
-		}
+            return *this;
+        }
 
-		MatrixType& operator/= (const MatrixType &other) {
-			*this = *this / other;
+        MatrixType& operator/= (const MatrixType &other) {
+            *this = *this / other;
 
-			return *this;
-		}
+            return *this;
+        }
 
-		MatrixType& operator*= (Type factor) {
-			*this = *this * factor;
+        MatrixType& operator*= (Type factor) {
+            *this = *this * factor;
 
-			return *this;
-		}
+            return *this;
+        }
 
-		MatrixType& operator/= (Type factor) {
-			*this = *this / factor;
+        MatrixType& operator/= (Type factor) {
+            *this = *this / factor;
 
-			return *this;
-		}
+            return *this;
+        }
 
-		MatrixType operator/ (const MatrixType &other) const {
-			return (*this) * inverse(other);
-		}
+        MatrixType operator/ (const MatrixType &other) const {
+            return (*this) * inverse(other);
+        }
 
-		bool operator== (const MatrixType &other) const {
-			for (int i=0; i<ValueCount; i++) {
-				if (values[i] != other.values[i]) {
-					return false;
-				}
-			}
+        bool operator== (const MatrixType &other) const {
+            for (int i=0; i<ValueCount; i++) {
+                if (values[i] != other.values[i]) {
+                    return false;
+                }
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		bool operator!= (const MatrixType &other) const {
-			return ! (*this == other);
-		}
+        bool operator!= (const MatrixType &other) const {
+            return ! (*this == other);
+        }
 
-	private:
-		template<typename Type_, int Count>
-		struct Determinant {
-			static Type_ compute(const Matrix<Type_, Count, Count> &m) {
-				Type_ factor = Type_(1);
-				Type_ result = Type_(0);
+    private:
+        template<typename Type_, int Count>
+        struct Determinant {
+            static Type_ compute(const Matrix<Type_, Count, Count> &m) {
+                Type_ factor = Type_(1);
+                Type_ result = Type_(0);
                 
-				const int row = 0;
+                const int row = 0;
                 
-				for (int column=0; column<Count; ++column) {
-					factor = (column+1)%2 ? Type_(-1) : Type_(1);
+                for (int column=0; column<Count; ++column) {
+                    factor = (column+1)%2 ? Type_(-1) : Type_(1);
 
-					Type_ subDet = abs(m.getSubMatrix(row, column));
+                    Type_ subDet = abs(m.getSubMatrix(row, column));
 
-					result += factor * m.get(row, column) * subDet;
-				}
+                    result += factor * m.get(row, column) * subDet;
+                }
                 
-				return result;
-			}
-		};
+                return result;
+            }
+        };
 
-		template<typename Type_>
-		struct Determinant<Type_, 2> {
-			static Type_ compute(const Matrix<Type_, 2, 2> &m) {
-				return m(0, 0)*m(1, 1) - m(1, 0)*m(0, 1);
-			}
-		};
+        template<typename Type_>
+        struct Determinant<Type_, 2> {
+            static Type_ compute(const Matrix<Type_, 2, 2> &m) {
+                return m(0, 0)*m(1, 1) - m(1, 0)*m(0, 1);
+            }
+        };
 
-	public:
-		friend Type abs(const Matrix<Type, RowCount, ColumnCount> &m) {
-			static_assert(RowCount == ColumnCount, "");
+    public:
+        friend Type abs(const Matrix<Type, RowCount, ColumnCount> &m) {
+            static_assert(RowCount == ColumnCount, "");
 
-			return Determinant<Type, RowCount>::compute(m);
-		}
+            return Determinant<Type, RowCount>::compute(m);
+        }
 
-		friend MatrixType adjoint(const MatrixType &matrix) {
-			Matrix<Type, RowCount, ColumnCount> result;
+        friend MatrixType adjoint(const MatrixType &matrix) {
+            Matrix<Type, RowCount, ColumnCount> result;
         
-			for(int i=0; i<RowCount; ++i) {
-				for(int j=0; j<ColumnCount; ++j) {
-					Type factor = ((i+j)%2 == 1) ? Type(1) : Type(-1);
-					result(i, j) = factor * abs(matrix.getSubMatrix(i, j));
-				}
-			}
+            for(int i=0; i<RowCount; ++i) {
+                for(int j=0; j<ColumnCount; ++j) {
+                    Type factor = ((i+j)%2 == 1) ? Type(1) : Type(-1);
+                    result(i, j) = factor * abs(matrix.getSubMatrix(i, j));
+                }
+            }
         
-			return result;
-		}
+            return result;
+        }
 
-		friend MatrixType transpose(const MatrixType &other) {
-			auto result = other;
-			int baseColumn = 1;
+        friend MatrixType transpose(const MatrixType &other) {
+            auto result = other;
+            int baseColumn = 1;
 
-			for(int i=0; i<RowCount-1; ++i) {
-				for(int j=baseColumn; j<ColumnCount; ++j) {
-					std::swap( result(i, j), result(j, i) );
-				}
+            for(int i=0; i<RowCount-1; ++i) {
+                for(int j=baseColumn; j<ColumnCount; ++j) {
+                    std::swap( result(i, j), result(j, i) );
+                }
 
-				++baseColumn;
-			}
+                ++baseColumn;
+            }
         
-			return result;
-		}
+            return result;
+        }
 
-		friend MatrixType inverse(const MatrixType &m, Type det) {
-			return transpose(adjoint(m)) / det;
-		}
-		
-		friend MatrixType inverse(const MatrixType &m) {
-			return inverse(m, abs(m));
-		}
+        friend MatrixType inverse(const MatrixType &m, Type det) {
+            return transpose(adjoint(m)) / det;
+        }
+        
+        friend MatrixType inverse(const MatrixType &m) {
+            return inverse(m, abs(m));
+        }
 
-	private:
-		int offset(const int i, const int j) const {
-			assert(i >= 0);
-			assert(i < RowCount);
+    private:
+        int offset(const int i, const int j) const {
+            assert(i >= 0);
+            assert(i < RowCount);
 
-			assert(j >= 0);
-			assert(j < ColumnCount);
+            assert(j >= 0);
+            assert(j < ColumnCount);
 
-			return j * RowCount + i;
-		}
-		
-		template<int i, int j>
-		int offset() const {
-			static_assert(i >= 0, "");
-			static_assert(i < RowCount, "");
+            return j * RowCount + i;
+        }
+        
+        template<int i, int j>
+        int offset() const {
+            static_assert(i >= 0, "");
+            static_assert(i < RowCount, "");
 
-			static_assert(j >= 0, "");
-			static_assert(j < ColumnCount, "");
+            static_assert(j >= 0, "");
+            static_assert(j < ColumnCount, "");
 
-			return j * RowCount + i;
-		}
+            return j * RowCount + i;
+        }
 
-	public:
-		Type values[ValueCount];
-	};
-	
-	// matrix factory functions
+    public:
+        Type values[ValueCount];
+    };
+    
+    // matrix factory functions
 
-	template<typename Type, int RowCount, int ColumnCount>
+    template<typename Type, int RowCount, int ColumnCount>
     Matrix<Type, RowCount, ColumnCount> zero() {
         Matrix<Type, RowCount, ColumnCount> result;
         
         for(int i=0; i<RowCount; ++i) {
-			for(int j=0; j<ColumnCount; ++j) {
-				result(i, j) = Type(0);
-			}
+            for(int j=0; j<ColumnCount; ++j) {
+                result(i, j) = Type(0);
+            }
         }
         
         return result;
@@ -524,7 +524,7 @@ namespace xe {
     template<typename Type>
     Matrix<Type, 4, 4> perspective(Type fov_radians, Type aspect, Type znear, Type zfar) {
         Type f = Type(1) / std::tan(fov_radians / Type(2));
-		Type zdiff = znear - zfar;
+        Type zdiff = znear - zfar;
         
         auto result = identity<Type, 4>();
         
@@ -563,30 +563,30 @@ namespace xe {
         return result;
     }
 
-	template<typename Type, int Size>
-	Vector<Type, Size> transform(const Matrix<Type, Size, Size> &m, const Vector<Type, Size> &v) {
-		Vector<Type, Size> result;
+    template<typename Type, int Size>
+    Vector<Type, Size> transform(const Matrix<Type, Size, Size> &m, const Vector<Type, Size> &v) {
+        Vector<Type, Size> result;
 
-		for (int i=0; i<Size; i++) {
-			result[i] = dot(m.getRow(i), v);
-		}
+        for (int i=0; i<Size; i++) {
+            result[i] = dot(m.getRow(i), v);
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	template<typename Type, int Size>
-	Vector<Type, Size - 1> transform(const Matrix<Type, Size, Size> &m, const Vector<Type, Size - 1> &v) {
-		Vector<Type, Size - 1> result;
+    template<typename Type, int Size>
+    Vector<Type, Size - 1> transform(const Matrix<Type, Size, Size> &m, const Vector<Type, Size - 1> &v) {
+        Vector<Type, Size - 1> result;
 
-		for (int i=0; i<Size - 1; i++) {
-			result[i] = dot(m.getRow(i), Vector<Type, Size>(v, Type(1)));
-		}
+        for (int i=0; i<Size - 1; i++) {
+            result[i] = dot(m.getRow(i), Vector<Type, Size>(v, Type(1)));
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	typedef Matrix<float, 2, 2> Matrix2f;
-	typedef Matrix<float, 3, 3> Matrix3f;
+    typedef Matrix<float, 2, 2> Matrix2f;
+    typedef Matrix<float, 3, 3> Matrix3f;
     typedef Matrix<float, 4, 4> Matrix4f;
 
     typedef Matrix<double, 2, 2> Matrix2d;

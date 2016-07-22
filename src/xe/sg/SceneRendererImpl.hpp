@@ -9,21 +9,21 @@
 #include "xe/sg/TransformationStack.hpp"
 
 namespace xe { namespace sg {
-	class SceneRendererImpl : public SceneRenderer {
-	public:
-		explicit SceneRendererImpl(Pipeline* pipeline) {
-			m_pipeline = pipeline;
-		}
+    class SceneRendererImpl : public SceneRenderer {
+    public:
+        explicit SceneRendererImpl(Pipeline* pipeline) {
+            m_pipeline = pipeline;
+        }
 
-		virtual ~SceneRendererImpl() {}
+        virtual ~SceneRendererImpl() {}
 
-		virtual void renderScene(Scene *scene) override;
+        virtual void renderScene(Scene *scene) override;
 
-	protected:
-		void renderNode(xe::sg::TransformationStack *transformStack, xe::sg::SceneNode* node);
+    protected:
+        void renderNode(xe::sg::TransformationStack *transformStack, xe::sg::SceneNode* node);
 
-		Pipeline* m_pipeline = nullptr;
-	};
+        Pipeline* m_pipeline = nullptr;
+    };
 }}
 
 #endif

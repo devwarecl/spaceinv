@@ -8,35 +8,35 @@
 
 namespace xe { namespace sg {
 
-	void SceneRendererImpl::renderScene(Scene *scene) {
-		assert(m_pipeline);
-		assert(scene);
+    void SceneRendererImpl::renderScene(Scene *scene) {
+        assert(m_pipeline);
+        assert(scene);
         
-		TransformationStack transformStack;
+        TransformationStack transformStack;
 
-		transformStack.reset(xe::identity<float, 4>());
+        transformStack.reset(xe::identity<float, 4>());
 
-		m_pipeline->beginFrame(scene->backcolor);
-		this->renderNode(&transformStack, &scene->rootNode);
-		m_pipeline->endFrame();
-	}
+        m_pipeline->beginFrame(scene->backcolor);
+        this->renderNode(&transformStack, &scene->rootNode);
+        m_pipeline->endFrame();
+    }
 
-	void SceneRendererImpl::renderNode(TransformationStack *transformStack, SceneNode* node) {
+    void SceneRendererImpl::renderNode(TransformationStack *transformStack, SceneNode* node) {
         assert(transformStack);
-		assert(node);
+        assert(node);
 
-		transformStack->push(node->transform);
+        transformStack->push(node->transform);
         
-		m_pipeline->setWorldTransform(transformStack->top());
+        m_pipeline->setWorldTransform(transformStack->top());
 
-		if (node->renderable) {
-			node->renderable->renderWith(m_pipeline);
-		}
+        if (node->renderable) {
+            node->renderable->renderWith(m_pipeline);
+        }
 
         for (auto &child : node->childs) {
             this->renderNode(transformStack, child.get());
         }
 
-		transformStack->pop();
-	}
+        transformStack->pop();
+    }
 }}

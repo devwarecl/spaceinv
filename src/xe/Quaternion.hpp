@@ -11,16 +11,16 @@ namespace xe {
     template<typename Type>
     struct Rotation {
         Type angle = Type(0);
-		Vector<Type, 3> axis = {Type(0), Type(0), Type(0)};
+        Vector<Type, 3> axis = {Type(0), Type(0), Type(0)};
     };
 
     template<typename Type>
     struct Quaternion {
-		union {
-			struct {Type x, y, z, w;};
-			Type values[4];
+        union {
+            struct {Type x, y, z, w;};
+            Type values[4];
 
-		};
+        };
 
         Quaternion(const xe::Vector<Type, 3> &v_={0, 0, 0}, Type w_=Type(0)) {
             v = v_;

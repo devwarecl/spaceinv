@@ -10,59 +10,59 @@
 
 namespace xe { namespace gfx {
 
-	enum class TextureType {
-		Unknown,
-		Tex1D,
-		Tex2D,
-		Tex3D,
-		TexCube
-	};
+    enum class TextureType {
+        Unknown,
+        Tex1D,
+        Tex2D,
+        Tex3D,
+        TexCube
+    };
 
-	enum class TextureCubeSide {
-		Unknown,
-		PosX, PosY, PosZ,
-		NegX, NegY, NegZ
-	};
+    enum class TextureCubeSide {
+        Unknown,
+        PosX, PosY, PosZ,
+        NegX, NegY, NegZ
+    };
 
-	struct TextureDesc {
-		TextureType type = TextureType::Unknown;
-		PixelFormat format = PixelFormat::Unknown;
-		size_t width = 0;
-		size_t height = 0;
-		size_t depth = 0;
+    struct TextureDesc {
+        TextureType type = TextureType::Unknown;
+        PixelFormat format = PixelFormat::Unknown;
+        size_t width = 0;
+        size_t height = 0;
+        size_t depth = 0;
 
-		size_t getSize() const {
-			size_t result = 1;
-			size_t dimensions[] = {width, height, depth};
+        size_t getSize() const {
+            size_t result = 1;
+            size_t dimensions[] = {width, height, depth};
 
-			for (size_t dim : dimensions) {
-				if (dim) {
-					result *= dim;
-				}
-			}
+            for (size_t dim : dimensions) {
+                if (dim) {
+                    result *= dim;
+                }
+            }
 
-			result *= size(format);
+            result *= size(format);
 
-			return result;
-		}
-	};
+            return result;
+        }
+    };
 
-	class Texture;
-	typedef std::unique_ptr<Texture> TexturePtr;
+    class Texture;
+    typedef std::unique_ptr<Texture> TexturePtr;
 
-	class Device;
-	class Texture {
-	public:
-		virtual ~Texture() {}
+    class Device;
+    class Texture {
+    public:
+        virtual ~Texture() {}
 
-		virtual TextureDesc getDesc() const = 0;
-		virtual Buffer* getBuffer(TextureCubeSide side = TextureCubeSide::Unknown, size_t level = 0) = 0;
-		virtual const Buffer* getBuffer(TextureCubeSide side = TextureCubeSide::Unknown, size_t level = 0) const = 0;
+        virtual TextureDesc getDesc() const = 0;
+        virtual Buffer* getBuffer(TextureCubeSide side = TextureCubeSide::Unknown, size_t level = 0) = 0;
+        virtual const Buffer* getBuffer(TextureCubeSide side = TextureCubeSide::Unknown, size_t level = 0) const = 0;
 
-		virtual void buildMipmaps();
+        virtual void buildMipmaps();
 
-		static TexturePtr createCheckerboard(Device *device, const TextureDesc &desc, const int tilesInX, const int tilesInY);
-	};	
+        static TexturePtr createCheckerboard(Device *device, const TextureDesc &desc, const int tilesInX, const int tilesInY);
+    };    
 }}
 
 #endif

@@ -15,7 +15,7 @@ namespace xe { namespace sg {
         virtual void update(float seconds) = 0;
     };
 
-	typedef std::unique_ptr<SceneNodeAnimator> SceneNodeAnimatorPtr;
+    typedef std::unique_ptr<SceneNodeAnimator> SceneNodeAnimatorPtr;
 }}
 
-#endif	// __EXENG_SCENEGRAPH_SCENENODEANIMATOR_HPP__
+#endif    // __EXENG_SCENEGRAPH_SCENENODEANIMATOR_HPP__

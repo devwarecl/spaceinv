@@ -26,9 +26,9 @@ namespace xe { namespace gfx { namespace gl3  {
 
         virtual void read(void* destination, const int size = 0, const int offset = 0, const int destination_offset = 0) const override;
 
-		virtual size_t getSize() const override {
-			return m_size;
-		}
+        virtual size_t getSize() const override {
+            return m_size;
+        }
 
         GLint getId() const {
             return m_id;

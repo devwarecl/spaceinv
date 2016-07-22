@@ -12,21 +12,21 @@
 #include "xe/gfx/ShaderType.hpp"
 
 namespace xe { namespace gfx {
-	struct ShaderSource {
-		xe::gfx::ShaderType type;
-		std::string source;
-	};
+    struct ShaderSource {
+        xe::gfx::ShaderType type;
+        std::string source;
+    };
 
     class Program {
     public:
         virtual ~Program() {}
 
-		virtual int getLocation(const std::string &name) const = 0;
+        virtual int getLocation(const std::string &name) const = 0;
 
-		virtual void fillUniformLocations(UniformFormat *uniformFormat) const = 0;
+        virtual void fillUniformLocations(UniformFormat *uniformFormat) const = 0;
     };
 
-	typedef std::unique_ptr<Program> ProgramPtr;
+    typedef std::unique_ptr<Program> ProgramPtr;
 }}
 
 #endif 

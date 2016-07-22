@@ -29,21 +29,21 @@ namespace xe { namespace gfx { namespace gl3  {
             return m_indexed;
         }
 
-		virtual std::size_t getBufferCount() const override {
-			return m_buffers.size();
-		}
+        virtual std::size_t getBufferCount() const override {
+            return m_buffers.size();
+        }
 
-		virtual Buffer* getBuffer(const std::size_t index)  override {
-			return m_buffers[index].get();
-		}
+        virtual Buffer* getBuffer(const std::size_t index)  override {
+            return m_buffers[index].get();
+        }
 
-		virtual const Buffer* getBuffer(const std::size_t index) const override {
-			return m_buffers[index].get();
-		}
+        virtual const Buffer* getBuffer(const std::size_t index) const override {
+            return m_buffers[index].get();
+        }
 
-		MeshFormat getFormat() const override {
-			return m_format;
-		}
+        MeshFormat getFormat() const override {
+            return m_format;
+        }
 
     protected:
         void construct(const MeshFormat &format, std::vector<BufferPtr> buffers);
@@ -52,10 +52,10 @@ namespace xe { namespace gfx { namespace gl3  {
         GLuint m_id = 0;
         bool m_indexed = false;
         std::vector<BufferGLPtr> m_buffers;
-		MeshFormat m_format;
+        MeshFormat m_format;
     };
 
-	typedef std::unique_ptr<MeshGL> MeshGLPtr;
+    typedef std::unique_ptr<MeshGL> MeshGLPtr;
 }}}
 
 #endif

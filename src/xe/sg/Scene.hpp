@@ -13,10 +13,10 @@ namespace xe { namespace sg {
         Vector4f backcolor = {0.2f, 0.2f, 0.2f, 1.0f};
         SceneNode rootNode;
 
-		Scene();
+        Scene();
     };
 
-	typedef std::unique_ptr<Scene> ScenePtr;
+    typedef std::unique_ptr<Scene> ScenePtr;
 }}
 
 #endif

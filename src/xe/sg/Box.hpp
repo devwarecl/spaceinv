@@ -10,7 +10,7 @@ namespace xe { namespace sg {
     
     xe::Boxf box(const xe::Boxf &solid);
 
-	template<typename OtherSolid>
+    template<typename OtherSolid>
     inline xe::Boxf box(const OtherSolid &solid) {
         return xe::Boxf();
     }

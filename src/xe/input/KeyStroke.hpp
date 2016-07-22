@@ -8,13 +8,13 @@
 #include <xe/input/KeyStatus.hpp>
 
 namespace xe { namespace input {
-	struct KeyStroke {
-		KeyCode code = KeyCode::Unknown;
-		KeyStatus status = KeyStatus::Release;
+    struct KeyStroke {
+        KeyCode code = KeyCode::Unknown;
+        KeyStatus status = KeyStatus::Release;
 
-		KeyStroke() {}
-		KeyStroke(KeyCode code_, KeyStatus status_) : code(code_), status(status_) {}
-	};
+        KeyStroke() {}
+        KeyStroke(KeyCode code_, KeyStatus status_) : code(code_), status(status_) {}
+    };
 }}
 
 #endif 

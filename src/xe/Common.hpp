@@ -66,7 +66,7 @@ namespace xe {
     Scalar proj_abs(const Type &a, const Type &b) {
         return dot(a, b) / dot(a, a);
     }
-	
+    
     template<typename Type>
     Type proj(const Type &a, const Type &b) {
         return proj_abs(a, b) * a;

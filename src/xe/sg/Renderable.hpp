@@ -6,11 +6,11 @@
 #include "xe/sg/Forward.hpp"
 
 namespace xe { namespace sg {
-	class Renderable {
-	public:
-		virtual ~Renderable() {}
-		virtual void renderWith(xe::sg::Pipeline *renderer) = 0;
-	};
+    class Renderable {
+    public:
+        virtual ~Renderable() {}
+        virtual void renderWith(xe::sg::Pipeline *renderer) = 0;
+    };
 }}
 
 #endif 

@@ -70,7 +70,7 @@ std::vector<ModelMaterial> createMaterialArray(xe::gfx::UniformFormat *format, T
         ModelMaterial material(format);
 
         xe::gfx::Texture *texture = loader.loadTexture(textureName);
-		material.layers.push_back(xe::gfx::MaterialLayer(texture));
+        material.layers.push_back(xe::gfx::MaterialLayer(texture));
 
         materials.push_back(std::move(material));
     }
@@ -90,10 +90,10 @@ std::vector<xe::Vector2f> createTexCoordArray(const std::vector<ModelMaterial> &
         xe::Vector2f texsize = {1.0f, 1.0f};
         
         if (material.layers[0].texture) {
-			auto desc = material.layers[0].texture->getDesc();
+            auto desc = material.layers[0].texture->getDesc();
 
             texsize.x = float(desc.width);
-			texsize.y = float(desc.height);
+            texsize.y = float(desc.height);
         }
 
         xe::Vector2f texcoord = xe::Vector2f(t.values) / texsize;
@@ -143,12 +143,12 @@ ModelPart createPart(const bdm::Mesh &bdm_mesh, xe::gfx::UniformFormat *material
 
     scale(getBox(vertices), vertices);
 
-	// cargar datos a OpenGL
-	std::vector<xe::BufferPtr> buffers;
+    // cargar datos a OpenGL
+    std::vector<xe::BufferPtr> buffers;
 
-	buffers.push_back(device->createBuffer(xe::gfx::BufferType::Vertex, vertices));
-	buffers.push_back(device->createBuffer(xe::gfx::BufferType::Vertex, normals));
-	buffers.push_back(device->createBuffer(xe::gfx::BufferType::Vertex, texcoords));
+    buffers.push_back(device->createBuffer(xe::gfx::BufferType::Vertex, vertices));
+    buffers.push_back(device->createBuffer(xe::gfx::BufferType::Vertex, normals));
+    buffers.push_back(device->createBuffer(xe::gfx::BufferType::Vertex, texcoords));
 
     //buffers.emplace_back(new xe::gfx::gl3::BufferGL(GL_ARRAY_BUFFER, GL_STATIC_DRAW, vertices));
     //buffers.emplace_back(new xe::gfx::gl3::BufferGL(GL_ARRAY_BUFFER, GL_STATIC_DRAW, normals));
@@ -163,7 +163,7 @@ ModelPart createPart(const bdm::Mesh &bdm_mesh, xe::gfx::UniformFormat *material
     part.materials = std::move(materials);
     part.patches = std::move(patches);
     part.format = format;
-	part.materialFormat = materialFormat;
+    part.materialFormat = materialFormat;
     
     return part;
 }
@@ -171,10 +171,10 @@ ModelPart createPart(const bdm::Mesh &bdm_mesh, xe::gfx::UniformFormat *material
 ModelPtr ModelLoader::createModel(const std::string &path, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format) {
     std::vector<ModelPart> parts;
 
-	std::string location = path;
-	if (m_locator) {
-		location = m_locator->locate(path);
-	}
+    std::string location = path;
+    if (m_locator) {
+        location = m_locator->locate(path);
+    }
 
     bdm::BdmFile bdm_file(location.c_str());
     
@@ -186,17 +186,17 @@ ModelPtr ModelLoader::createModel(const std::string &path, xe::gfx::UniformForma
 }
 
 Model* ModelLoader::getModel(const std::string &name, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat *format) {
-	Model* model = nullptr;
+    Model* model = nullptr;
 
-	auto modelIt = m_models.find(name);
+    auto modelIt = m_models.find(name);
 
-	if (modelIt == std::end(m_models)) {
-		m_models[name] = this->createModel(name, materialFormat, *format);
-		model = m_models[name].get();
+    if (modelIt == std::end(m_models)) {
+        m_models[name] = this->createModel(name, materialFormat, *format);
+        model = m_models[name].get();
 
-	} else {
-		model = modelIt->second.get();
-	}
+    } else {
+        model = modelIt->second.get();
+    }
 
-	return model;
+    return model;
 }

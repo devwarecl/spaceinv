@@ -10,12 +10,12 @@
 
 namespace xe { namespace sg {
     
-	class SceneRenderer {
+    class SceneRenderer {
     public:
         virtual void renderScene(Scene *scene) = 0;
-	};
+    };
 
-	typedef std::unique_ptr<SceneRenderer> SceneRendererPtr;
+    typedef std::unique_ptr<SceneRenderer> SceneRendererPtr;
 }}
 
 #endif 

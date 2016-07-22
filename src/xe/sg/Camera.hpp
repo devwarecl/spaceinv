@@ -17,19 +17,19 @@ namespace xe { namespace sg {
     public:
         virtual ~Camera() {}
 
-		virtual Matrix4f computeView() const = 0;
-		virtual Matrix4f computeProj() const = 0;
+        virtual Matrix4f computeView() const = 0;
+        virtual Matrix4f computeProj() const = 0;
 
-		virtual Rectf getViewport() const = 0;
+        virtual Rectf getViewport() const = 0;
 
-		virtual void renderWith(xe::sg::Pipeline *renderer) override {
+        virtual void renderWith(xe::sg::Pipeline *renderer) override {
             assert(renderer);
 
             renderer->render(this);
         }
     };
 
-	typedef std::unique_ptr<Camera> CameraPtr;
+    typedef std::unique_ptr<Camera> CameraPtr;
 }}
 
 #endif

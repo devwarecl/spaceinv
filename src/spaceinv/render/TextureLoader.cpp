@@ -4,7 +4,7 @@
 #include "FreeImage.h"
 
 TextureLoader::TextureLoader(xe::FileLocator *locator) {
-	this->setLocator(locator);
+    this->setLocator(locator);
     ::FreeImage_Initialise();
 }
 
@@ -15,16 +15,16 @@ TextureLoader::~TextureLoader() {
 xe::gfx::Texture* TextureLoader::loadTexture(const std::string &file) {
     xe::gfx::TexturePtr texture;
 
-	std::string location = file;
+    std::string location = file;
 
-	if (m_locator) {
-		location = m_locator->locate(file);
-	}
+    if (m_locator) {
+        location = m_locator->locate(file);
+    }
 
-	if (m_textures.find(location) == m_textures.end()) {
-		texture = this->doLoadTexture(location);
-		m_textures[location] = std::move(texture);
-	}
+    if (m_textures.find(location) == m_textures.end()) {
+        texture = this->doLoadTexture(location);
+        m_textures[location] = std::move(texture);
+    }
 
     return m_textures[location].get();
 }
@@ -40,11 +40,11 @@ xe::gfx::TexturePtr TextureLoader::doLoadTexture(const std::string &file) {
 
     bitmap = FreeImage_ConvertTo24Bits(bitmap);
 
-	xe::gfx::TextureDesc textureDesc;
-	textureDesc.type = xe::gfx::TextureType::Tex2D;
-	textureDesc.width = ::FreeImage_GetWidth(bitmap);
-	textureDesc.height = ::FreeImage_GetHeight(bitmap);
-	textureDesc.format = xe::gfx::PixelFormat::R8G8B8;
+    xe::gfx::TextureDesc textureDesc;
+    textureDesc.type = xe::gfx::TextureType::Tex2D;
+    textureDesc.width = ::FreeImage_GetWidth(bitmap);
+    textureDesc.height = ::FreeImage_GetHeight(bitmap);
+    textureDesc.format = xe::gfx::PixelFormat::R8G8B8;
 
     void* data = ::FreeImage_GetBits(bitmap);
     

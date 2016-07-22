@@ -10,35 +10,35 @@ class Scenario;
 
 class Entity {
 public:
-	Entity() {}
+    Entity() {}
 
-	Entity(Scenario *scenario, xe::sg::SceneNode *node);
+    Entity(Scenario *scenario, xe::sg::SceneNode *node);
 
-	~Entity() {}
+    ~Entity() {}
 
-	void move(const float distance);
+    void move(const float distance);
 
-	void move(const float distance, const xe::Vector3f &direction);
+    void move(const float distance, const xe::Vector3f &direction);
 
-	void step(const float distance);
+    void step(const float distance);
 
-	void turn(const float angle);
+    void turn(const float angle);
 
-	void fire();
+    void fire();
 
-	void syncNode();
+    void syncNode();
 
 protected:
-	xe::Matrix4f getTranform();
+    xe::Matrix4f getTranform();
 
 private:
-	Scenario *m_scenario = nullptr;
+    Scenario *m_scenario = nullptr;
 
-	xe::sg::SceneNode *m_node = nullptr;
+    xe::sg::SceneNode *m_node = nullptr;
 
-	xe::Vector3f m_position = {0.0f, 0.0f, -8.0f};
-	xe::Vector3f m_direction;
-	xe::Vector3f m_up = {0.0f, 1.0f, 0.0f};
+    xe::Vector3f m_position = {0.0f, 0.0f, -8.0f};
+    xe::Vector3f m_direction;
+    xe::Vector3f m_up = {0.0f, 1.0f, 0.0f};
 };
 
 typedef std::unique_ptr<Entity> EntityPtr;

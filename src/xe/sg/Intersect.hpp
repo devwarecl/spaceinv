@@ -28,8 +28,8 @@ namespace xe { namespace sg {
     bool intersect(const Ray &ray, const Plane &plane, IntersectInfo *info);
     bool intersect(const Ray &ray, const Sphere &sphere, IntersectInfo *info);
 
-	inline bool intersect(const Ray &ray, const xe::Boxf &box, IntersectInfo *info) 
-	{
+    inline bool intersect(const Ray &ray, const xe::Boxf &box, IntersectInfo *info) 
+    {
         Vector3f minEdge = box.getMin();
         Vector3f maxEdge = box.getMax();
         
@@ -118,12 +118,12 @@ namespace xe { namespace sg {
     }
     
     inline bool intersect(const Ray &ray, const Plane &plane, IntersectInfo *info) 
-	{
+    {
         return plane.intersect(ray, info);
     }
     
     inline bool intersect(const Ray &ray, const Sphere &sphere, IntersectInfo *info) 
-	{
+    {
         return sphere.intersect(ray, info);
     }
 }}

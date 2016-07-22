@@ -9,15 +9,15 @@ find_package(glfw3 REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(Boost 
 
-	COMPONENTS 
-		filesystem
-		system 
-		unit_test_framework 
-		timer 
-		log 
-		thread 
+    COMPONENTS 
+        filesystem
+        system 
+        unit_test_framework 
+        timer 
+        log 
+        thread 
 
-	REQUIRED
+    REQUIRED
 )
 
 set(CMAKE_CXX_STANDARD 14)

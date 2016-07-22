@@ -11,17 +11,17 @@
 
 namespace xe { namespace sg {
     
-	class Geometry : public Renderable {
-	public:
+    class Geometry : public Renderable {
+    public:
         virtual ~Geometry() {}
 
-		virtual void renderWith(Pipeline *renderer) override {
+        virtual void renderWith(Pipeline *renderer) override {
             assert(renderer);
-		    renderer->render(this);
+            renderer->render(this);
         }
-	};
+    };
 
-	typedef std::unique_ptr<Geometry> GeometryPtr;
+    typedef std::unique_ptr<Geometry> GeometryPtr;
 }}
 
 #endif 

@@ -36,7 +36,7 @@ namespace xe { namespace sg {
     };
 
 
-	template<typename Vector>
+    template<typename Vector>
     Triangle<Vector>::Triangle(const Vector &P1, const Vector &P2, const Vector &P3) : p1(P1), p2(P2), p3(P3) {
     }
 

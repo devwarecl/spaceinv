@@ -9,42 +9,42 @@
 #include <xe/input/Event.hpp>
 
 namespace xe { namespace input {
-	template<typename EventData>
-	class EventImpl : public Event<EventData> {
-	public:
-		EventImpl() {}
-		virtual ~EventImpl() {}
+    template<typename EventData>
+    class EventImpl : public Event<EventData> {
+    public:
+        EventImpl() {}
+        virtual ~EventImpl() {}
 
-		virtual int getHandlerCount() const override {
-			return handlers.size();
-		}
+        virtual int getHandlerCount() const override {
+            return handlers.size();
+        }
 
-		virtual EventHandler<EventData>* getHandler(const int index) override {
-			assert(index >= 0);
-			assert(index < this->getHandlerCount());
+        virtual EventHandler<EventData>* getHandler(const int index) override {
+            assert(index >= 0);
+            assert(index < this->getHandlerCount());
 
-			return handlers[index];
-		}
+            return handlers[index];
+        }
 
-		virtual void addHandler(EventHandler<EventData>* handler) override {
-			handlers.push_back(handler);
-		}
+        virtual void addHandler(EventHandler<EventData>* handler) override {
+            handlers.push_back(handler);
+        }
 
-		virtual void removeHandler(EventHandler<EventData>* handler) override {
+        virtual void removeHandler(EventHandler<EventData>* handler) override {
             std::remove(handlers.begin(), handlers.end(), handler);
-		}
+        }
 
-		virtual void raise(const EventData &eventData) override {
-			for (EventHandler<EventData> *handler : this->handlers) {
-				if (!handler->handleEvent(eventData)) {
-					break;
-				}
-			}
-		}
+        virtual void raise(const EventData &eventData) override {
+            for (EventHandler<EventData> *handler : this->handlers) {
+                if (!handler->handleEvent(eventData)) {
+                    break;
+                }
+            }
+        }
 
-	private:
-		std::vector<EventHandler<EventData>*> handlers;
-	};
+    private:
+        std::vector<EventHandler<EventData>*> handlers;
+    };
 }}
 
 #endif 
