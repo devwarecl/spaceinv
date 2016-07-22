@@ -23,7 +23,7 @@ set (sources_input
     input/InputManager.hpp 
     input/Keyboard.hpp 
     input/Mouse.hpp 
-    input/InputManagerImpl.hpp    input/InputManagerImpl.cpp 
+    input/InputManagerImpl.hpp  input/InputManagerImpl.cpp 
     input/KeyboardStatus.hpp    input/KeyboardStatus.cpp 
     input/KeyCode.hpp 
     input/KeyStatus.hpp 
@@ -47,15 +47,16 @@ set (sources_gfx
 
 set (sources_gfx_gl3
     gfx/gl3/OpenGL.hpp 
-    gfx/gl3/BufferGL.hpp gfx/gl3/BufferGL.cpp
-    gfx/gl3/DeviceGL.hpp gfx/gl3/DeviceGL.cpp 
-    gfx/gl3/TextureGL.hpp gfx/gl3/TextureGL.cpp 
+    gfx/gl3/BufferGL.hpp        gfx/gl3/BufferGL.cpp
+    gfx/gl3/DeviceGL.hpp        gfx/gl3/DeviceGL.cpp 
+    gfx/gl3/TextureGL.hpp       gfx/gl3/TextureGL.cpp 
     gfx/gl3/TextureBufferGL.hpp gfx/gl3/TextureBufferGL.cpp 
     gfx/gl3/MaterialGL.hpp 
-    gfx/gl3/ProgramGL.hpp gfx/gl3/ProgramGL.cpp 
-    gfx/gl3/ShaderGL.hpp gfx/gl3/ShaderGL.cpp 
-    gfx/gl3/MeshGL.hpp gfx/gl3/MeshGL.cpp
-    gfx/gl3/InputManagerGLFW.hpp gfx/gl3/InputManagerGLFW.cpp
+    gfx/gl3/ProgramGL.hpp       gfx/gl3/ProgramGL.cpp 
+    gfx/gl3/ShaderGL.hpp        gfx/gl3/ShaderGL.cpp 
+    gfx/gl3/MeshGL.hpp          gfx/gl3/MeshGL.cpp
+
+    gfx/gl3/InputManagerGLFW.hpp    gfx/gl3/InputManagerGLFW.cpp
 )
 
 

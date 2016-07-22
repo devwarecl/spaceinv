@@ -45,8 +45,8 @@ namespace xe { namespace input {
             }
         };
 
-        Status current;
-        Status previous;
+        Status m_current;
+        Status m_previous;
     };
 }}
 

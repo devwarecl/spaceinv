@@ -60,9 +60,9 @@ namespace xe { namespace gfx { namespace gl3  {
         GLenum target;
 
         switch (type) {
-        case BufferType::Vertex: target=GL_ARRAY_BUFFER; break;
-        case BufferType::Index: target=GL_ELEMENT_ARRAY_BUFFER; break;
-        default: assert(false); 
+            case BufferType::Vertex: target=GL_ARRAY_BUFFER; break;
+            case BufferType::Index: target=GL_ELEMENT_ARRAY_BUFFER; break;
+            default: assert(false); 
         }
 
         GLenum usage = GL_DYNAMIC_DRAW;
@@ -162,14 +162,7 @@ namespace xe { namespace gfx { namespace gl3  {
                 glBindTexture(textureGL->getTarget(), textureGL->getId());
 
             } else {
-                GLenum target = GL_TEXTURE_2D;
-
-                //if (m_material && i < m_material->layers.size()) {
-                //    auto textureGL = static_cast<TextureGL*>(m_material->layers[i].texture);
-                //    target = textureGL->getTarget();
-                //}
-
-                glBindTexture(target, 0);
+                glBindTexture(GL_TEXTURE_2D, 0);
             }
         }
 

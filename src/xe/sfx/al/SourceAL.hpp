@@ -20,5 +20,6 @@ namespace xe { namespace sfx { namespace al {
         
     private:
         SourceDesc m_desc;
+        BufferAL *m_buffer = nullptr;
     };
 }}}

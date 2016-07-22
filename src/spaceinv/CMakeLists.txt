@@ -18,8 +18,8 @@ set (sources_render
     render/PhongPipeline.hpp render/PhongPipeline.cpp
 )
 
-source_group(\\             FILES ${sources})
-source_group(\\render          FILES ${sources_render})
+source_group(\\         FILES ${sources})
+source_group(\\render   FILES ${sources_render})
 
 add_executable(${target} ${sources} ${sources_render} ${sources_render_gl3})
 

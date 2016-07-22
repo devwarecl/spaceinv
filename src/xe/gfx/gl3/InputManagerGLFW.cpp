@@ -9,12 +9,12 @@ namespace xe { namespace gfx { namespace gl3 {
 
     static std::map<int, xe::input::KeyCode> keymaps = {
         {GLFW_KEY_ESCAPE    , xe::input::KeyCode::KeyEsc},
-        {GLFW_KEY_LEFT        , xe::input::KeyCode::KeyLeft},
-        {GLFW_KEY_RIGHT        , xe::input::KeyCode::KeyRight},
+        {GLFW_KEY_LEFT      , xe::input::KeyCode::KeyLeft},
+        {GLFW_KEY_RIGHT     , xe::input::KeyCode::KeyRight},
         {GLFW_KEY_UP        , xe::input::KeyCode::KeyUp},
-        {GLFW_KEY_DOWN        , xe::input::KeyCode::KeyDown},
-        {GLFW_KEY_ENTER        , xe::input::KeyCode::KeyEnter}, 
-        {GLFW_KEY_SPACE        , xe::input::KeyCode::KeySpace}
+        {GLFW_KEY_DOWN      , xe::input::KeyCode::KeyDown},
+        {GLFW_KEY_ENTER     , xe::input::KeyCode::KeyEnter}, 
+        {GLFW_KEY_SPACE     , xe::input::KeyCode::KeySpace}
     };
 
     void xe_handle_key(GLFWwindow* window, int key, int scancode, int action, int mods) {
