@@ -7,10 +7,7 @@
 
 class Scenario {
 public:
-    Scenario (xe::sg::SceneNode *node, xe::sg::Renderable *missileRenderable) {
-        m_node = node;
-        m_missileRenderable = missileRenderable;
-    }
+    Scenario (xe::sg::SceneNode *node, xe::sg::Renderable *missileRenderable, xe::sg::Renderable *floorRenderable);
 
     void update(const float seconds);
 
@@ -19,6 +16,7 @@ public:
 private:    
     xe::sg::SceneNode *m_node = nullptr;
     xe::sg::Renderable *m_missileRenderable = nullptr;
+    xe::sg::Renderable *m_floorRenderable = nullptr;
 
     std::list<Updatable*> m_updatables;
     std::list<MissilePtr> m_missiles;

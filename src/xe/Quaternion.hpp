@@ -7,7 +7,6 @@
 #include <xe/Vector.hpp>
 
 namespace xe {
-
     template<typename Type>
     struct Rotation {
         Type angle = Type(0);
@@ -17,14 +16,26 @@ namespace xe {
     template<typename Type>
     struct Quaternion {
         union {
-            struct {Type x, y, z, w;};
+            struct {
+                Vector<Type, 3> v;
+                Type w;
+            };
+            Vector<Type, 4> q;
             Type values[4];
-
         };
 
         Quaternion(const xe::Vector<Type, 3> &v_={0, 0, 0}, Type w_=Type(0)) {
-            v = v_;
+            v.x = v_.x;
+            v.y = v_.y;
+            v.z = v_.z;
             w = w_;
+        }
+
+        Quaternion(const xe::Vector<Type, 3> &v1, const xe::Vector<Type, 3> &v2) {
+            v = cross(v1, v2);
+            w = std::sqrt(dot(v1, v1) * dot(v2, v2)) + dot(v1, v2);
+
+            *this = normalize(*this);
         }
 
         explicit Quaternion(const xe::Vector<Type, 4> &q) {
@@ -55,9 +66,9 @@ namespace xe {
             );
         }
 
-        Quaternion<Type> operator* (const Quaternion<Type> &other) const {
-            return *this * inverse(other);
-        }
+        //Quaternion<Type> operator* (const Quaternion<Type> &other) const {
+        //    return *this * inverse(other);
+        //}
 
         Quaternion<Type> operator* (Type s) const {
             return Quaternion(v * s);
@@ -77,7 +88,7 @@ namespace xe {
         }
 
         friend Quaternion<Type> conj(const Quaternion<Type> &q) {
-            return {-q.v, q.w}
+            return {-q.v, q.w};
         }
 
         friend Type norm_pow2(const Quaternion<Type> &q) {
@@ -88,12 +99,13 @@ namespace xe {
             return std::abs(norm_pow2(q));
         }
 
-        friend Quaternion<Type> normalize(Quaternion<Type> &q) {
+        friend Quaternion<Type> normalize(const Quaternion<Type> &q) {
             return q / norm(q);
         }
 
-        friend Vector<Type, 3> transform (Quaternion<Type> &q, const Vector<Type, 3> &v) const {
-            return q * Quaternion(v, Type(0)) * inverse(q);
+        friend Vector<Type, 3> transform (const Quaternion<Type> &q, const Vector<Type, 3> &v) {
+            auto quat = q * Quaternion(v, Type(0)) * inverse(q);
+            return quat.v;
         }
     };
 }

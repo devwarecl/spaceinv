@@ -11,12 +11,8 @@ namespace xe { namespace sfx { namespace al {
         
     }
 
-    ALuint BufferAL::getId() const {
-        return m_id;
-    }
-
     std::size_t BufferAL::getSize() const {
-        
+        return 0;
     }
 
     void BufferAL::read(void* destination, const int size, const int offset, const int destination_offset) const {

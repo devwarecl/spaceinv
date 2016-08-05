@@ -37,11 +37,8 @@ set (sources_gfx
     gfx/ShaderType.hpp
     gfx/Mesh.hpp gfx/Mesh.cpp
     gfx/Texture.hpp gfx/Texture.cpp
-
     gfx/Image.hpp
-    
     gfx/PixelFormat.hpp gfx/PixelFormat.cpp
-
     gfx/UniformFormat.hpp
 )
 
@@ -67,6 +64,7 @@ set (sources_sfx
 
 set (sources_sfx_al
     sfx/al/SourceAL.hpp sfx/al/SourceAL.cpp 
+	sfx/al/BufferAL.hpp sfx/al/BufferAL.cpp 
 )
 
 set (sources_sg    

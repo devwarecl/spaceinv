@@ -103,17 +103,22 @@ void SpaceInvApp::initScene() {
     }
 
     // create the scene structure
-    m_scene.rootNode.renderable = &m_camera;
+    m_scene.rootNode.setRenderable(&m_camera);
 
     // create the scenario
     m_scenario = std::make_unique<Scenario>(&m_scene.rootNode, m_modelLoader.getModel("wls1.bdm"));
 
     // create the player
-    auto playerNode = new xe::sg::SceneNode(m_modelLoader.getModel("iav5.bdm"), xe::translate(xe::Vector3f(0.0f, 0.0f, 0.0f)));
+    xe::sg::SceneNode* playerNode = m_scene.rootNode.addChild()
+        ->setRenderable(m_modelLoader.getModel("iav5.bdm"))
+        ->setMatrix(xe::translate(xe::Vector3f(0.0f, 0.0f, 0.0f)))
+    ;
+    
+    // auto playerNode = new xe::sg::SceneNode(m_modelLoader.getModel("iav5.bdm"), xe::translate(xe::Vector3f(0.0f, 0.0f, 0.0f)));
 
     m_player = Entity(m_scenario.get(), playerNode);
 
-    m_scene.rootNode.childs.emplace_back(playerNode);
+    // m_scene.rootNode.childs.emplace_back(playerNode);
 }
 
 xe::gfx::MeshFormat SpaceInvApp::createMeshFormat() const {

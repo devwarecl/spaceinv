@@ -15,7 +15,7 @@ namespace xe { namespace gfx {
 
         UniformDescriptor() {}
 
-        UniformDescriptor(const std::string name_, size_t dim_, xe::DataType type_, size_t count_=1) {
+        UniformDescriptor(const std::string name_, size_t dim_, DataType type_, size_t count_=1) {
             name = name_;
             dim = dim_;
             type = type_;

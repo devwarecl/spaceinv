@@ -25,16 +25,16 @@ namespace xe { namespace sg {
         assert(transformStack);
         assert(node);
 
-        transformStack->push(node->transform);
+        transformStack->push(node->getMatrix());
         
         m_pipeline->setWorldTransform(transformStack->top());
 
-        if (node->renderable) {
-            node->renderable->renderWith(m_pipeline);
+        if (node->getRenderable()) {
+            node->getRenderable()->renderWith(m_pipeline);
         }
 
-        for (auto &child : node->childs) {
-            this->renderNode(transformStack, child.get());
+        for (std::size_t i=0; i<node->getChildCount(); i++) {
+            this->renderNode(transformStack, node->getChild(i));
         }
 
         transformStack->pop();

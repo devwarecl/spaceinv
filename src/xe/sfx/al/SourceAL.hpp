@@ -5,7 +5,6 @@
 #include <AL/al.h>
 
 namespace xe { namespace sfx { namespace al {
-    
     class SourceAL : public Source {
     public:
         SourceAL();

@@ -49,7 +49,7 @@ xe::Matrix4f Entity::getTranform() {
 }
 
 void Entity::syncNode() {
-    m_node->transform = this->getTranform();
+    m_node->setMatrix(this->getTranform());
 }
 
 void Entity::fire() {

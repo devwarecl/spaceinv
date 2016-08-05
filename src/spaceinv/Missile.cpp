@@ -10,11 +10,11 @@ void Missile::update(const float seconds) {
     }
 
     if (m_alive == false) {
-        m_node->renderable = nullptr;
+        m_node->setRenderable(nullptr);
     } else {
         m_position += m_direction * m_speed * seconds;
 
-        m_node->transform = xe::translate(m_position);
+        m_node->setMatrix(xe::translate(m_position));
     }
 }
 
