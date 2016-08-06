@@ -13,7 +13,7 @@
 namespace xe { namespace sg {
     class Pipeline {
     public:
-        virtual ~Pipeline() {}
+        virtual ~Pipeline();
         
         virtual void beginFrame(const xe::Vector4f &color) = 0;
         virtual void endFrame() = 0;

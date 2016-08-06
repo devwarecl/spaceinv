@@ -26,6 +26,10 @@ public:
 
     virtual void setWorldTransform(const xe::Matrix4f &world) override;
 
+    xe::gfx::Device *getDevice() {
+        return m_device;
+    }
+
 protected:
     xe::Matrix4f getPVW() const;
 

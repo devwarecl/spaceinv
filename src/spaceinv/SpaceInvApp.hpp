@@ -23,6 +23,7 @@
 #include "Model.hpp"
 #include "ModelPart.hpp"
 #include "Scenario.hpp"
+#include "Floor.hpp"
 #include "render/TextureLoader.hpp"
 #include "render/ModelLoader.hpp"
 #include "render/PhongPipeline.hpp"
@@ -56,6 +57,10 @@ private:
     xe::FileLocator m_locator;
     xe::sg::Scene m_scene;
     xe::sg::SceneRendererPtr m_renderer;
+
+    xe::gfx::MeshPtr m_floorMesh;
+
+    std::unique_ptr<Floor> m_floor;
 
     float m_angle = 0.0f;
 

@@ -6,7 +6,6 @@
 
 #include <memory>
 #include <string>
-#include <list>
 
 #include "xe/gfx/UniformFormat.hpp"
 #include "xe/gfx/ShaderType.hpp"
@@ -19,11 +18,13 @@ namespace xe { namespace gfx {
 
     class Program {
     public:
-        virtual ~Program() {}
+        virtual ~Program();
 
-        virtual int getLocation(const std::string &name) const = 0;
+        virtual int getUniform(const std::string &name) const = 0;
 
-        virtual void fillUniformLocations(UniformFormat *uniformFormat) const = 0;
+        virtual int getAttrib(const std::string &name) const = 0;
+
+        virtual void fillUniformLocations(UniformFormat *uniformFormat) const;
     };
 
     typedef std::unique_ptr<Program> ProgramPtr;

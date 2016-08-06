@@ -1,9 +1,10 @@
 
 #include "SpaceInvApp.hpp"
 
-
 #include <chrono>
+
 #include "xe/gfx/gl3/DeviceGL.hpp"
+#include "xe/sg/Generators.hpp"
 
 SpaceInvApp::SpaceInvApp() {
     m_device = std::make_unique<xe::gfx::gl3::DeviceGL>();
@@ -102,23 +103,38 @@ void SpaceInvApp::initScene() {
         m_modelLoader.getModel(name, &m_materialFormat, &m_format);
     }
 
+    // create the floor model
+    xe::sg::Shape<float> floorShape = xe::sg::gencoords<float> (
+        xe::sg::Plane{{0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}}, 
+        {10.0f, 10.0f}, 
+        {10, 10}
+    );
+    
+    std::vector<xe::Vector3f> floorNormals = xe::sg::gennormals(floorShape);
+    std::vector<xe::Vector2f> floorTexcoords = xe::sg::gentexcoords(floorShape);
+
+    std::vector<xe::BufferPtr> buffers;
+    buffers.push_back(m_device->createBuffer(xe::gfx::BufferType::Vertex, floorShape.coords));
+    buffers.push_back(m_device->createBuffer(xe::gfx::BufferType::Vertex, floorNormals));
+    buffers.push_back(m_device->createBuffer(xe::gfx::BufferType::Vertex, floorTexcoords));
+
+    m_floorMesh = m_device->createMesh(m_format, std::move(buffers));
+
+    m_floor = std::make_unique<Floor>(&m_materialFormat, m_floorMesh.get(), floorShape.coords.size());
+
     // create the scene structure
-    m_scene.rootNode.setRenderable(&m_camera);
+    m_scene.getNode()->setRenderable(&m_camera);
 
     // create the scenario
-    m_scenario = std::make_unique<Scenario>(&m_scene.rootNode, m_modelLoader.getModel("wls1.bdm"));
+    m_scenario = std::make_unique<Scenario>(m_scene.getNode(), m_modelLoader.getModel("wls1.bdm"), m_floor.get());
 
     // create the player
-    xe::sg::SceneNode* playerNode = m_scene.rootNode.addChild()
+    xe::sg::SceneNode* playerNode = m_scene.getNode()->addChild()
         ->setRenderable(m_modelLoader.getModel("iav5.bdm"))
         ->setMatrix(xe::translate(xe::Vector3f(0.0f, 0.0f, 0.0f)))
     ;
     
-    // auto playerNode = new xe::sg::SceneNode(m_modelLoader.getModel("iav5.bdm"), xe::translate(xe::Vector3f(0.0f, 0.0f, 0.0f)));
-
     m_player = Entity(m_scenario.get(), playerNode);
-
-    // m_scene.rootNode.childs.emplace_back(playerNode);
 }
 
 xe::gfx::MeshFormat SpaceInvApp::createMeshFormat() const {

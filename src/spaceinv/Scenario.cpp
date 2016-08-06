@@ -1,13 +1,12 @@
 
 #include "Scenario.hpp"
 
-#include "xe/sg/Generators.hpp"
-
 Scenario::Scenario (xe::sg::SceneNode *node, xe::sg::Renderable *missileRenderable, xe::sg::Renderable *floorRenderable) {
     m_node = node;
     m_missileRenderable = missileRenderable;
+    m_floorRenderable = floorRenderable;
 
-    // auto shape = xe::sg::gencoords<float>(xe::sg::Plane{{0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0}}, {10.0f, 10.0f}, {10, 10});
+    m_node->addChild()->setRenderable(m_floorRenderable);
 }
 
 void Scenario::spawnMissile(const xe::Vector3f &position, const xe::Vector3f &direction) {

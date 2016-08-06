@@ -67,8 +67,21 @@ namespace xe { namespace sg {
     }
 
     template<typename Type>
-    Vector<Type, 3> gennormals(const Shape<Type> &shape) {
+    std::vector<Vector<Type, 3>> gennormals(const Shape<Type> &shape) {
+        std::vector<Vector<Type, 3>> normals;
 
+        normals.resize(shape.coords.size());
+
+        return normals;
+    }
+
+    template<typename Type>
+    std::vector<Vector<Type, 2>> gentexcoords(const Shape<Type> &shape) {
+        std::vector<Vector<Type, 2>> texcoords;
+
+        texcoords.resize(shape.coords.size());
+
+        return texcoords;
     }
 }}
 

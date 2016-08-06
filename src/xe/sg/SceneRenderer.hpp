@@ -12,6 +12,8 @@ namespace xe { namespace sg {
     
     class SceneRenderer {
     public:
+        virtual ~SceneRenderer();
+
         virtual void renderScene(Scene *scene) = 0;
     };
 

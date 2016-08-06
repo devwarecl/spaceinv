@@ -46,7 +46,7 @@ namespace xe { namespace sg {
     };
 }}
 
-std::ostream& operator<< (std::ostream& os, const xe::sg::Ray& ray) {
+inline std::ostream& operator<< (std::ostream& os, const xe::sg::Ray& ray) {
     return os << "Point : {" << ray.point << "}, Direction : {" << ray.direction << "}";
 }
 

@@ -64,7 +64,7 @@ void PhongPipeline::render(ModelPart *mesh) {
 void PhongPipeline::updateMvp() {
     xe::Matrix4f mvp = this->getPVW();
 
-    int location = m_program->getLocation("mvp");
+    int location = m_program->getUniform("mvp");
 
     m_device->setUniformMatrix(location, 1, false, mvp.values);
 }

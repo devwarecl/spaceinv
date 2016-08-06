@@ -16,8 +16,8 @@ namespace xe { namespace sg {
 
         transformStack.reset(xe::identity<float, 4>());
 
-        m_pipeline->beginFrame(scene->backcolor);
-        this->renderNode(&transformStack, &scene->rootNode);
+        m_pipeline->beginFrame(scene->getBackColor());
+        this->renderNode(&transformStack, scene->getNode());
         m_pipeline->endFrame();
     }
 

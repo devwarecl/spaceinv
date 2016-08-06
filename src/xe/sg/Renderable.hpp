@@ -8,7 +8,7 @@
 namespace xe { namespace sg {
     class Renderable {
     public:
-        virtual ~Renderable() {}
+        virtual ~Renderable();
         virtual void renderWith(xe::sg::Pipeline *renderer) = 0;
     };
 }}

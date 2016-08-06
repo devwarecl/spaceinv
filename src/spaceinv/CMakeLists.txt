@@ -10,6 +10,8 @@ set (sources
     Config.hpp
     Updatable.hpp
     Scenario.hpp Scenario.cpp
+	Floor.hpp Floor.cpp
+	ModelMaterial.hpp ModelMaterial.cpp 
 )
 
 set (sources_render

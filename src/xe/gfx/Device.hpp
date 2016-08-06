@@ -4,6 +4,8 @@
 #ifndef __xe_gfx_device_hpp__
 #define __xe_gfx_device_hpp__
 
+#include <list>
+
 #include "xe/Buffer.hpp"
 #include "xe/Vector.hpp"
 #include "xe/gfx/BufferType.hpp"

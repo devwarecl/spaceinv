@@ -51,17 +51,15 @@ namespace xe { namespace gfx { namespace gl3  {
         XE_GL_CHECK_ERROR();
     }
 
-    int ProgramGL::getLocation(const std::string &uniformName) const {
+    int ProgramGL::getUniform(const std::string &uniformName) const {
+        assert(m_id);
+
         return glGetUniformLocation(m_id, uniformName.c_str());
     }
 
-    void ProgramGL::fillUniformLocations(UniformFormat *uniformFormat) const {
-        assert(uniformFormat);
+    int ProgramGL::getAttrib(const std::string &attribName) const {
+        assert(m_id);
 
-        for (UniformDescriptor &desc : uniformFormat->attribs) {
-            desc.location = glGetUniformLocation(m_id, desc.name.c_str());
-        }
-
-        XE_GL_CHECK_ERROR();
+        return glGetAttribLocation(m_id, attribName.c_str());
     }
 }}}

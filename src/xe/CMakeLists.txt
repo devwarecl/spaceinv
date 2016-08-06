@@ -33,13 +33,14 @@ set (sources_input
 set (sources_gfx 
     gfx/Device.hpp gfx/Device.cpp 
     gfx/BufferType.hpp
-    gfx/Program.hpp
+    gfx/Program.hpp gfx/Program.cpp
     gfx/ShaderType.hpp
     gfx/Mesh.hpp gfx/Mesh.cpp
     gfx/Texture.hpp gfx/Texture.cpp
     gfx/Image.hpp
     gfx/PixelFormat.hpp gfx/PixelFormat.cpp
     gfx/UniformFormat.hpp
+	gfx/Material.hpp
 )
 
 set (sources_gfx_gl3

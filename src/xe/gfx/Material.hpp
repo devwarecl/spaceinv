@@ -32,31 +32,31 @@ namespace xe { namespace gfx {
         TextureWrap zWrap = TextureWrap::Repeat;
         TextureWrap wWrap = TextureWrap::Repeat;
 
-		MaterialLayer() {}
-		explicit MaterialLayer(Texture *texture_) : texture(texture_) {}
+        MaterialLayer() {}
+        explicit MaterialLayer(Texture *texture_) : texture(texture_) {}
     };
     
-	class Material {
-	public:
-		enum Enum {
-			None = 0,
-			CullFace = 2,
-			DepthTest = 4,
-			Blending = 8
-		};
+    class Material {
+    public:
+        enum Enum {
+            None = 0,
+            CullFace = 2,
+            DepthTest = 4,
+            Blending = 8
+        };
 
-		Flags<Enum> flags = None;
+        Flags<Enum> flags = None;
 
-		std::vector<MaterialLayer> layers;
+        std::vector<MaterialLayer> layers;
 
-		UniformFormat *format = nullptr;
-		
-		explicit Material(UniformFormat *format) {
-			this->format = format;
-		}
+        UniformFormat *format = nullptr;
+        
+        explicit Material(UniformFormat *format) {
+            this->format = format;
+        }
 
-		virtual const void* getUniformPointer() const = 0;
-	};
+        virtual const void* getUniformPointer() const = 0;
+    };
 
-	typedef std::unique_ptr<Material> MaterialPtr;
+    typedef std::unique_ptr<Material> MaterialPtr;
 }}
