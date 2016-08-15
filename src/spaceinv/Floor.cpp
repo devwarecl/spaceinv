@@ -1,6 +1,6 @@
 
 #include "Floor.hpp"
-#include "ModelMaterial.hpp"
+#include "render/PhongMaterial.hpp"
 #include "render/PhongPipeline.hpp"
 
 Floor::Floor(xe::gfx::UniformFormat *format, xe::gfx::Mesh *mesh, int count) {
@@ -8,7 +8,7 @@ Floor::Floor(xe::gfx::UniformFormat *format, xe::gfx::Mesh *mesh, int count) {
     assert(mesh);
 
     m_mesh = mesh;
-    m_material = std::make_unique<ModelMaterial>(format);
+    m_material = std::make_unique<PhongMaterial>(format);
     m_count = count;
 }
 

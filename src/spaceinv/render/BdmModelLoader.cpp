@@ -1,5 +1,5 @@
 
-#include "ModelLoader.hpp"
+#include "BdmModelLoader.hpp"
 #include "bdm/BdmFile.hpp"
 
 std::vector<xe::Vector3f> createVertexArray(const bdm::Mesh &bdm_mesh) {
@@ -63,11 +63,11 @@ void scale(const Box &scaleBox, std::vector<xe::Vector3f> &vertices) {
     }
 }
 
-std::vector<ModelMaterial> createMaterialArray(xe::gfx::UniformFormat *format, TextureLoader &loader, const bdm::Mesh &bdm_mesh) {
-    std::vector<ModelMaterial> materials;
+std::vector<PhongMaterial> createMaterialArray(xe::gfx::UniformFormat *format, TextureLoader &loader, const bdm::Mesh &bdm_mesh) {
+    std::vector<PhongMaterial> materials;
 
     for (const auto &textureName : bdm_mesh.textures) {
-        ModelMaterial material(format);
+        PhongMaterial material(format);
 
         xe::gfx::Texture *texture = loader.loadTexture(textureName);
         material.layers.push_back(xe::gfx::MaterialLayer(texture));
@@ -78,7 +78,7 @@ std::vector<ModelMaterial> createMaterialArray(xe::gfx::UniformFormat *format, T
     return materials;
 }
 
-std::vector<xe::Vector2f> createTexCoordArray(const std::vector<ModelMaterial> &materials, const bdm::Mesh &bdm_mesh) {
+std::vector<xe::Vector2f> createTexCoordArray(const std::vector<PhongMaterial> &materials, const bdm::Mesh &bdm_mesh) {
     std::vector<xe::Vector2f> texcoords;
 
     // Procesar mapeo de texturas
@@ -168,7 +168,7 @@ ModelPart createPart(const bdm::Mesh &bdm_mesh, xe::gfx::UniformFormat *material
     return part;
 }
 
-ModelPtr ModelLoader::createModel(const std::string &path, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format) {
+ModelPtr BdmModelLoader::createModel(const std::string &path, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format) {
     std::vector<ModelPart> parts;
 
     std::string location = path;
@@ -185,7 +185,7 @@ ModelPtr ModelLoader::createModel(const std::string &path, xe::gfx::UniformForma
     return std::make_unique<Model>(std::move(parts));
 }
 
-Model* ModelLoader::getModel(const std::string &name, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat *format) {
+Model* BdmModelLoader::getModel(const std::string &name, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat *format) {
     Model* model = nullptr;
 
     auto modelIt = m_models.find(name);

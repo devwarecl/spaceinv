@@ -10,14 +10,15 @@ set (sources
     Config.hpp
     Updatable.hpp
     Scenario.hpp Scenario.cpp
-	Floor.hpp Floor.cpp
-	ModelMaterial.hpp ModelMaterial.cpp 
+    Floor.hpp Floor.cpp
 )
 
 set (sources_render
-    render/TextureLoader.hpp render/TextureLoader.cpp 
-    render/ModelLoader.cpp render/ModelLoader.hpp 
-    render/PhongPipeline.hpp render/PhongPipeline.cpp
+    render/TextureLoader.hpp    render/TextureLoader.cpp 
+    render/BdmModelLoader.cpp   render/BdmModelLoader.hpp 
+    render/PhongPipeline.hpp    render/PhongPipeline.cpp
+    render/PhongMaterial.hpp    render/PhongMaterial.cpp 
+    render/LookAtCamera.hpp
 )
 
 source_group(\\         FILES ${sources})

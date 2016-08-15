@@ -25,7 +25,7 @@
 #include "Scenario.hpp"
 #include "Floor.hpp"
 #include "render/TextureLoader.hpp"
-#include "render/ModelLoader.hpp"
+#include "render/BdmModelLoader.hpp"
 #include "render/PhongPipeline.hpp"
 #include "render/LookAtCamera.hpp"
 
@@ -47,7 +47,7 @@ private:
     xe::gfx::UniformFormat m_materialFormat;
 
     PhongPipelinePtr m_pipeline;
-    ModelLoader m_modelLoader;
+    BdmModelLoader m_modelLoader;
     TextureLoader m_textureLoader;
     LookAtCamera m_camera;
 

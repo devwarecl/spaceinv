@@ -11,13 +11,13 @@
 
 #include <map>
 
-class ModelLoader {
+class BdmModelLoader {
 public:
-    ModelLoader(xe::FileLocator *locator=nullptr, xe::gfx::Device *device=nullptr) {
+    BdmModelLoader(xe::FileLocator *locator=nullptr, xe::gfx::Device *device=nullptr) {
         this->setLocator(locator);
     }
 
-    ~ModelLoader() {}
+    ~BdmModelLoader() {}
 
     void setTextureLoader(TextureLoader *textureLoader) {
         m_textureLoader = textureLoader;

@@ -11,7 +11,7 @@
 #include "xe/gfx/Texture.hpp"
 #include "xe/gfx/Mesh.hpp"
 
-#include "ModelMaterial.hpp"
+#include "render/PhongMaterial.hpp"
 
 struct Box {
     xe::Vector3f pmin;
@@ -39,7 +39,7 @@ struct ModelPart : public xe::sg::Geometry {
 
     xe::gfx::UniformFormat *materialFormat=nullptr;
 
-    std::vector<ModelMaterial> materials;
+    std::vector<PhongMaterial> materials;
     std::vector<Patch> patches;
 
     xe::gfx::Primitive primitive = xe::gfx::Primitive::TriangleList;
