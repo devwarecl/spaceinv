@@ -83,6 +83,8 @@ set (sources_sg
     sg/Geometry.cpp
     sg/AssetsLibrary.cpp
     sg/GeometryLibrary.cpp
+    sg/Renderer.cpp 
+    sg/Pipeline2.cpp 
 
     sg/Forward.hpp 
     sg/Renderable.hpp
@@ -107,6 +109,8 @@ set (sources_sg
     sg/SceneNodeAnimator.hpp
     sg/AssetsLibrary.hpp
     sg/GeometryLibrary.hpp
+    sg/Renderer.hpp 
+    sg/Pipeline2.hpp 
 )
 
 source_group(\\         FILES ${sources})
