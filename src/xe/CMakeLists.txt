@@ -65,7 +65,7 @@ set (sources_sfx
 
 set (sources_sfx_al
     sfx/al/SourceAL.hpp sfx/al/SourceAL.cpp 
-	sfx/al/BufferAL.hpp sfx/al/BufferAL.cpp 
+    sfx/al/BufferAL.hpp sfx/al/BufferAL.cpp 
 )
 
 set (sources_sg    
@@ -76,8 +76,7 @@ set (sources_sg
     sg/SceneNodeAnimator.cpp
     sg/SceneLoader.cpp
     sg/SceneManager.cpp
-    sg/SceneRenderer.cpp
-    sg/SceneRendererImpl.cpp
+    sg/SceneManagerImpl.cpp
     sg/SceneLoader.cpp
     sg/Camera.cpp 
     sg/Light.cpp
@@ -102,10 +101,9 @@ set (sources_sg
     sg/IntersectInfo.hpp  
     sg/Sphere.hpp
     sg/Triangle.hpp
-    sg/SceneRenderer.hpp
-    sg/SceneRendererImpl.hpp
     sg/SceneLoader.hpp
     sg/SceneManager.hpp
+    sg/SceneManagerImpl.hpp
     sg/SceneNodeAnimator.hpp
     sg/AssetsLibrary.hpp
     sg/GeometryLibrary.hpp

@@ -10,7 +10,7 @@ SpaceInvApp::SpaceInvApp() {
     m_device = std::make_unique<xe::gfx::gl3::DeviceGL>();
 
     m_pipeline = std::make_unique<PhongPipeline>(m_device.get());
-    m_renderer = std::make_unique<xe::sg::SceneRendererImpl>(m_pipeline.get());
+    m_renderer = std::make_unique<xe::sg::SceneManagerImpl>(m_pipeline.get());
     
     m_locator.addPath("assets/uprising/models/");
     m_locator.addPath("assets/uprising/bitmaps/");

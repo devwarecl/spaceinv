@@ -5,17 +5,17 @@
 #define __xe_sg_scenerendererimpl__
 
 #include "xe/sg/Pipeline.hpp"
-#include "xe/sg/SceneRenderer.hpp"
+#include "xe/sg/SceneManager.hpp"
 #include "xe/sg/TransformationStack.hpp"
 
 namespace xe { namespace sg {
-    class SceneRendererImpl : public SceneRenderer {
+    class SceneManagerImpl : public SceneManager {
     public:
-        explicit SceneRendererImpl(Pipeline* pipeline) {
+        explicit SceneManagerImpl(Pipeline* pipeline) {
             m_pipeline = pipeline;
         }
 
-        virtual ~SceneRendererImpl() {}
+        virtual ~SceneManagerImpl() {}
 
         virtual void renderScene(Scene *scene) override;
 

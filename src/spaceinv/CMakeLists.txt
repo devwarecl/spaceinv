@@ -12,6 +12,7 @@ set (sources
 )
 
 set (sources_render
+    render/Model.hpp            render/Model.cpp
     render/TextureLoader.hpp    render/TextureLoader.cpp 
     render/BdmModelLoader.cpp   render/BdmModelLoader.hpp 
     render/BdmModel.hpp         render/BdmModel.cpp 

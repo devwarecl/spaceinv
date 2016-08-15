@@ -5,7 +5,7 @@
 #define __XE_SG_FORWARD_HPP__
 
 namespace xe { namespace sg {
-    class SceneRenderer;
+    class SceneManager;
     
     class SceneLoader;
     class SceneManager;

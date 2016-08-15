@@ -1,5 +1,5 @@
 
-#include "SceneRendererImpl.hpp"
+#include "SceneManagerImpl.hpp"
 
 #include <cassert>
 #include "xe/sg/Scene.hpp"
@@ -8,7 +8,7 @@
 
 namespace xe { namespace sg {
 
-    void SceneRendererImpl::renderScene(Scene *scene) {
+    void SceneManagerImpl::renderScene(Scene *scene) {
         assert(m_pipeline);
         assert(scene);
         
@@ -21,7 +21,7 @@ namespace xe { namespace sg {
         m_pipeline->endFrame();
     }
 
-    void SceneRendererImpl::renderNode(TransformationStack *transformStack, SceneNode* node) {
+    void SceneManagerImpl::renderNode(TransformationStack *transformStack, SceneNode* node) {
         assert(transformStack);
         assert(node);
 

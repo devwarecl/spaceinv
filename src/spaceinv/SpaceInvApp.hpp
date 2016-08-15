@@ -13,7 +13,7 @@
 #include "xe/FileLocator.hpp"
 #include "xe/sg/Camera.hpp"
 #include "xe/sg/Scene.hpp"
-#include "xe/sg/SceneRendererImpl.hpp"
+#include "xe/sg/SceneManagerImpl.hpp"
 
 #include "xe/gfx/Mesh.hpp"
 #include "xe/gfx/Program.hpp"
@@ -56,7 +56,7 @@ private:
 
     xe::FileLocator m_locator;
     xe::sg::Scene m_scene;
-    xe::sg::SceneRendererPtr m_renderer;
+    xe::sg::SceneManagerPtr m_renderer;
 
     xe::gfx::MeshPtr m_floorMesh;
 
