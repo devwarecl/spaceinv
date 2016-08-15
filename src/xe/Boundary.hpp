@@ -172,8 +172,6 @@ namespace xe {
     typedef Boundary<float, 2> Rectf;
     typedef Boundary<int, 2> Recti;
 
-    typedef Boundary<float, 3> Boxf;
-    typedef Boundary<int, 3> Boxi;
 }
 
 #endif 

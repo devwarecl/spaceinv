@@ -18,7 +18,6 @@ namespace xe { namespace sg {
     inline xe::Boxf box(const xe::Boxf &solid) {
         return solid;
     }
-
 }}
 
 #endif  
