@@ -4,8 +4,6 @@ set (target spaceinv)
 set (sources 
     SpaceInvApp.hpp SpaceInvApp.cpp 
     Entity.hpp Entity.cpp 
-    Model.cpp Model.hpp 
-    ModelPart.hpp 
     Missile.hpp Missile.cpp
     Config.hpp
     Updatable.hpp
@@ -16,6 +14,8 @@ set (sources
 set (sources_render
     render/TextureLoader.hpp    render/TextureLoader.cpp 
     render/BdmModelLoader.cpp   render/BdmModelLoader.hpp 
+    render/BdmModel.hpp         render/BdmModel.cpp 
+    render/BdmModelPart.hpp     render/BdmModelPart.cpp 
     render/PhongPipeline.hpp    render/PhongPipeline.cpp
     render/PhongMaterial.hpp    render/PhongMaterial.cpp 
     render/LookAtCamera.hpp

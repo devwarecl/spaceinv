@@ -5,8 +5,6 @@
 #include "xe/gfx/gl3/TextureGL.hpp"
 #include "xe/gfx/gl3/Util.hpp"
 
-#include "spaceinv/ModelPart.hpp"
-
 namespace xe { namespace gfx { namespace gl3  {
     void window_size_callback(GLFWwindow* m_window, int width, int height) {
         glViewport(0, 0, width, height);

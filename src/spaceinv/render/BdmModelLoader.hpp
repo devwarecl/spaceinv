@@ -3,7 +3,7 @@
 #ifndef __meshloader__
 #define __meshloader__
 
-#include "../Model.hpp"
+#include "BdmModel.hpp"
 #include "TextureLoader.hpp"
 
 #include "xe/FileLocator.hpp"
@@ -51,7 +51,7 @@ public:
         return m_textureLoader;
     }
 
-    Model* getModel(const std::string &model, xe::gfx::UniformFormat *materialFormat=nullptr, const xe::gfx::MeshFormat *format=nullptr);
+    BdmModel* getModel(const std::string &model, xe::gfx::UniformFormat *materialFormat=nullptr, const xe::gfx::MeshFormat *format=nullptr);
 
 protected:
     ModelPtr createModel(const std::string &name, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format);

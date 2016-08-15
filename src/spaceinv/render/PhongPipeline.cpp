@@ -52,12 +52,12 @@ void PhongPipeline::render(xe::sg::Camera *camera) {
 
 void PhongPipeline::render(xe::sg::Geometry *geometry) {
     
-    if (auto *mesh = dynamic_cast<ModelPart*>(geometry)) {
+    if (auto *mesh = dynamic_cast<BdmModelPart*>(geometry)) {
         this->renderMesh(*mesh);
     }
 }
 
-void PhongPipeline::render(ModelPart *mesh) {
+void PhongPipeline::render(BdmModelPart *mesh) {
     this->renderMesh(*mesh);
 }
 
@@ -81,7 +81,7 @@ xe::Matrix4f PhongPipeline::getPVW() const {
     return mvp;
 }
 
-void PhongPipeline::renderMesh(ModelPart &part) {
+void PhongPipeline::renderMesh(BdmModelPart &part) {
     m_program->fillUniformLocations(part.materialFormat);
 
     for (size_t mindex=0; mindex<part.materials.size(); mindex++) {

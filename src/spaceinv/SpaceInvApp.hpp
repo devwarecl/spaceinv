@@ -20,14 +20,14 @@
 #include "xe/gfx/Device.hpp"
 
 #include "Entity.hpp"
-#include "Model.hpp"
-#include "ModelPart.hpp"
 #include "Scenario.hpp"
 #include "Floor.hpp"
 #include "render/TextureLoader.hpp"
 #include "render/BdmModelLoader.hpp"
 #include "render/PhongPipeline.hpp"
 #include "render/LookAtCamera.hpp"
+#include "render/BdmModel.hpp"
+#include "render/BdmModelPart.hpp"
 
 class SpaceInvApp {
 public:

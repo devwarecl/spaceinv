@@ -134,7 +134,7 @@ std::vector<Patch> createPatchArray(const bdm::Mesh &bdm_mesh) {
     return patches;
 }
 
-ModelPart createPart(const bdm::Mesh &bdm_mesh, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format, TextureLoader *loader, xe::gfx::Device *device) {    
+BdmModelPart createPart(const bdm::Mesh &bdm_mesh, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format, TextureLoader *loader, xe::gfx::Device *device) {    
     auto materials = createMaterialArray(materialFormat, *loader, bdm_mesh);
     auto vertices = createVertexArray(bdm_mesh);
     auto normals = generateNormals(vertices);
@@ -155,7 +155,7 @@ ModelPart createPart(const bdm::Mesh &bdm_mesh, xe::gfx::UniformFormat *material
     //buffers.emplace_back(new xe::gfx::gl3::BufferGL(GL_ARRAY_BUFFER, GL_STATIC_DRAW, texcoords));
     
     // finalizar construccion modelo
-    ModelPart part;
+    BdmModelPart part;
 
     part.count = vertices.size();
     part.primitive = xe::gfx::Primitive::TriangleList;
@@ -169,7 +169,7 @@ ModelPart createPart(const bdm::Mesh &bdm_mesh, xe::gfx::UniformFormat *material
 }
 
 ModelPtr BdmModelLoader::createModel(const std::string &path, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat &format) {
-    std::vector<ModelPart> parts;
+    std::vector<BdmModelPart> parts;
 
     std::string location = path;
     if (m_locator) {
@@ -182,11 +182,11 @@ ModelPtr BdmModelLoader::createModel(const std::string &path, xe::gfx::UniformFo
         parts.push_back(createPart(bdm_mesh, materialFormat, format, m_textureLoader, m_device));
     }
 
-    return std::make_unique<Model>(std::move(parts));
+    return std::make_unique<BdmModel>(std::move(parts));
 }
 
-Model* BdmModelLoader::getModel(const std::string &name, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat *format) {
-    Model* model = nullptr;
+BdmModel* BdmModelLoader::getModel(const std::string &name, xe::gfx::UniformFormat *materialFormat, const xe::gfx::MeshFormat *format) {
+    BdmModel* model = nullptr;
 
     auto modelIt = m_models.find(name);
 

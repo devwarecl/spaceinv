@@ -7,7 +7,7 @@
 #include "xe/gfx/Device.hpp"
 #include "xe/gfx/Program.hpp"
 
-#include "../ModelPart.hpp"
+#include "BdmModelPart.hpp"
 
 class PhongPipeline : public xe::sg::Pipeline {
 public:
@@ -22,7 +22,7 @@ public:
     virtual void render(xe::sg::Camera *camera) override;
     virtual void render(xe::sg::Geometry *geometry) override;
     
-    void render(ModelPart *mesh);
+    void render(BdmModelPart *mesh);
 
     virtual void setWorldTransform(const xe::Matrix4f &world) override;
 
@@ -33,7 +33,7 @@ public:
 protected:
     xe::Matrix4f getPVW() const;
 
-    void renderMesh(ModelPart &mesh);
+    void renderMesh(BdmModelPart &mesh);
 
     void updateMvp();
 

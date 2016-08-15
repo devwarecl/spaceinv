@@ -1,15 +1,15 @@
 
-#include "Model.hpp"
+#include "BdmModel.hpp"
 
-Model::Model(std::vector<ModelPart> parts) {
+BdmModel::BdmModel(std::vector<BdmModelPart> parts) {
     m_parts = std::move(parts);
 }
 
-void Model::renderWith(xe::sg::Pipeline *pipeline) {
+void BdmModel::renderWith(xe::sg::Pipeline *pipeline) {
     this->renderWith(dynamic_cast<PhongPipeline*>(pipeline));
 }
 
-void Model::renderWith(PhongPipeline *pipeline) {
+void BdmModel::renderWith(PhongPipeline *pipeline) {
     assert(pipeline);
     assert(m_parts.size() > 0);
 
