@@ -7,7 +7,7 @@
 
 #include "xe/Vector.hpp"
 #include "xe/Matrix.hpp"
-#include "xe/Boundary.hpp"
+#include "xe/Box.hpp"
 #include "xe/sg/SceneNode.hpp"
 
 class Missile : public Updatable {
