@@ -38,7 +38,7 @@ namespace xe {
             *this = normalize(*this);
         }
 
-        explicit Quaternion(const xe::Vector<Type, 4> &q) {
+        explicit Quaternion(const xe::Vector<Type, 4> &q_) {
             q = q_;
         }
 
