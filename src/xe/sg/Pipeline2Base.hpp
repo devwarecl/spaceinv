@@ -9,7 +9,6 @@
 #include <map>
 
 namespace xe { namespace sg {
-
     class Pipeline2Base : public Pipeline2 {
     public:
         Pipeline2Base();

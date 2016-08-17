@@ -11,6 +11,7 @@ set (sources
     Matrix.hpp 
     Quaternion.hpp 
     Boundary.hpp
+    Box.hpp
     FileLocator.hpp FileLocator.cpp
     FileUtil.hpp FileUtil.cpp
 )
@@ -40,7 +41,7 @@ set (sources_gfx
     gfx/Image.hpp
     gfx/PixelFormat.hpp gfx/PixelFormat.cpp
     gfx/UniformFormat.hpp
-	gfx/Material.hpp
+    gfx/Material.hpp
 )
 
 set (sources_gfx_gl3
@@ -85,6 +86,7 @@ set (sources_sg
     sg/GeometryLibrary.cpp
     sg/Renderer.cpp 
     sg/Pipeline2.cpp 
+    sg/Pipeline2Base.cpp
 
     sg/Forward.hpp 
     sg/Renderable.hpp
@@ -111,6 +113,7 @@ set (sources_sg
     sg/GeometryLibrary.hpp
     sg/Renderer.hpp 
     sg/Pipeline2.hpp 
+    sg/Pipeline2Base.hpp
 )
 
 source_group(\\         FILES ${sources})

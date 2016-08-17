@@ -1,4 +1,6 @@
 
+#pragma once
+
 #ifndef __xe_box_hpp__
 #define __xe_box_hpp__
 
