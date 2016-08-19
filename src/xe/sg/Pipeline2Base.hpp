@@ -17,6 +17,8 @@ namespace xe { namespace sg {
         virtual void registerRenderer(const std::type_index &typeInfo, Renderer *renderer) override;
         virtual void unregisterRenderer(const std::type_index &typeInfo) override;
 
+        virtual void render(Renderable *renderable);
+
     protected:
         std::map<std::type_index, Renderer*> m_renderers;
     };

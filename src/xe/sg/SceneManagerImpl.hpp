@@ -4,11 +4,14 @@
 #ifndef __xe_sg_scenerendererimpl__
 #define __xe_sg_scenerendererimpl__
 
-#include "xe/sg/Pipeline.hpp"
 #include "xe/sg/SceneManager.hpp"
-#include "xe/sg/TransformationStack.hpp"
 
 namespace xe { namespace sg {
+
+    class SceneNode;
+    class Pipeline;
+    class TransformationStack;
+
     class SceneManagerImpl : public SceneManager {
     public:
         explicit SceneManagerImpl(Pipeline* pipeline) {

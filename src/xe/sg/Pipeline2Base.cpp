@@ -1,6 +1,13 @@
 
 #include "Pipeline2Base.hpp"
 
+#include <xe/sg/Renderer.hpp>
+#include <cassert>
+
+#if defined(_DEBUG)
+#include <iostream>
+#endif
+
 namespace xe { namespace sg {
 
     Pipeline2Base::Pipeline2Base() {}
@@ -17,5 +24,18 @@ namespace xe { namespace sg {
         if (pos != m_renderers.end()) {
             m_renderers.erase(pos);
         }
+    }
+
+    void Pipeline2Base::render(Renderable *renderable) {
+        assert(false);
+
+        auto pos = m_renderers.find(std::type_index(typeid(renderable)));
+
+#if defined(_DEBUG)
+        if (pos == m_renderers.end()) {
+            std::cerr << "Pipeline2Base::render: Unknown renderable implementation: " << typeid(renderable).name() << std::endl;
+        }
+#endif
+        pos->second->render(renderable);
     }
 }}

@@ -5,6 +5,7 @@
 #define __xe_sg_pipeline2_hpp__
 
 #include <typeindex>
+#include <xe/Matrix.hpp>
 
 namespace xe { namespace sg {
     class Renderable;
@@ -15,6 +16,10 @@ namespace xe { namespace sg {
 
         virtual void registerRenderer(const std::type_index &typeInfo, Renderer *renderer) = 0;
         virtual void unregisterRenderer(const std::type_index&typeInfo) = 0;
+
+        virtual void setMatrix(const Matrix4f &matrix) = 0;
+
+        virtual Matrix4f getMatrix() const = 0;
 
         virtual void render(Renderable *renderable) = 0;
     };

@@ -1,4 +1,5 @@
 
+#pragma once
 
 #ifndef __xe_sg_renderer_hpp__
 #define __xe_sg_renderer_hpp__

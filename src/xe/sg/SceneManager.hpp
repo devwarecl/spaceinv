@@ -6,10 +6,8 @@
 
 #include <memory>
 
-#include "xe/sg/Scene.hpp"
-
 namespace xe { namespace sg {
-    
+    class Scene;
     class SceneManager {
     public:
         virtual ~SceneManager();

@@ -2,9 +2,11 @@
 #include "SceneManagerImpl.hpp"
 
 #include <cassert>
-#include "xe/sg/Scene.hpp"
-#include "xe/sg/SceneNode.hpp"
-#include "xe/sg/Renderable.hpp"
+#include <xe/sg/Scene.hpp>
+#include <xe/sg/SceneNode.hpp>
+#include <xe/sg/Renderable.hpp>
+#include <xe/sg/Pipeline.hpp>
+#include <xe/sg/TransformationStack.hpp>
 
 namespace xe { namespace sg {
 
