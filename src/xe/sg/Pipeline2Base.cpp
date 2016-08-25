@@ -14,16 +14,21 @@ namespace xe { namespace sg {
 
     Pipeline2Base::~Pipeline2Base() {}
 
-    void Pipeline2Base::registerRenderer(const std::type_index &typeInfo, Renderer *renderer) {
-        m_renderers[typeInfo] = renderer;
+    void Pipeline2Base::registerRenderer(const std::type_index &typeInfo, std::unique_ptr<Renderer> renderer) {
+        m_renderers[typeInfo] = std::move(renderer);
     }
 
-    void Pipeline2Base::unregisterRenderer(const std::type_index &typeInfo) {
+    std::unique_ptr<Renderer> Pipeline2Base::unregisterRenderer(const std::type_index &typeInfo) {
+        std::unique_ptr<Renderer> renderer;
+
         auto pos = m_renderers.find(typeInfo);
 
         if (pos != m_renderers.end()) {
+            renderer = std::move(pos->second);
             m_renderers.erase(pos);
         }
+
+        return renderer;
     }
 
     void Pipeline2Base::render(Renderable *renderable) {

@@ -5,6 +5,7 @@
 #define __xe_sg_pipeline2_hpp__
 
 #include <typeindex>
+#include <memory>
 #include <xe/Matrix.hpp>
 
 namespace xe { namespace sg {
@@ -14,8 +15,8 @@ namespace xe { namespace sg {
     public:
         virtual ~Pipeline2();
 
-        virtual void registerRenderer(const std::type_index &typeInfo, Renderer *renderer) = 0;
-        virtual void unregisterRenderer(const std::type_index&typeInfo) = 0;
+        virtual void registerRenderer(const std::type_index &typeInfo, std::unique_ptr<Renderer> renderer) = 0;
+        virtual std::unique_ptr<Renderer> unregisterRenderer(const std::type_index&typeInfo) = 0;
 
         virtual void setMatrix(const Matrix4f &matrix) = 0;
 

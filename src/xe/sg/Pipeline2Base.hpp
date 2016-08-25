@@ -12,15 +12,15 @@ namespace xe { namespace sg {
     class Pipeline2Base : public Pipeline2 {
     public:
         Pipeline2Base();
-        ~Pipeline2Base();
+        virtual ~Pipeline2Base();
 
-        virtual void registerRenderer(const std::type_index &typeInfo, Renderer *renderer) override;
-        virtual void unregisterRenderer(const std::type_index &typeInfo) override;
+        virtual void registerRenderer(const std::type_index &typeInfo, std::unique_ptr<Renderer> renderer) override;
+        virtual std::unique_ptr<Renderer> unregisterRenderer(const std::type_index &typeInfo) override;
 
-        virtual void render(Renderable *renderable);
+        virtual void render(Renderable *renderable) override;
 
     protected:
-        std::map<std::type_index, Renderer*> m_renderers;
+        std::map<std::type_index, std::unique_ptr<Renderer>> m_renderers;
     };
 }}
 

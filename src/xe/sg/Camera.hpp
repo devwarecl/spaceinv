@@ -7,7 +7,7 @@
 #include <memory>
 
 #include "xe/Matrix.hpp"
-#include "xe/Boundary.hpp"
+#include "xe/Rect.hpp"
 #include "xe/sg/Renderable.hpp"
 #include "xe/sg/Pipeline.hpp"
 

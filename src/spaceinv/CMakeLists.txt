@@ -18,6 +18,7 @@ set (sources_render
     render/BdmModel.hpp         render/BdmModel.cpp 
     render/BdmModelPart.hpp     render/BdmModelPart.cpp 
     render/PhongPipeline.hpp    render/PhongPipeline.cpp
+    render/PhongPipeline2.hpp   render/PhongPipeline2.cpp
     render/PhongMaterial.hpp    render/PhongMaterial.cpp 
     render/LookAtCamera.hpp
 )

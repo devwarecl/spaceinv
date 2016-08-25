@@ -168,10 +168,6 @@ namespace xe {
         Vector<Type, Size> minEdge;
         Vector<Type, Size> maxEdge;
     };
-
-    typedef Boundary<float, 2> Rectf;
-    typedef Boundary<int, 2> Recti;
-
 }
 
 #endif 

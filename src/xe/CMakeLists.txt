@@ -11,6 +11,7 @@ set (sources
     Matrix.hpp 
     Quaternion.hpp 
     Boundary.hpp
+    Rect.hpp
     Box.hpp
     FileLocator.hpp FileLocator.cpp
     FileUtil.hpp FileUtil.cpp
@@ -124,6 +125,6 @@ source_group(\\sfx\\al  FILES ${sources_sfx_al})
 source_group(\\sg       FILES ${sources_sg})
 source_group(\\input    FILES ${sources_input})
 
-add_library(${target} ${sources} ${sources_gfx} ${sources_gfx_gl3} ${sources_sfx} ${sources_sfx_al}  ${sources_sg} ${sources_input})
+add_library(${target} ${sources} ${sources_gfx} ${sources_gfx_gl3} ${sources_sfx} ${sources_sfx_al} ${sources_sg} ${sources_input})
 
 target_link_libraries(${target} ${Boost_LIBRARIES})
