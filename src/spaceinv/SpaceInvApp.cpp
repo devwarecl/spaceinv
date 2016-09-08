@@ -6,6 +6,8 @@
 #include "xe/gfx/gl3/DeviceGL.hpp"
 #include "xe/sg/Generators.hpp"
 
+#include "xe/Array.hpp"
+
 SpaceInvApp::SpaceInvApp() {
     m_device = std::make_unique<xe::gfx::gl3::DeviceGL>();
 
@@ -172,6 +174,7 @@ void SpaceInvApp::initGeometry() {
 }
 
 int main() {
+    /*
     SpaceInvApp app;
     
     while (app.running()) {
@@ -184,6 +187,16 @@ int main() {
         app.update(span.count());
         app.render();
     }
+    */
+    typedef xe::experimental::Vector<float, 2> Vector2f;
 
+    Vector2f v1 = {0.0f, 0.0f};
+    Vector2f v2 = {1.0f, 0.0f};
+    Vector2f v3 = {0.0f, 1.0f};
+
+    v1 = xe::add(v1, xe::add(v2, v3));
+
+    std::cout << v1.x << ", " << v1.y << std::endl;
+    
     return 0;
 }

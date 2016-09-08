@@ -7,6 +7,7 @@ set (sources
     DataFormat.hpp 
     DataType.hpp 
     Traits.hpp 
+    Array.hpp
     Vector.hpp 
     Matrix.hpp 
     Quaternion.hpp 
