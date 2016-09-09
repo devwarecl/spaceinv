@@ -188,15 +188,20 @@ int main() {
         app.render();
     }
     */
-    typedef xe::experimental::Vector<float, 2> Vector2f;
+    typedef xe::Vector<float, 2> Vector2f;
 
     Vector2f v1 = {0.0f, 0.0f};
     Vector2f v2 = {1.0f, 0.0f};
     Vector2f v3 = {0.0f, 1.0f};
 
-    v1 = xe::add(v1, xe::add(v2, v3));
+    v1 = v1 + v2 - v3 * v1 + 3.0f * v2;
 
     std::cout << v1.x << ", " << v1.y << std::endl;
+
+    float value = xe::max(v2);
+
+
     
+
     return 0;
 }
