@@ -8,7 +8,6 @@ find_package(OpenAL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(Boost 
-
     COMPONENTS 
         filesystem
         system 

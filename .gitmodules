@@ -1,0 +1,3 @@
+[submodule "deps/libbdm"]
+	path = deps/libbdm
+	url = https://github.com/fapablazacl/libbdm.git
